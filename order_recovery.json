@@ -15,7 +15,15 @@
                         }
                     }
                 }
-            }
+            },
+            "parameters": [
+                {
+                    "name": "orderId",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
         }
     },
     "definitions": {
