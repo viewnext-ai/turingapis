@@ -1,0 +1,618 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Microservicio para la generación y consulta de estado de documentos/Microservice for create and request document status",
+    "version": "1.0.0",
+    "title": "Generador documentos/Documents generator"
+  },
+  "host": "petstore.swagger.io",
+  "basePath": "/api/v1",
+  "tags": [
+    {
+      "name": "documentsgenerator",
+      "description": "Generador y consulta de documentación/Create and request documents status"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/request": {
+      "post": {
+        "tags": [
+          "document"
+        ],
+        "summary": "Generar documentos asociados a una orden/Create documents related with one order",
+        "description": "Generar documentos asociados a una orden/Create documents related with one order",
+        "operationId": "createDocuments",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/requestinfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operacion correcta/OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "requestId": {
+                  "type": "string",
+                  "description": "Identificador interno de la petición/Internal petition identifier. It must be used for requests"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Valor no encontrado/Value not found"
+          },
+          "404": {
+            "description": "No es posible atender la peticion/Not Found"
+          },
+          "405": {
+            "description": "Error de validacion/Validation error"
+          }
+        }
+      }
+    },
+    "/request/{requestId}": {
+      "get": {
+        "tags": [
+          "document"
+        ],
+        "summary": "Consulta la orden el listado de documentos por una orden/Request order information and a list of documents related with one order",
+        "description": "Devuelve información de la orden y una lista de documentos con el estado por el identificador de orden/Return order information and a list of documents with current status requested by order id",
+        "operationId": "DocumentsByOrderId",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "description": "Identificador de la orden a la que están asociados los documentos/Order Id related with documents",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operacion correcta/OK",
+            "schema": {
+              "$ref": "#/definitions/request"
+            }
+          },
+          "400": {
+            "description": "Valor no encontrado/Value not found"
+          },
+          "404": {
+            "description": "No es posible atender la peticion/Not Found"
+          },
+          "405": {
+            "description": "Error de validacion/Validation error"
+          }
+        }
+      }
+    },
+    "/spa/getDashBoardInfo": {
+      "get": {
+        "tags": [
+          "SPA"
+        ],
+        "summary": "Consulta informacion de peticiones para formar el dashboard/Request information to generate dashboard",
+        "description": "Devuelve informacion agrupada/Return information in groups ",
+        "operationId": "getDashBoardInfo",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/spa_summary_request"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operacion correcta/OK",
+            "schema": {
+              "$ref": "#/definitions/spa_summary_response_list"
+            }
+          },
+          "400": {
+            "description": "Valor no encontrado/Value not found"
+          },
+          "404": {
+            "description": "No es posible atender la peticion/Not Found"
+          },
+          "405": {
+            "description": "Error de validacion/Validation error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "params": {
+      "type": "object",
+      "required": [
+        "name",
+        "value"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "params"
+      }
+    },
+    "document_status_type": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "INITIAL",
+            "IN_PROGRESS",
+            "DONE",
+            "ERROR"
+          ],
+          "description": "Estado del documento/Document status"
+        },
+        "statusDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Fecha y hora en la que se actualizo el estado/Document status timestamp          "
+        }
+      }
+    },
+    "document_type": {
+      "type": "object",
+      "properties": {
+        "doc_type": {
+          "type": "string",
+          "description": "Tipo de documento/Type of document",
+          "enum": [
+            "CONTRATO",
+            "COMPROBANTE",
+            "ARGUMENTARIO",
+            "RECIBI",
+            "SEPA",
+            "SMS"
+          ]
+        },
+        "documentDescr": {
+          "type": "string",
+          "description": "Descripción del documento/Document description"
+        }
+      }
+    },
+    "request_status_type": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "REGISTERED",
+            "RETRIEVING_INFORMATION",
+            "EXECUTING_RULES",
+            "GENERATING_DOCS",
+            "DONE",
+            "ERROR",
+            "CANCELLED"
+          ],
+          "description": "Estado de la orden de generacion de documentos/Documents creation order status"
+        },
+        "statusDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Fecha y hora en la que se actualizo el estado/Document status timestamp          "
+        }
+      }
+    },
+    "document": {
+      "type": "object",
+      "required": [
+        "id",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Identificador unico del documento/Unique document identifier"
+        },
+        "orderitemid": {
+          "type": "string",
+          "description": "Identificador del acto comercial de la orden que genera el documento. Vacío para orden completa, por ejemplo el mandado SEPA/Commertial request identifier. It should be null if document is related with complete order, i.e. SEPA document"
+        },
+        "contractid": {
+          "type": "string",
+          "description": "identificador de contrato/contract identifier"
+        },
+        "documenttype": {
+          "$ref": "#/definitions/document_type"
+        },
+        "documentStatus": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/document_status_type"
+          }
+        },
+        "signaturetype": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "SIGNATURE",
+              "VOICE_RECORD",
+              "CERTIFIED_SMS"
+            ],
+            "description": "Tipo de firma que se puede realizar con el documento. Si es null el documento no tiene que ser firmado/Signature type available for this document. If null, the document doesn't have to be signed"
+          }
+        },
+        "attachment": {
+          "type": "string",
+          "description": "Enlace para realizar la descarga del documento/Link to download the document"
+        },
+        "digitalSignature": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/params"
+          }
+        },
+        "publishType": {
+          "type": "string",
+          "enum": [
+            "S3",
+            "GED"
+          ]
+        }
+      },
+      "xml": {
+        "name": "document"
+      }
+    },
+    "role_definition": {
+      "type": "object",
+      "required": [
+        "role_type",
+        "doc_number"
+      ],
+      "properties": {
+        "role_type": {
+          "type": "string",
+          "enum": [
+            "HOLDER",
+            "LEGAL_REPRESENTATIVE",
+            "PAYER"
+          ]
+        },
+        "doc_number": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "surname": {
+          "type": "string"
+        },
+        "second_surmane": {
+          "type": "string"
+        }
+      }
+    },
+    "requestinfo": {
+      "type": "object",
+      "required": [
+        "orderid",
+        "brand",
+        "channel",
+        "sfid",
+        "roles",
+        "step"
+      ],
+      "properties": {
+        "orderid": {
+          "type": "string",
+          "description": "Identificador de la orden en stack origen/Order identifier in original stack"
+        },
+        "orderItemsId": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Lista de subordenes involucrados en la peticion. Si es nulo aplica a la orden completa/list of orderitemid involved in this request. If it's null, request involved all items"
+        },
+        "stack": {
+          "type": "string",
+          "description": "Stack/Stack",
+          "enum": [
+            "ALANI",
+            "BAU OSP",
+            "BAU JZZ"
+          ]
+        },
+        "brand": {
+          "type": "string",
+          "description": "Marca sobre la que se realiza la orden/Commertial brand related with order",
+          "enum": [
+            "ORANGE",
+            "JAZZTEL",
+            "AMENA"
+          ],
+          "default": "ORANGE"
+        },
+        "channel": {
+          "type": "string",
+          "description": "Canal de venta sobre el que se genero la orden/Sales channel"
+        },
+        "sfid": {
+          "type": "string",
+          "description": "SFID que genero la orden/SFID"
+        },
+        "step": {
+          "type": "string",
+          "description": "Paso en el flujo de contratación/Step in contract flow",
+          "enum": [
+            "PURCHASE",
+            "DELIVERY"
+          ]
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/role_definition"
+          }
+        },
+        "callback": {
+          "type": "string",
+          "description": "url de callback cuando se complete la creacion de documentos/callback url to call when documents generation is completed"
+        },
+        "metadata": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/params"
+          }
+        }
+      },
+      "xml": {
+        "name": "requestinfo"
+      }
+    },
+    "request": {
+      "type": "object",
+      "required": [
+        "language",
+        "info"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string",
+          "description": "Idioma del documento (ISO 639-1)/Document language (ISO 639-1)",
+          "enum": [
+            "es",
+            "ca",
+            "eu",
+            "gl",
+            "en"
+          ],
+          "default": "es"
+        },
+        "info": {
+          "$ref": "#/definitions/requestinfo"
+        },
+        "status": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/request_status_type"
+          }
+        },
+        "documents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/document"
+          }
+        }
+      }
+    },
+    "spa_summary_request": {
+      "type": "object",
+      "properties": {
+        "orderid": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Identificador de la orden en stack origen/Order identifier in original stack"
+          }
+        },
+        "stack": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Stack/Stack",
+            "enum": [
+              "ALANI",
+              "BAU OSP",
+              "BAU JZZ"
+            ]
+          }
+        },
+        "brand": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Marca sobre la que se realiza la orden/Commertial brand related with order",
+            "enum": [
+              "ORANGE",
+              "JAZZTEL",
+              "AMENA"
+            ]
+          }
+        },
+        "channel": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Canal de venta sobre el que se genero la orden/Sales channel"
+          }
+        },
+        "sfid": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "SFID que genero la orden/SFID"
+          }
+        },
+        "step": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Paso en el flujo de contratación/Step in contract flow",
+            "enum": [
+              "PURCHASE",
+              "DELIVERY"
+            ]
+          }
+        },
+        "language": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Idioma del documento (ISO 639-1)/Document language (ISO 639-1)",
+            "enum": [
+              "es",
+              "ca",
+              "eu",
+              "gl",
+              "en"
+            ]
+          }
+        },
+        "initialdate": {
+          "type": "string",
+          "format": "date"
+        },
+        "enddate": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "spa_summary_response": {
+      "type": "object",
+      "properties": {
+        "orderid": {
+          "type": "string",
+          "description": "Identificador de la orden en stack origen/Order identifier in original stack"
+        },
+        "stack": {
+          "type": "string",
+          "description": "Stack/Stack",
+          "enum": [
+            "ALANI",
+            "BAU OSP",
+            "BAU JZZ"
+          ]
+        },
+        "brand": {
+          "type": "string",
+          "description": "Marca sobre la que se realiza la orden/Commertial brand related with order",
+          "enum": [
+            "ORANGE",
+            "JAZZTEL",
+            "AMENA"
+          ]
+        },
+        "channel": {
+          "type": "string",
+          "description": "Canal de venta sobre el que se genero la orden/Sales channel"
+        },
+        "sfid": {
+          "type": "string",
+          "description": "SFID que genero la orden/SFID"
+        },
+        "step": {
+          "type": "string",
+          "description": "Paso en el flujo de contratación/Step in contract flow",
+          "enum": [
+            "PURCHASE",
+            "DELIVERY"
+          ]
+        },
+        "language": {
+          "type": "string",
+          "description": "Idioma del documento (ISO 639-1)/Document language (ISO 639-1)",
+          "enum": [
+            "es",
+            "ca",
+            "eu",
+            "gl",
+            "en"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "REGISTERED",
+            "RETRIEVING_INFORMATION",
+            "EXECUTING_RULES",
+            "GENERATING_DOCS",
+            "DONE",
+            "ERROR",
+            "CANCELLED"
+          ]
+        },
+        "summary": {
+          "type": "integer",
+          "format": "base64"
+        }
+      }
+    },
+    "spa_summary_response_list": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/spa_summary_response"
+          }
+        }
+      }
+    }
+  }
+}
