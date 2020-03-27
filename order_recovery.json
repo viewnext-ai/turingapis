@@ -552,20 +552,6 @@
                 }
             }
         },
-        "Money": {
-            "description": "The price and currency of the catalog item\n",
-            "type": "object",
-            "properties": {
-                "unit": {
-                    "description": "The currency of the price\n",
-                    "type": "string"
-                },
-                "value": {
-                    "description": "The amount of the price\n",
-                    "type": "number"
-                }
-            }
-        },
         "PriceParam": {
             "description": "The parameters that may impact/impact the price\n",
             "type": "object",
@@ -1859,33 +1845,6 @@
                 }
             }
         },
-        "ExternalIdentifier": {
-            "description": "Reference to an external system identifier\n",
-            "type": "object",
-            "properties": {
-                "type": {
-                    "description": "Type of the external system\n",
-                    "type": "string"
-                },
-                "id": {
-                    "description": "Unique identifier in the external system\n",
-                    "type": "string"
-                },
-                "version": {
-                    "description": "Version of the related entity in the external system\n",
-                    "type": "string"
-                },
-                "extensions": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "object"
-                    },
-                    "x-amdocs": {
-                        "refDefinition": "ExternalIdentifierExtensions"
-                    }
-                }
-            }
-        },
         "Note": {
             "description": "Extra information about a given entity\n",
             "required": [
@@ -2973,15 +2932,6 @@
             },
             "discriminator": "type"
         },
-        "AccountRef": {
-            "description": "This represents  a reference to Engaged party.\n",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/AccountRefOrValue"
-                },
-                {}
-            ]
-        },
         "CreditProfile": {
             "description": "Credit profile for the party (containing credit scoring, ...). By default only the current credit profile is retrieved. It can be used as a list to give the party credit profiles history, the first one in the list will be the current one.\n",
             "type": "object",
@@ -3068,24 +3018,6 @@
                     }
                 }
             ]
-        },
-        "ErrorResponse": {
-            "description": "Response containing descriptive error text, error code\ntype: object\n",
-            "type": "object",
-            "properties": {
-                "code": {
-                    "description": "The code associated with the error\n",
-                    "type": "string"
-                },
-                "message": {
-                    "description": "The message associated with the error",
-                    "type": "string"
-                },
-                "traceId": {
-                    "description": "A unique trace id used to correlate an error returned to a client with the server\n",
-                    "type": "string"
-                }
-            }
         },
         "IndividualValue": {
             "description": "Individual resource\n",
@@ -3862,6 +3794,34 @@
                     "items": {
                         "$ref": "#/definitions/Individual"
                     }
+                },
+                "geographicAddresses": {
+                    "description": "geographicAddresses",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/GeographicAddress"
+                    }
+                },
+                "billingAccounts": {
+                    "description": "billingAccounts",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/BillingAccount"
+                    }
+                },
+                "financialAccounts": {
+                    "description": "financialAccounts",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/FinancialAccount"
+                    }
+                },
+                "PaymentMethods": {
+                    "description": "PaymentMethods",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PaymentMethod"
+                    }
                 }
             }
         },
@@ -3907,6 +3867,3146 @@
                 }
             ]
         },
+        "TimePeriod": {
+            "description": "Time period\n",
+            "type": "object",
+            "properties": {
+                "startDateTime": {
+                    "format": "date-time",
+                    "description": "Start date and time of the period\n",
+                    "type": "string"
+                },
+                "endDateTime": {
+                    "format": "date-time",
+                    "description": "End date and time of the period\n",
+                    "type": "string"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "TimePeriodExtensions"
+                    }
+                },
+                "extension": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "TimePeriodExtension"
+                    }
+                }
+            }
+        },
+        "GeographicAddressBridgeValidation": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "href": {
+                    "type": "string"
+                },
+                "status": {
+                    "description": "Valid values are 'In Progress', 'Terminated With Error', 'Done'\n",
+                    "enum": [
+                        "In Progress",
+                        "Terminated With Error",
+                        "Done"
+                    ],
+                    "type": "string"
+                },
+                "validationDate": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "validationResult": {
+                    "enum": [
+                        "Success",
+                        "Partial",
+                        "Fail"
+                    ],
+                    "type": "string"
+                },
+                "provideAlternative": {
+                    "type": "boolean"
+                },
+                "validAddress": {
+                    "$ref": "#/definitions/GeographicAddress"
+                },
+                "alternateGeographicAddress": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/AlternateGeographicAddress"
+                    }
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "GeographicAddressValidationExtension"
+                    }
+                }
+            }
+        },
+        "AlternateGeographicAddress": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/GeographicAddress"
+                }
+            ]
+        },
+        "GeographicAddress": {
+            "description": "A geographic address is a structured, textual way of describing how to find a Property in an urban area.",
+            "required": [
+                "country"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the geographic address\n",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "URI to access the geographic address resource\n",
+                    "type": "string"
+                },
+                "streetNr": {
+                    "description": "The number identifying a specific property on a public street. It may be combined with streetNrLast for ranged addresses.\n",
+                    "type": "string"
+                },
+                "streetNrSuffix": {
+                    "description": "The first street number suffix.\n",
+                    "type": "string"
+                },
+                "streetNrLast": {
+                    "description": "The last number in a range of street numbers allocated to a property.\n",
+                    "type": "string"
+                },
+                "streetNrLastSuffix": {
+                    "description": "The last street number suffix for a ranged address.\n",
+                    "type": "string"
+                },
+                "streetName": {
+                    "description": "The name of the street or other street type.\n",
+                    "type": "string"
+                },
+                "streetType": {
+                    "description": "The type of street. Alley, avenue, boulevard, brae, crescent, drive, highway, lane, terrace, parade, place, tarn, way, or wharf\n",
+                    "type": "string"
+                },
+                "streetSuffix": {
+                    "description": "A modifier denoting a particular direction.\n",
+                    "type": "string"
+                },
+                "displayText": {
+                    "description": "The display text for the address. For example in case of @type=Country the displayText would contain long displayble string.\n",
+                    "type": "string"
+                },
+                "postcode": {
+                    "description": "The descriptor of postal delivery area, used to speed & simplify delivery of mail (also known as zipcode).\n",
+                    "type": "string"
+                },
+                "locality": {
+                    "description": "An area of defined or undefined boundaries within a local authority or other legislatively defined area, usually rural or semi-rural in nature'\n",
+                    "type": "string"
+                },
+                "city": {
+                    "description": "The city that the geographic address is in.\n",
+                    "type": "string"
+                },
+                "stateOrProvince": {
+                    "description": "The State or Province that the geographic address is in.\n",
+                    "type": "string"
+                },
+                "country": {
+                    "description": "The country that the geographic address is in.\n",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "Status of the geographic address. Validated or Unvalidated.    \n",
+                    "type": "string"
+                },
+                "@type": {
+                    "description": "Indicates the type of the resource. Here can be 'UrbanPropertyAddress', FormattedAddress, apanesePropertyAddress , AustralianPropertyAddress, etc\n",
+                    "type": "string"
+                },
+                "@schemaLocation": {
+                    "description": "A link to the schema describing this REST Resource.\n",
+                    "type": "string"
+                },
+                "createdOn": {
+                    "format": "date-time",
+                    "description": "Date and time when the entity was created.\n",
+                    "type": "string"
+                },
+                "lastModifiedOn": {
+                    "format": "date-time",
+                    "description": "Date and time when the entity was last updated.\n",
+                    "type": "string"
+                },
+                "geographicSubAddress": {
+                    "description": "A list of geographic sub addresses (GeographicSubAddress [*])\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/GeographicSubAddress"
+                    }
+                },
+                "geographicLocation": {
+                    "$ref": "#/definitions/GeographicLocationRefOrValue"
+                },
+                "extensions": {
+                    "$ref": "#/definitions/GeographicAddressExtension",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    }
+                }
+            }
+        },
+        "GeographicSubAddress": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Identifier for a GeographicSubAddress\n",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "URI to access the geographic address sub-resource\n",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of geographicSubAddress to identify it with a meaningful identification\n",
+                    "type": "string"
+                },
+                "subAddressType": {
+                    "description": "Type of sub-address. Can be sub-unit or private street \n",
+                    "type": "string"
+                },
+                "subUnitType": {
+                    "description": "The type of subunit e.g. BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT, WHARF\n",
+                    "type": "string"
+                },
+                "subUnitNumber": {
+                    "description": "The discrimator used for the subunit often just a simple number e.g. FLAT No, may also be a range.\n",
+                    "type": "string"
+                },
+                "levelType": {
+                    "description": "This describes the level types within a building.\n",
+                    "type": "string"
+                },
+                "levelNumber": {
+                    "description": "This is used where a level type may be repeated.\n",
+                    "type": "string"
+                },
+                "buildingName": {
+                    "description": "This allows for buildings that have well-known names.\n",
+                    "type": "string"
+                },
+                "privateStreetNumber": {
+                    "description": "A private street numbers internal to a private street.\n",
+                    "type": "string"
+                },
+                "privateStreetName": {
+                    "description": "Private streets internal to a property may have internal names.\n",
+                    "type": "string"
+                },
+                "@type": {
+                    "description": "Type of the resource for this subAdress like GeographicSubAddress\n",
+                    "type": "string"
+                },
+                "@schemaLocation": {
+                    "description": "A Link to the schema describing this REST Resource.\n",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "Status of geographic sub address. Validated, Unvalidated            \n",
+                    "type": "string"
+                },
+                "extensions": {
+                    "$ref": "#/definitions/GeographicSubAddressExtension",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    }
+                }
+            }
+        },
+        "GeographicLocationRefOrValue": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Identifier for a GeographicLocation",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "URI to access the geographic location",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of GeographicLocation",
+                    "type": "string"
+                },
+                "geometryType": {
+                    "description": "Type allows describing geographic location form; it could be a point, line, polygon, etc.\n",
+                    "type": "string"
+                },
+                "accuracy": {
+                    "description": "Accuracy of co-ordinate specified",
+                    "type": "string"
+                },
+                "spatialRef": {
+                    "description": "Geocoding referential",
+                    "type": "string"
+                },
+                "geometry": {
+                    "description": "A list of geographic points (GeographicPoint [*])",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/GeographicPoint"
+                    }
+                }
+            }
+        },
+        "GeographicPoint": {
+            "type": "object",
+            "properties": {
+                "x": {
+                    "description": "x-coordinate. usually latitude",
+                    "type": "string"
+                },
+                "y": {
+                    "description": "y-coordinate. usually longitude",
+                    "type": "string"
+                },
+                "z": {
+                    "description": "z-coordinate. usually elevation",
+                    "type": "string"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "GeographicPointExtension"
+                    }
+                }
+            }
+        },
+        "ExternalIdentifier": {
+            "description": "Reference to an external system identifier\n",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "description": "Type of the external system\n",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "Unique identifier in the external system\n",
+                    "type": "string"
+                },
+                "version": {
+                    "description": "Version of the related entity in the external system\n",
+                    "type": "string"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "ExternalIdentifierExtensions"
+                    }
+                },
+                "name": {
+                    "description": "The name of the external identifier",
+                    "type": "string"
+                },
+                "value": {
+                    "description": "The value of the external identifier",
+                    "type": "string"
+                }
+            }
+        },
+        "GeographicAddressValidation": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "href": {
+                    "type": "string"
+                },
+                "status": {
+                    "description": "Valid values are 'in progress', 'terminated With Error', 'done'\n",
+                    "type": "string"
+                },
+                "@type": {
+                    "description": "Indicates the type of the resource\n",
+                    "type": "string"
+                },
+                "@schemaLocation": {
+                    "description": "Link to schema describing this REST resource         \n",
+                    "type": "string"
+                },
+                "validationDate": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "validationResult": {
+                    "description": "Valid Values are success,partial,fail \n",
+                    "type": "string"
+                },
+                "provideAlternative": {
+                    "type": "boolean"
+                },
+                "validAddress": {
+                    "$ref": "#/definitions/GeographicAddressResponseValidation"
+                },
+                "alternateGeographicAddress": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/GeographicAddressResponseValidation"
+                    }
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "GeographicAddressValidationExtension"
+                    }
+                }
+            }
+        },
+        "GeographicAddressResponseValidation": {
+            "description": "Structure used to describe an address validation request\n",
+            "required": [
+                "country"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the geographic address\n",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "URI to access the geographic address resource\n",
+                    "type": "string"
+                },
+                "streetNr": {
+                    "description": "Number identifying a specific property on a public street. It may be combined with streetNrLast for ranged addresses\n",
+                    "type": "string"
+                },
+                "streetNrSuffix": {
+                    "description": "The first street number suffix\n",
+                    "type": "string"
+                },
+                "streetNrLast": {
+                    "description": "Last number in a range of street numbers allocated to a property\n",
+                    "type": "string"
+                },
+                "streetNrLastSuffix": {
+                    "description": "Last street number suffix for a ranged address\n",
+                    "type": "string"
+                },
+                "streetName": {
+                    "description": "Name of the street or other street type\n",
+                    "type": "string"
+                },
+                "streetType": {
+                    "description": "Type of Street. Alley, avenue, boulevard, brae, crescent, drive, highway, lane, terrace, parade, place, tarn, way, wharf\n",
+                    "type": "string"
+                },
+                "streetSuffix": {
+                    "description": "A modifier denoting a particular direction\n",
+                    "type": "string"
+                },
+                "displayText": {
+                    "description": "The display text for the address. For example in case of @type=Country the displayText would contain long displayble string.\n",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "Status of the geographic address. Validated or Unvalidated.\n",
+                    "type": "string"
+                },
+                "postcode": {
+                    "description": "Descriptor of postal delivery area, used to speed & simplify delivery of mail (also known as zipcode)\n",
+                    "type": "string"
+                },
+                "locality": {
+                    "description": "An area of defined or undefined boundaries within a local authority or other legislatively defined area, usually rural or semi-rural in nature'\n",
+                    "type": "string"
+                },
+                "city": {
+                    "description": "City that the geographic address is in\n",
+                    "type": "string"
+                },
+                "stateOrProvince": {
+                    "description": "State or Province that the geographic address is in\n",
+                    "type": "string"
+                },
+                "country": {
+                    "description": "Country that the geographic address is in\n",
+                    "type": "string"
+                },
+                "@type": {
+                    "description": "Indicates the type of the resource. Here can be 'UrbanPropertyAddress', FormattedAddress, apanesePropertyAddress , AustralianPropertyAddress, etc\n",
+                    "type": "string"
+                },
+                "@schemaLocation": {
+                    "description": "A Link to the schema describing this REST Resource\n",
+                    "type": "string"
+                },
+                "geographicSubAddress": {
+                    "description": "A list of geographic sub addresses (GeographicSubAddress [*])\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/GeographicSubAddress"
+                    }
+                },
+                "geographicLocation": {
+                    "$ref": "#/definitions/GeographicLocationRefOrValue"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "GeographicAddressResponseValidationExtension"
+                    }
+                }
+            }
+        },
+        "GeographicAddressRequestValidation": {
+            "description": "Structure used to describe an address validation request\n",
+            "required": [
+                "country"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the geographic address\n",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "URI to access the geographic address resource\n",
+                    "type": "string"
+                },
+                "streetNr": {
+                    "description": "Number identifying a specific property on a public street. It may be combined with streetNrLast for ranged addresses\n",
+                    "type": "string"
+                },
+                "streetNrSuffix": {
+                    "description": "The first street number suffix\n",
+                    "type": "string"
+                },
+                "streetNrLast": {
+                    "description": "Last number in a range of street numbers allocated to a property\n",
+                    "type": "string"
+                },
+                "streetNrLastSuffix": {
+                    "description": "Last street number suffix for a ranged address\n",
+                    "type": "string"
+                },
+                "streetName": {
+                    "description": "Name of the street or other street type\n",
+                    "type": "string"
+                },
+                "streetType": {
+                    "description": "Type of Street. Alley, avenue, boulevard, brae, crescent, drive, highway, lane, terrace, parade, place, tarn, way, wharf\n",
+                    "type": "string"
+                },
+                "streetSuffix": {
+                    "description": "A modifier denoting a particular direction\n",
+                    "type": "string"
+                },
+                "postcode": {
+                    "description": "Descriptor of postal delivery area, used to speed & simplify delivery of mail (also known as zipcode)\n",
+                    "type": "string"
+                },
+                "locality": {
+                    "description": "An area of defined or undefined boundaries within a local authority or other legislatively defined area, usually rural or semi-rural in nature'\n",
+                    "type": "string"
+                },
+                "city": {
+                    "description": "City that the geographic address is in\n",
+                    "type": "string"
+                },
+                "stateOrProvince": {
+                    "description": "State or Province that the geographic address is in\n",
+                    "type": "string"
+                },
+                "country": {
+                    "description": "Country that the geographic address is in\n",
+                    "type": "string"
+                },
+                "@type": {
+                    "description": "Indicates the type of the resource. Here can be 'UrbanPropertyAddress', FormattedAddress, apanesePropertyAddress , AustralianPropertyAddress, etc\n",
+                    "type": "string"
+                },
+                "@schemaLocation": {
+                    "description": "A Link to the schema describing this REST Resource    \n",
+                    "type": "string"
+                },
+                "geographicLocation": {
+                    "$ref": "#/definitions/GeographicLocationRefOrValue"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "GeographicAddressRequestValidationExtension"
+                    }
+                }
+            }
+        },
+        "GeographicAddressEntity": {
+            "description": "A geographic address is a structed textual way of describing how to find a Property in an urban area",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the geographic address\n",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "URI to access the geographic address resource\n",
+                    "type": "string"
+                },
+                "streetNr": {
+                    "description": "Number identifying a specific property on a public street. It may be combined with streetNrLast for ranged addresses\n",
+                    "type": "string"
+                },
+                "streetNrSuffix": {
+                    "description": "The first street number suffix\n",
+                    "type": "string"
+                },
+                "streetNrLast": {
+                    "description": "Last number in a range of street numbers allocated to a property\n",
+                    "type": "string"
+                },
+                "streetNrLastSuffix": {
+                    "description": "Last street number suffix for a ranged address\n",
+                    "type": "string"
+                },
+                "streetName": {
+                    "description": "Name of the street or other street type\n",
+                    "type": "string"
+                },
+                "streetType": {
+                    "description": "Type of Street. Alley, avenue, boulevard, brae, crescent, drive, highway, lane, terrace, parade, place, tarn, way, wharf\n",
+                    "type": "string"
+                },
+                "streetSuffix": {
+                    "description": "A modifier denoting a particular direction\n",
+                    "type": "string"
+                },
+                "postcode": {
+                    "description": "Descriptor of postal delivery area, used to speed & simplify delivery of mail (also known as zipcode)\n",
+                    "type": "string"
+                },
+                "displayText": {
+                    "description": "display text for address. For example in case of @type=Country the displayText would contain long displayble string.\n",
+                    "type": "string"
+                },
+                "locality": {
+                    "description": "An area of defined or undefined boundaries within a local authority or other legislatively defined area, usually rural or semi-rural in nature'          \n",
+                    "type": "string"
+                },
+                "city": {
+                    "description": "City that the geographic address is in\n",
+                    "type": "string"
+                },
+                "stateOrProvince": {
+                    "description": "State or Province that the geographic address is in\n",
+                    "type": "string"
+                },
+                "country": {
+                    "description": "Country that the geographic address is in\n",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "Status of geographic address. Validated, Unvalidated  \n",
+                    "type": "string"
+                },
+                "@type": {
+                    "description": "Indicates the type of the resource. Here can be 'UrbanPropertyAddress', 'FormattedAddress', 'JapanesePropertyAddress' , 'AustralianPropertyAddress', etc.\n",
+                    "type": "string"
+                },
+                "@schemaLocation": {
+                    "description": "A Link to the schema describing this REST Resource \n",
+                    "type": "string"
+                },
+                "createdOn": {
+                    "format": "date-time",
+                    "description": "Date and time when the entity was created.\n",
+                    "type": "string"
+                },
+                "lastModifiedOn": {
+                    "format": "date-time",
+                    "description": "Date and time when the entity was last updated.\n",
+                    "type": "string"
+                },
+                "geographicSubAddress": {
+                    "description": "A list of geographic sub addresses (GeographicSubAddress [*])\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/GeographicSubAddress"
+                    }
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "GeographicAddressEntityExtension"
+                    }
+                }
+            }
+        },
+        "AddressRole": {
+            "description": "Represents the address roles based on context (example Individual,Customer etc).\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "addressRole": {
+                            "description": "The value of the telephone medium type.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "invoice": {
+                            "description": "Indicates whether address can be used for invoice address type.\n",
+                            "type": "boolean",
+                            "readOnly": true
+                        },
+                        "mailing": {
+                            "description": "Indicates whether address can be used for mailing address type.\n",
+                            "type": "boolean",
+                            "readOnly": true
+                        },
+                        "shipping": {
+                            "description": "Indicates whether address can be used for shipping address type.\n",
+                            "type": "boolean",
+                            "readOnly": true
+                        },
+                        "service": {
+                            "description": "Indicates whether address can be used for service address type.\n",
+                            "type": "boolean",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "Country": {
+            "description": "Provides the reference data and display values for a particular country\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "country": {
+                            "description": "The code for the country used to populate the 'country' attribute in target mediums.\nIt will contain the ISO-3166 Alpha-3 code for the country for eg USA. \nshortLabelDisplay filed is not supported.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "SubUnitType": {
+            "description": "Represents the SubUnit Type.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "subUnitType": {
+                            "description": "The value of the SubUnitType.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "StreetType": {
+            "description": "Represents the StreetType.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "streetType": {
+                            "description": "The value of the type of street.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "LevelType": {
+            "description": "Represents the type of the level.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "levelType": {
+                            "description": "The value of the level type.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "GeographicAddressExtension": {
+            "type": "object",
+            "properties": {
+                "ospDwelingId": {
+                    "description": "External identifier of MyAddress",
+                    "type": "string"
+                },
+                "externalIdentifier": {
+                    "description": "Characteristics of external identifier",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ExternalIdentifier"
+                    }
+                }
+            }
+        },
+        "GeographicSubAddressExtension": {
+            "type": "object",
+            "properties": {
+                "buildingNameSuffix": {
+                    "description": "Suffix for the building name",
+                    "type": "string"
+                },
+                "stairCase": {
+                    "description": "Stair case type",
+                    "type": "string"
+                },
+                "doorType": {
+                    "description": "Door type",
+                    "type": "string"
+                },
+                "door": {
+                    "description": "Door number",
+                    "type": "string"
+                },
+                "stairCaseSuffix": {
+                    "description": "Suffix for the stair case",
+                    "type": "string"
+                }
+            }
+        },
+        "BillingAccount": {
+            "description": "An account of money owed by a party to another entity in exchange for goods or services that have been delivered or used. A billing account used for billing purposes. It includes a description of the bill structure, such as frequency, presentation media, format and so on.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/PartyAccount"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "ratingType": {
+                            "description": "Rating Type associated with Billing Account. One of two possible value postpaid or prepaid must be filled.\n",
+                            "type": "string"
+                        }
+                    }
+                }
+            ]
+        },
+        "PartyAccount": {
+            "description": "An account of money owed by a party to another entity in exchange for goods or services that have been delivered or used. PartyAccount used for billing or for settlement purposes concerning a given party (an organization or an individual).\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/Account"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "paymentStatus": {
+                            "description": "status of payment\n",
+                            "type": "string"
+                        },
+                        "paymentPlan": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/PaymentPlan"
+                            }
+                        },
+                        "financialAccount": {
+                            "$ref": "#/definitions/FinancialAccountRef"
+                        },
+                        "defaultPaymentMethod": {
+                            "$ref": "#/definitions/PaymentMethodRef"
+                        },
+                        "billStructure": {
+                            "$ref": "#/definitions/BillStructure"
+                        },
+                        "extensions": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "object"
+                            },
+                            "x-amdocs": {
+                                "refDefinition": "PartyAccountExtension"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "Account": {
+            "description": "This is the base for all type of accounts, such as, party account, settlement account, etc. It contains a set of common attributes.\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "A unique identifier of the account.\n",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "A URI reference of the account.\n",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "The name of the account.\n",
+                    "type": "string",
+                    "x-amdocs-pii": "nameInfo:name"
+                },
+                "description": {
+                    "description": "A description of the account.\n",
+                    "type": "string"
+                },
+                "state": {
+                    "description": "It contains the lifecycle state, such as Active, Closed, Suspended, and so on.\n",
+                    "type": "string"
+                },
+                "createdOn": {
+                    "format": "date-time",
+                    "description": "The date and time when the entity was created.\n",
+                    "type": "string"
+                },
+                "lastModified": {
+                    "format": "date-time",
+                    "description": "The date of the last modification of the account.\n",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "A categorization of an account, such as individual, joint, and so on, whose instances share some of the same characteristics.\n",
+                    "type": "string"
+                },
+                "@baseType": {
+                    "description": "Base type of entity\n",
+                    "type": "string"
+                },
+                "@schemaLocation": {
+                    "description": "A uri where the data model can be retrieved.\n",
+                    "type": "string"
+                },
+                "currencyCode": {
+                    "description": "The currency code.\n",
+                    "type": "string"
+                },
+                "accountType": {
+                    "description": "The type of account.\n",
+                    "type": "string"
+                },
+                "accountSubType": {
+                    "description": "The subtype of an account.\n",
+                    "type": "string"
+                },
+                "stateDate": {
+                    "format": "date-time",
+                    "description": "The date on which the current status becomes effective.\n",
+                    "type": "string"
+                },
+                "stateReason": {
+                    "description": "The reason for the corresponding status, which is taken from the last activity that changed the status.\n",
+                    "type": "string"
+                },
+                "stateIssueDate": {
+                    "format": "date-time",
+                    "description": "The date on which the status was changed.\n",
+                    "type": "string"
+                },
+                "statusLastActivity": {
+                    "description": "The last activity that caused the status modification.\n",
+                    "type": "string"
+                },
+                "openDate": {
+                    "format": "date-time",
+                    "description": "The date on which the account was opened.\n",
+                    "type": "string"
+                },
+                "waiveLatePaymentFee": {
+                    "description": "Defines if a late payment fees should be calculated for this account or if the account is waived from late payment fees.\n",
+                    "type": "boolean"
+                },
+                "validFor": {
+                    "$ref": "#/definitions/TimePeriod"
+                },
+                "creditLimit": {
+                    "$ref": "#/definitions/Money"
+                },
+                "contact": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Contact"
+                    }
+                },
+                "accountBalance": {
+                    "description": "The balances linked to the account.\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/AccountBalance"
+                    }
+                },
+                "taxExemption": {
+                    "description": "A proof of freedom from taxes imposed by a taxing jurisdiction.\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/AccountTaxExemption"
+                    }
+                },
+                "relatedParty": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatedPartyRef"
+                    }
+                },
+                "controlFields": {
+                    "$ref": "#/definitions/ControlFields"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "AccountExtension"
+                    }
+                }
+            }
+        },
+        "Contact": {
+            "description": "It contains a reference to the related party.\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier\n",
+                    "type": "string"
+                },
+                "contactName": {
+                    "description": "A displayable name for a contact.\n",
+                    "type": "string",
+                    "x-amdocs-pii": "nameInfo:name"
+                },
+                "contactType": {
+                    "description": "The type of contact, primary or secondary.\n",
+                    "type": "string"
+                },
+                "partyRoleType": {
+                    "description": "It identifies what kind of party role type is linked to the contact (account manager...).\n",
+                    "type": "string"
+                },
+                "contactMedium": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ContactMedium"
+                    }
+                },
+                "validFor": {
+                    "$ref": "#/definitions/TimePeriod",
+                    "description": ""
+                },
+                "relatedParty": {
+                    "$ref": "#/definitions/RelatedPartyRef",
+                    "description": "A related party defines party or party role linked to a specific entity.\n"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "ContactExtension"
+                    }
+                }
+            }
+        },
+        "Money": {
+            "description": "The price and currency of the catalog item\n",
+            "type": "object",
+            "properties": {
+                "unit": {
+                    "description": "The currency of the price\n",
+                    "type": "string"
+                },
+                "value": {
+                    "description": "The amount of the price\n",
+                    "type": "number"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "MoneyExtension"
+                    }
+                }
+            }
+        },
+        "AccountBalance": {
+            "description": "A proof of freedom from taxes imposed by a taxing jurisdiction.\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier\n",
+                    "type": "string"
+                },
+                "amount": {
+                    "$ref": "#/definitions/Money"
+                },
+                "type": {
+                    "description": "The type of the balance, deposit balance, disputed balance, loyalty balance, or receivable balance.\n",
+                    "type": "string"
+                },
+                "validFor": {
+                    "$ref": "#/definitions/TimePeriod"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "AccountBalanceExtension"
+                    }
+                }
+            }
+        },
+        "AccountTaxExemption": {
+            "description": "A proof of freedom from taxes imposed by a taxing juridiction.\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier\n",
+                    "type": "string"
+                },
+                "certificateNumber": {
+                    "description": "An identifier of a document that shows proof of exemption from taxes for the taxing jurisdiction.\n",
+                    "type": "string",
+                    "x-amdocs-pii": "governmentIdentityInfo:identificationId"
+                },
+                "issuingJurisdiction": {
+                    "description": "The name of the taxing jurisdiction for which taxes are exempted.\n",
+                    "type": "string"
+                },
+                "reason": {
+                    "description": "The reason for the tax exemption.\n",
+                    "type": "string"
+                },
+                "validFor": {
+                    "$ref": "#/definitions/TimePeriod"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "ContactExtension"
+                    }
+                }
+            }
+        },
+        "ControlFields": {
+            "type": "object",
+            "properties": {
+                "createdBy": {
+                    "description": "The system identification of the user that created the instance.\n",
+                    "type": "string"
+                },
+                "createdOn": {
+                    "format": "date-time",
+                    "description": "The date and time when the instance was created.\n",
+                    "type": "string"
+                },
+                "lastModifiedBy": {
+                    "description": "The system identification of the user who last modified the instance.\n",
+                    "type": "string"
+                },
+                "lastModifiedOn": {
+                    "format": "date-time",
+                    "description": "The date and time when the instance was last modified.\n",
+                    "type": "string"
+                },
+                "modelVersion": {
+                    "description": "It records the model version to allow on-the-fly upgrade of persisted data.\n",
+                    "type": "string"
+                }
+            }
+        },
+        "PaymentPlan": {
+            "description": "It defines a plan for payment, when a party wants to spread the payments.\n",
+            "type": "object",
+            "properties": {
+                "numberOfPayments": {
+                    "description": "The number of payments used to spread the global payment.\n",
+                    "type": "integer"
+                },
+                "paymentFrequency": {
+                    "description": "The frequency of the payments, such as monthly and bi-monthly.\n",
+                    "type": "string"
+                },
+                "priority": {
+                    "description": "The priority of the payment plan.\n",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "The status of the payment plan, effective or ineffective.\n",
+                    "type": "string"
+                },
+                "totalAmount": {
+                    "$ref": "#/definitions/Money"
+                },
+                "type": {
+                    "description": "Type of payment plan\n",
+                    "type": "string"
+                },
+                "validFor": {
+                    "$ref": "#/definitions/TimePeriod"
+                },
+                "paymentMethod": {
+                    "$ref": "#/definitions/PaymentMethodRef"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "PaymentPlanExtension"
+                    }
+                }
+            }
+        },
+        "FinancialAccountRef": {
+            "description": "It contains a reference to the financial account.\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "A unique identifier of an existing financial account.\n",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "A hypertext reference to the existing financial account.\n",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "The name of the financial account.\n",
+                    "type": "string",
+                    "x-amdocs-pii": "nameInfo:name"
+                },
+                "role": {
+                    "description": "Account role (should be used to identify in which balance to add to aggregation).\n",
+                    "type": "string"
+                }
+            }
+        },
+        "BillStructure": {
+            "description": "The structure of the bill for the billing account.\n",
+            "type": "object",
+            "properties": {
+                "documentType": {
+                    "description": "It indicates whether the billing document is an invoice or a bill.\n",
+                    "type": "string"
+                },
+                "billItemTaxInd": {
+                    "description": "It indicates whether the tax is calculated for each charge or for the total amount of the bill.\n",
+                    "type": "boolean"
+                },
+                "produceBillInd": {
+                    "description": "It indicates whether a bill is produced.\n",
+                    "type": "boolean"
+                },
+                "zeroBalanceInd": {
+                    "description": "It indicates whether to zero the balance of the billing account at the billing run, such as in the case of internal employees.\n",
+                    "type": "boolean"
+                },
+                "billFrequency": {
+                    "description": "The bill frequency multiplier is defined in the customer's billing account. This means that different billing account for the same customer can be billed on different schedules.\n",
+                    "type": "integer"
+                },
+                "dueDays": {
+                    "description": "It defines the number of days to add to the invoice date to get the due date.\n",
+                    "type": "integer"
+                },
+                "presentationMedia": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/BillPresentationMediaRef"
+                    }
+                },
+                "format": {
+                    "$ref": "#/definitions/BillFormatRef"
+                },
+                "cycleSpecification": {
+                    "$ref": "#/definitions/BillingCycleSpecificationRef"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "BillStructureExtension"
+                    }
+                }
+            }
+        },
+        "BillPresentationMediaRef": {
+            "description": "A means of communicating a bill, supported by the associated bill format. For example, post mail, email, or web page.\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the bill presentation media.\n",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "Reference of the bill presentation media.\n",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "A short descriptive name.\n",
+                    "type": "string"
+                }
+            }
+        },
+        "BillFormatRef": {
+            "description": "A bill format is a description in the way in which a bill is presented.\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the bill format.\n",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "Reference of the bill format.\n",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "A short descriptive name.\n",
+                    "type": "string"
+                }
+            }
+        },
+        "BillingCycleSpecificationRef": {
+            "description": "A description of when to initiate a billing cycle and the various sub steps of a billing cycle.\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the billing cycle specification.\n",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "A reference of the billing cycle specification.\n",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "A short descriptive name.\n",
+                    "type": "string"
+                },
+                "frequency": {
+                    "description": "The frequency of the billing cycle, for instance, a monthly billing cycle.\n",
+                    "type": "string"
+                },
+                "billingDateShift": {
+                    "description": "An offset of a billing or settlement date. The offset is expressed as number of days with regard to the start of the billing or settlement period.\n",
+                    "type": "integer"
+                },
+                "externalIdentifier": {
+                    "description": "A list of external identifiers related to the billing cycle specification.\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ExternalIdentifier"
+                    }
+                }
+            },
+            "example": {
+                "id": "BillingCycleSpecification_53e24112-c251-4396-9ebd-90ab04cc5e19",
+                "href": "http://server:port/accountManagement/v1/billingCycleSpecification/BillingCycleSpecification_53e24112-c251-4396-9ebd-90ab04cc5e19",
+                "name": "TestBillingCycleSpecification",
+                "frequency": "month"
+            }
+        },
+        "BillingAccountStateCount": {
+            "type": "object",
+            "properties": {
+                "state": {
+                    "description": "It contains the lifecycle state, such as Active, Closed, Suspended, and so on.",
+                    "type": "string"
+                },
+                "count": {
+                    "format": "int",
+                    "description": "It contains the count of the state.",
+                    "type": "number"
+                }
+            }
+        },
+        "updatebillingAccountState": {
+            "description": "Describes the new state for billing account\n",
+            "type": "object",
+            "properties": {
+                "state": {
+                    "description": "The stae of billing account to be changed to.\n",
+                    "type": "string"
+                },
+                "relatedParty": {
+                    "$ref": "#/definitions/RelatedPartyRef"
+                }
+            }
+        },
+        "FinancialAccount": {
+            "description": "An account of money owed by a party to another entity in exchange for goods or services that have been delivered or used. A financial (account receivable account/account payable) aggregates the amounts of one or more party accounts (billing or settlement) owned by a given party.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/Account"
+                }
+            ]
+        },
+        "FinancialAccountStateCount": {
+            "type": "object",
+            "properties": {
+                "state": {
+                    "description": "It contains the lifecycle state, such as Active, Closed, Suspended, and so on.",
+                    "type": "string"
+                },
+                "count": {
+                    "format": "int",
+                    "description": "It contains the count of the state.",
+                    "type": "number"
+                }
+            }
+        },
+        "updatefinancialAccountState": {
+            "description": "Describes the new state for financial account\n",
+            "type": "object",
+            "properties": {
+                "state": {
+                    "description": "The stae of billing financial to be changed to.\n",
+                    "type": "string"
+                },
+                "relatedParty": {
+                    "$ref": "#/definitions/RelatedPartyRef"
+                }
+            }
+        },
+        "FinancialAccountState": {
+            "description": "Represents the FA State.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "financialAccountState": {
+                            "description": "The value of the FA state.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "transitionToStatus": {
+                            "description": "The list of statuses eligible for transition.\n",
+                            "minItems": 0,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/FinancialAccountState_transitionToStatus"
+                            }
+                        },
+                        "statusChangeReason": {
+                            "description": "The list of status change reason codes.\n",
+                            "minItems": 0,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/FinancialAccountState_statusChangeReason"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "ReferenceData": {
+            "description": "Represents the Interaction Type.\n",
+            "type": "object",
+            "properties": {
+                "href": {
+                    "description": "The reference to retrieve the details of the item.\n",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "shortLabelDisplay": {
+                    "description": "The displayable short text for the value of item.\n",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "fullLabelDisplay": {
+                    "description": "The full displayable text value of the item.\n",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "selectionDisplay": {
+                    "description": "The displayable text value for the item to be used for displaying the items on the UI.\n",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "active": {
+                    "description": "Indicator whether the item is active or not.\n",
+                    "type": "boolean",
+                    "readOnly": true
+                },
+                "default": {
+                    "description": "Indicator whether the item is default in the list.\n",
+                    "type": "boolean"
+                },
+                "@type": {
+                    "description": "Indicates the (class) type of ReferenceData.\n",
+                    "type": "string"
+                }
+            }
+        },
+        "BillingAccountState": {
+            "description": "Represents the State of BA.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "billingAccountState": {
+                            "description": "The value of the state of BA.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "transitionToStatus": {
+                            "description": "The list of statuses eligible for transition.\n",
+                            "minItems": 0,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/BillingAccountState_transitionToStatus"
+                            }
+                        },
+                        "statusChangeReason": {
+                            "description": "The list of status change reason codes.\n",
+                            "minItems": 0,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/FinancialAccountState_statusChangeReason"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "BillingAccountType": {
+            "description": "Represents the type of Billing Account.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "billingAccountType": {
+                            "description": "The value of the type of Billing Account.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "billingAccountSubType": {
+                            "description": "The value of the subtype of Billing Account\n",
+                            "minItems": 0,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/BillingAccountSubType"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "BillingAccountSubType": {
+            "description": "Represents the sub type of Account.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "billingAccountSubType": {
+                            "description": "The value of the sub type of Account.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "billingAccountType": {
+                            "description": "The value of the Billing AccountType.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "CurrencyCode": {
+            "description": "Represents the Currency Code.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "currencyCode": {
+                            "description": "The value of the currency code.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "CreditLimitUnit": {
+            "description": "Represents the Credit Limit Unit.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "creditLimitUnit": {
+                            "description": "The value of the Credit Limit Unit.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "BillingAccountRelatedPartyType": {
+            "description": "Represents the Related Party Type of Billing Account.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "billingAccountRelatedPartyType": {
+                            "description": "The value of the related party type of Billing Account.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "billingAccountRelatedPartyRole": {
+                            "description": "The roles of the related party\n",
+                            "minItems": 0,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/BillingAccountRelatedPartyRole"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "BillingAccountRelatedPartyRole": {
+            "description": "Represents the Related Party Role.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "billingAccountRelatedPartyRole": {
+                            "description": "The value of the related party role.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "billingAccountRelatedPartyType": {
+                            "description": "The value of the Billing AccountType RelatedPartyType.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "BillingAccountContactPartyRoleType": {
+            "description": "Represents the type of party role.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "billingAccountContactPartyRoleType": {
+                            "description": "The value of the type of party role.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "BillingAccountContactType": {
+            "description": "Represents the Contact Type.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "billingAccountContactType": {
+                            "description": "The value of the Contact Type.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "BillingAccountContactMediumType": {
+            "description": "Represents the Contact Medium Type.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "billingAccountContactMediumType": {
+                            "description": "The value of the contactMedium type.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "mediumType": {
+                            "minItems": 0,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/MediumType"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "MediumType": {
+            "description": "Represents Preferred Medium Type.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "mediumType": {
+                            "description": "The value of the MediumType.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "billingAccountContactMediumType": {
+                            "description": "The value of the contactMedium type.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "BillingAccountContactMediumCountry": {
+            "description": "Provides the reference data and display values for a particular country\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "billingAccountContactMediumCountry": {
+                            "description": "The code for the country used to populate the 'country' attribute in target mediums\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "iso3166Alpha2": {
+                            "description": "The ISO-3166 Alpha-2 code for the country\n",
+                            "type": "string"
+                        },
+                        "iso3166Alpha3": {
+                            "description": "The ISO-3166 Alpha-3 code for the country\n",
+                            "type": "string"
+                        },
+                        "iso3166Numeric": {
+                            "description": "The ISO-3166 Numeric code for the country\n",
+                            "type": "string"
+                        },
+                        "postalDisplay": {
+                            "description": "The country name to be used as part of postal address\n",
+                            "type": "string"
+                        },
+                        "stateOrProvince": {
+                            "minItems": 0,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/StateOrProvince"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "City": {
+            "description": "Represents the City.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "city": {
+                            "description": "The value of the StateOrProvince.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "stateOrProvince": {
+                            "description": "The State or Province of the city.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "postCode": {
+                            "description": "Postal codes in the city\n",
+                            "minItems": 0,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/PostCode"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "PostCode": {
+            "description": "Represents the Post Code.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "postCode": {
+                            "description": "The value of the StateOrProvince.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "city": {
+                            "description": "The City of the post code.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "BillingAccountContactRelatedPartyType": {
+            "description": "Represents the Related Party Type of Billing Account Contact.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "billingAccountContactRelatedPartyType": {
+                            "description": "The value of the related party type of Billing Account Contact.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "billingAccountContactRelatedPartyRole": {
+                            "description": "The roles of the related party\n",
+                            "minItems": 0,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/BillingAccountContactRelatedPartyRole"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "BillingAccountContactRelatedPartyRole": {
+            "description": "Represents the Related Party Role.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "billingAccountContactRelatedPartyRole": {
+                            "description": "The value of the related party role.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "billingAccountContactRelatedPartyType": {
+                            "description": "The value of the Billing AccountType ContactRelatedPartyType.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "BillingAccountPaymentPlanType": {
+            "description": "Represents the type of payment plan.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "billingAccountPaymentPlanType": {
+                            "description": "The value of the type of payment plan.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "BillingAccountPaymentStatus": {
+            "description": "Represents the Payment Status.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "billingAccountPaymentStatus": {
+                            "description": "The value of the Payment Status.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "transitionToStatus": {
+                            "description": "The list of statuses eligible for transition.\n",
+                            "minItems": 0,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/BillingAccountPaymentStatus_transitionToStatus"
+                            }
+                        },
+                        "statusChangeReason": {
+                            "description": "The list of status change reason codes.\n",
+                            "minItems": 0,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/FinancialAccountState_statusChangeReason"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "BillingAccountPaymentPlanStatus": {
+            "description": "Represents the status of payment plan.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "billingAccountPaymentPlanStatus": {
+                            "description": "The value of the status of payment plan.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "transitionToStatus": {
+                            "description": "The list of statuses eligible for transition.\n",
+                            "minItems": 0,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/BillingAccountPaymentPlanStatus_transitionToStatus"
+                            }
+                        },
+                        "statusChangeReason": {
+                            "description": "The list of status change reason codes.\n",
+                            "minItems": 0,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/FinancialAccountState_statusChangeReason"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "BillStructureDocType": {
+            "description": "Represents the type of Bill doc.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "billStructureDocType": {
+                            "description": "The value of the Bill doc type.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "BillStructureBillFrequency": {
+            "description": "Represents the Bill Frequency.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "billStructureBillFrequency": {
+                            "description": "The value of the Bill Frequency.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "BillStructureDueDays": {
+            "description": "Represents the Bill Structure Due Days.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "billStructureDueDays": {
+                            "description": "The value of the Bill Structure Due Days.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "BillStructureCycleSpecFrequency": {
+            "description": "Represents the Bill Structure Cycle Specification Frequency.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "billStructureCycleSpecFrequency": {
+                            "description": "The value of the Bill Structure Cycle Specification Frequency.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "BillStructureCycleSpecBillingShiftDate": {
+            "description": "Represents the Bill Structure Cycle Specification Billing Shif Date.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "billStructureCycleSpecBillingShiftDate": {
+                            "description": "The value of the Bill Structure Cycle Specification Billing Shif Date.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "FinancialAccountType": {
+            "description": "Represents the type of Financial Account.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "financialAccountType": {
+                            "description": "The value of the type of Financial Account.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "financialAccountSubType": {
+                            "description": "The value of the subtype of Financial Account\n",
+                            "minItems": 0,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/FinancialAccountSubType"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "FinancialAccountSubType": {
+            "description": "Represents the sub type of Account.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "financialAccountSubType": {
+                            "description": "The value of the sub type of Account.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "financialAccountType": {
+                            "description": "The value of the Financial AccountType.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "FinancialAccountContactRelatedPartyType": {
+            "description": "Represents the Related Party Type of Financial Account Contact.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "financialAccountContactRelatedPartyType": {
+                            "description": "The value of the related party typeof Financial Account Contact.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "financialAccountContactRelatedPartyRole": {
+                            "description": "The roles of the related party\n",
+                            "minItems": 0,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/FinancialAccountContactRelatedPartyRole"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "FinancialAccountContactRelatedPartyRole": {
+            "description": "Represents the Related Party Role.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "financialAccountContactRelatedPartyRole": {
+                            "description": "The value of the related party role.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "financialAccountContactRelatedPartyType": {
+                            "description": "The value of the Financial AccountType ContactRelatedPartyType.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "HistoryItem": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the history record.",
+                    "type": "string"
+                },
+                "modifiedBy": {
+                    "description": "The user who modified the resource for given history field",
+                    "type": "string"
+                },
+                "modifiedOn": {
+                    "format": "date-time",
+                    "description": "The date time at which resource was modified for given history field",
+                    "type": "string"
+                },
+                "salesChannel": {
+                    "description": "Channel through which resource was modified for given history field",
+                    "type": "string"
+                },
+                "transactionID": {
+                    "description": "Transaction ID through which resource is modified",
+                    "type": "string"
+                },
+                "itemType": {
+                    "description": "Type of history item",
+                    "type": "string"
+                },
+                "HistoryData": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/HistoryData"
+                    }
+                },
+                "entity": {
+                    "$ref": "#/definitions/EntityRef"
+                }
+            }
+        },
+        "HistoryData": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "description": "Any object depending on resource for which history is captured",
+                    "type": "object"
+                }
+            }
+        },
+        "StateOrProvince": {
+            "description": "Represents the StateOrProvince.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "stateOrProvince": {
+                            "description": "The value of the StateOrProvince.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "country": {
+                            "description": "The value of the Country.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "billingAccountContactMediumCountry": {
+                            "description": "The value of the country.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "city": {
+                            "minItems": 0,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/City"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "BillingAccountSearchResult": {
+            "required": [
+                "id"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the Billing Account.",
+                    "type": "string"
+                }
+            }
+        },
+        "FinancialAccountSearchResult": {
+            "required": [
+                "id"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the Financial Account.",
+                    "type": "string"
+                }
+            }
+        },
+        "FinancialAccountRelatedPartyType": {
+            "description": "Represents the Related Party Type of Financial Account.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "financialAccountRelatedPartyType": {
+                            "description": "The value of the related party typeof Financial Account.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "financialAccountRelatedPartyRole": {
+                            "description": "The roles of the related party\n",
+                            "minItems": 0,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/FinancialAccountRelatedPartyRole"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "FinancialAccountRelatedPartyRole": {
+            "description": "Represents the Related Party Role.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "financialAccountRelatedPartyRole": {
+                            "description": "The value of the related party role.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "financialAccountRelatedPartyType": {
+                            "description": "The value of the Financial AccountType RelatedPartyType.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "FinancialAccountBalanceType": {
+            "description": "Represents the account balance type.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "financialAccountBalanceType": {
+                            "description": "The value of type of account balance.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "FinancialAccountBalanceAmountUnit": {
+            "description": "Represents the unit of Account Balance.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "financialAccountBalanceAmountUnit": {
+                            "description": "The value of the unit of Account Balance.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "TaxExemptionReason": {
+            "description": "Represents the tax exemption reason.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "taxExemptionReason": {
+                            "description": "The value of the tax exemption reason.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "TaxExemptionIssuingJurisdiction": {
+            "description": "Represents the tax exemption issuing jurisdiction.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "taxExemptionIssuingJurisdiction": {
+                            "description": "The value of the tax exemption issuing jurisdiction.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "BillingCycleSpecification": {
+            "description": "A description of when to initiate a billing cycle and the various sub steps of a billing cycle.\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the billing cycle specification.\n",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "Reference of the billing cycle specification.\n",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Short descriptive name.\n",
+                    "type": "string"
+                },
+                "active": {
+                    "description": "Indicator whether the item is active or not.\n",
+                    "type": "boolean",
+                    "readOnly": true
+                },
+                "description": {
+                    "description": "Explanatory text for this bill cycle specification\n",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "Reserved for describing type of entity. In this case it would be BillingCycleSpecification\n",
+                    "type": "string"
+                },
+                "frequency": {
+                    "description": "Frequency of the billing cycle (monthly for instance).\n",
+                    "type": "string"
+                },
+                "billingDateShift": {
+                    "description": "An offset of a billing/settlement date. The offset is expressed as number of days with regard to the start of the billing/settlement period.\n",
+                    "type": "integer"
+                },
+                "billingPeriod": {
+                    "description": "Billing time period. It can be recurring, for example week, month, quarter of year, year.\n",
+                    "type": "string"
+                },
+                "chargeDateOffset": {
+                    "description": "An offset of a date through which charges previously received by the billing system will appear on the bill. The offset is expressed as number of days with regard to the start of the BillingPeriod.\n",
+                    "type": "integer"
+                },
+                "creditDateOffset": {
+                    "description": "An offset of a date through which credits previously received by the billing system will appear on the bill. The offset is expressed as number of days with regard to the start of the BillingPeriod.\n",
+                    "type": "integer"
+                },
+                "mailingDateOffset": {
+                    "description": "An offset of a customer bill mailing date. The offset is expressed as number of days with regard to the start of the BillingPeriod.\n",
+                    "type": "integer"
+                },
+                "paymentDueDateOffset": {
+                    "description": "An offset of a payment due date. The offset is expressed as number of days with regard to the start of the BillingPeriod.\n",
+                    "type": "integer"
+                },
+                "validFor": {
+                    "$ref": "#/definitions/TimePeriod"
+                },
+                "externalIdentifier": {
+                    "description": "A list of external identifiers related to the billing cycle specification.\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ExternalIdentifier"
+                    }
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "BillingCycleSpecificationExtension"
+                    }
+                }
+            },
+            "example": {
+                "name": "xyz",
+                "description": "billingaccount",
+                "type": "BillingCycleSpecification",
+                "frequency": "month",
+                "billingDateShift": 23,
+                "billingPeriod": "month",
+                "chargeDateOffset": 22,
+                "creditDateOffset": 22,
+                "mailingDateOffset": 22,
+                "paymentDueDateOffset": 22,
+                "validFor": {
+                    "startDateTime": "2020-02-15T05:37:00.059+0000",
+                    "endDateTime": "2021-02-15T05:37:00.059+0000"
+                }
+            }
+        },
+        "BillPresentationMedia": {
+            "description": "A means of communicating a bill, supported by the associated bill format. For example, post mail, email, or web page.\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The unique identifier of the bill presentation media.\n",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "A reference of the bill presentation media.\n",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "A short descriptive name.\n",
+                    "type": "string"
+                },
+                "active": {
+                    "description": "It indicates whether the item is active or not.\n",
+                    "type": "boolean",
+                    "readOnly": true
+                },
+                "default": {
+                    "description": "It indicates whether the item is default in the list.             \n",
+                    "type": "boolean"
+                },
+                "type": {
+                    "description": "Reserved for describing the type of entity. In this case, it would be BillPresentationMedia.\n",
+                    "type": "string"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "BillPresentationMediaExtension"
+                    }
+                }
+            },
+            "example": {
+                "name": "Abhishek",
+                "type": "BillPresentationMedia"
+            }
+        },
+        "BillFormat": {
+            "description": "A bill format is a description of the way in which a bill is presented.\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "A unique identifier of the bill format.\n",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "An explanatory text for this bill format.\n",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "A reference of the bill format.\n",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "A short descriptive name.\n",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "This is reserved for describing the type of entity. In this case, it would be BillFormat.\n",
+                    "type": "string"
+                },
+                "active": {
+                    "description": "It indicates whether the item is active or not.\n",
+                    "type": "boolean",
+                    "readOnly": true
+                },
+                "default": {
+                    "description": "It indicates whether the item is default in the list.              \n",
+                    "type": "boolean"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "BillFormatExtension"
+                    }
+                }
+            },
+            "example": {
+                "id": "BillFormat_00514500-1011-450d-8008-2088222a0200",
+                "href": "http://server:port/accountManagement/v1/billFormat/BillFormat_00514500-1011-450d-8008-2088222a0200",
+                "name": "Abhishek",
+                "type": "BillFormat",
+                "extensions": {}
+            }
+        },
+        "AccountRefValidation": {
+            "description": "AccountRefValidation resource\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/AccountRef"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "allowed": {
+                            "description": "in input this will always be false.  In respose it will specify whether this entity has passed the validation or not.\n",
+                            "enum": [
+                                "ALLOWED",
+                                "NOTALLOWED"
+                            ],
+                            "type": "string"
+                        }
+                    }
+                }
+            ]
+        },
+        "ChangeCycle": {
+            "required": [
+                "id"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the Change Cycle.",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "A hypertext reference to the existing Change Cycle.",
+                    "type": "string"
+                },
+                "createdOn": {
+                    "format": "date-time",
+                    "description": "Date and time when the entity was created. Set internally by system.\n",
+                    "type": "string"
+                },
+                "lastModifiedOn": {
+                    "format": "date-time",
+                    "description": "Date and time when the entity was last modified. Set internally by system.\n",
+                    "type": "string"
+                },
+                "account": {
+                    "$ref": "#/definitions/PartyAccountRef"
+                },
+                "state": {
+                    "description": "It contains the lifecycle state - initiated, inProgress, completed, cancled.\n",
+                    "type": "string"
+                },
+                "toCycle": {
+                    "$ref": "#/definitions/BillingCycleSpecificationRef"
+                }
+            }
+        },
+        "PartyAccountRef": {
+            "description": "The reference to the account. It can be a billing account or the settlement account.\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The unique id of an existing account.\n",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "href": {
+                    "description": "The self href for the existing account.\n",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "name": {
+                    "description": "The name of account.\n",
+                    "type": "string",
+                    "readOnly": true,
+                    "x-amdocs-pii": "nameInfo:name"
+                },
+                "@type": {
+                    "description": "A categorization of an account, such as individual, joint, and so forth, whose instances share some of the same characteristics. \n",
+                    "type": "string"
+                },
+                "@referredType": {
+                    "description": "Name of the type of the referred resource entity\n",
+                    "type": "string"
+                }
+            },
+            "discriminator": "type"
+        },
+        "FinancialAccountState_transitionToStatus": {
+            "type": "object",
+            "properties": {
+                "transitionToStatus": {
+                    "description": "The value of the state of Financial Account.\n",
+                    "type": "string",
+                    "readOnly": true
+                }
+            }
+        },
+        "FinancialAccountState_statusChangeReason": {
+            "type": "object",
+            "properties": {
+                "statusChangeReason": {
+                    "description": "The value of the status change reason.\n",
+                    "type": "string",
+                    "readOnly": true
+                }
+            }
+        },
+        "BillingAccountState_transitionToStatus": {
+            "type": "object",
+            "properties": {
+                "transitionToStatus": {
+                    "description": "The value of the state of Billing Account.\n",
+                    "type": "string",
+                    "readOnly": true
+                }
+            }
+        },
+        "BillingAccountPaymentStatus_transitionToStatus": {
+            "type": "object",
+            "properties": {
+                "transitionToStatus": {
+                    "description": "The value of the status of payment.\n",
+                    "type": "string",
+                    "readOnly": true
+                }
+            }
+        },
+        "BillingAccountPaymentPlanStatus_transitionToStatus": {
+            "type": "object",
+            "properties": {
+                "transitionToStatus": {
+                    "description": "The value of the status of Payment Plan.\n",
+                    "type": "string",
+                    "readOnly": true
+                }
+            }
+        },
+        "AccountRef": {
+            "description": "This represents  a reference to Engaged party.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/AccountRefOrValue"
+                },
+                {}
+            ],
+            "properties": {
+                "id": {
+                    "description": "Unique id of an account entity.\n",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "The self href for the account entity.\n",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "The name of account entity.\n",
+                    "type": "string"
+                },
+                "@referredType": {
+                    "description": "The type of the Entity such as Billing Account, Finanacial Account etc.\n",
+                    "type": "string"
+                },
+                "role": {
+                    "description": "role of account entity.\n",
+                    "type": "string"
+                }
+            }
+        },
+        "Custom": {
+            "description": "Represents custom payment method\n",
+            "type": "object",
+            "properties": {
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "CustomPaymentMethodExtension"
+                    }
+                }
+            }
+        },
+        "Check": {
+            "description": "Detailed information of check type payment method\n",
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "Unique identifier of the check\n",
+                    "type": "string",
+                    "x-amdocs-npi": "checkInfo:code"
+                },
+                "drawer": {
+                    "description": "Person or entity writing the check\n",
+                    "type": "string",
+                    "x-amdocs-npi": "checkInfo:drawer"
+                },
+                "payee": {
+                    "description": "Person or entity whom the check is addressed to\n",
+                    "type": "string",
+                    "x-amdocs-npi": "checkInfo:payee"
+                },
+                "bank": {
+                    "description": "Bank performing the payment of the check\n",
+                    "type": "string",
+                    "x-amdocs-npi": "checkInfo:bank"
+                },
+                "date": {
+                    "format": "date-time",
+                    "description": "Date when the check was signed\n",
+                    "type": "string",
+                    "x-amdocs-npi": "checkInfo:date"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "CheckExtension"
+                    }
+                }
+            }
+        },
+        "Voucher": {
+            "description": "Detailed information of Voucher\n",
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "Code that identifies the voucher\nx-amdocs-npi: voucherInfo:code\n",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "Description of the voucher. For example, \"get one and receive one free\"\n",
+                    "type": "string"
+                },
+                "value": {
+                    "$ref": "#/definitions/QuantityType",
+                    "description": "Value of the voucher. For example, if it's a discount voucher, the value of the discount.\n"
+                },
+                "expirationDate": {
+                    "format": "date-time",
+                    "description": "Expiration date of the voucher\n",
+                    "type": "string",
+                    "x-amdocs-npi": "voucherInfo:date"
+                },
+                "campaign": {
+                    "description": "Campaign this voucher belongs to\n",
+                    "type": "string",
+                    "x-amdocs-npi": "voucherInfo:campaign"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "VoucherExtension"
+                    }
+                }
+            }
+        },
+        "DigitalWallet": {
+            "description": "Detailed information of Digital Wallet\n",
+            "type": "object",
+            "properties": {
+                "service": {
+                    "description": "Organization, platform or currency backing the wallet (For example, PayPal, Yandex, BitCoin)\n",
+                    "type": "string",
+                    "x-amdocs-npi": "digitalWalletInfo:service"
+                },
+                "walletId": {
+                    "description": "Unique identifier of the wallet in that service\n",
+                    "type": "string",
+                    "x-amdocs-npi": "digitalWalletInfo:walletId"
+                },
+                "walletUrl": {
+                    "description": "URI pointing at the digital wallet\n",
+                    "type": "string"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "DigitalWalletExtension"
+                    }
+                }
+            }
+        },
+        "BankAccountDebit": {
+            "description": "Detailed information about the bank account",
+            "type": "object",
+            "properties": {
+                "accountNumber": {
+                    "description": "Bank account number (this could refer the IBAN or SWIFT Number)\n",
+                    "type": "string",
+                    "x-amdocs-npi": "bankAccountInfo:accountNumber"
+                },
+                "accountNumberType": {
+                    "description": "Type of the account (for example, IBAN,SWIFT)\n",
+                    "type": "string",
+                    "x-amdocs-npi": "bankAccountInfo:accountType"
+                },
+                "bic": {
+                    "description": "The business identifier code or Swift code of the financial institution where the account is located.\n",
+                    "type": "string",
+                    "x-amdocs-npi": "bankAccountInfo:swiftCode"
+                },
+                "owner": {
+                    "description": "The owner of the account\n",
+                    "type": "string",
+                    "x-amdocs-npi": "bankAccountInfo:accountOwner"
+                },
+                "bank": {
+                    "description": "The display name of the bank\n",
+                    "type": "string",
+                    "x-amdocs-npi": "bankAccountInfo:bankName"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "BankAccountDebitExtension"
+                    }
+                }
+            }
+        },
+        "QuantityType": {
+            "description": "Detailed information of value for Voucher\n",
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "description": "Total amount of Voucher\n",
+                    "type": "number"
+                },
+                "units": {
+                    "description": "Value of Voucher in Units\n",
+                    "type": "string"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "QuantityTypeExtension"
+                    }
+                }
+            }
+        },
+        "TokenizedCard": {
+            "description": "Detailed information about the tokenized card\n",
+            "type": "object",
+            "properties": {
+                "brand": {
+                    "description": "Card brand. Might be used for display purposes\n",
+                    "type": "string",
+                    "x-amdocs-pci": "creditCardInfo:brand"
+                },
+                "type": {
+                    "description": "Card type. Might be used for display purposes\n",
+                    "type": "string",
+                    "x-amdocs-pci": "creditCardInfo:type"
+                },
+                "lastFourDigits": {
+                    "description": "Last four digits of the credit card. Might be used for display purposes\n",
+                    "type": "string",
+                    "x-amdocs-pci": "creditCardInfo:lastFourDigits"
+                },
+                "expirationDate": {
+                    "format": "date-time",
+                    "description": "Expiration date of the tokenized card\n",
+                    "type": "string",
+                    "x-amdocs-pci": "creditCardInfo:expiryDate"
+                },
+                "tokenType": {
+                    "description": "Token type (for example emv)\n",
+                    "type": "string",
+                    "x-amdocs-pci": "creditCardInfo:tokenType"
+                },
+                "token": {
+                    "description": "The token itself\n",
+                    "type": "string",
+                    "x-amdocs-pci": "creditCardInfo:token"
+                },
+                "issuer": {
+                    "description": "Whoever issued the token\n",
+                    "type": "string",
+                    "x-amdocs-pci": "creditCardInfo:issuedBy"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "TokenizedCardExtension"
+                    }
+                }
+            }
+        },
+        "CashType": {
+            "description": "Detailed information of cash type payment method\n",
+            "type": "object",
+            "properties": {
+                "cashierInfo": {
+                    "description": "Cashier who performed the payment.\n",
+                    "type": "string",
+                    "x-amdocs-npi": "paymentMethodInfo:description"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "CashTypeExtension"
+                    }
+                }
+            }
+        },
+        "PaymentMethod": {
+            "description": "Represents an instantiated payment method that can be of different types.",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique id of a payment method.",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "Hypertext reference to the payment method",
+                    "type": "string"
+                },
+                "createdOn": {
+                    "format": "date-time",
+                    "description": "Date and time when the entity was created.\n",
+                    "type": "string"
+                },
+                "lastModifiedOn": {
+                    "format": "date-time",
+                    "description": "Date and time when the entity was last modified.\n",
+                    "type": "string"
+                },
+                "@baseType": {
+                    "description": "Base type of entity\n",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "Type of payment method (for example, CreditCard, BankAccount, Cash, so on).",
+                    "type": "string",
+                    "x-amdocs-npi": "paymentMethodInfo:type"
+                },
+                "@schemaLocation": {
+                    "description": "uri where the data model can be retrieved\n",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name assigned to the payment method",
+                    "type": "string",
+                    "x-amdocs-npi": "paymentMethodInfo:name"
+                },
+                "description": {
+                    "description": "Describes the contents of the payment method",
+                    "type": "string",
+                    "x-amdocs-npi": "paymentMethodInfo:description"
+                },
+                "preferred": {
+                    "description": "Indicates whether or not the payment method is the preferred by the owner.",
+                    "type": "boolean"
+                },
+                "authorizationCode": {
+                    "description": "Authorization code provided by a financial institution. Typically this would be populated for recurring payments using the payment method, as payments have an authorization code of their own.",
+                    "type": "string",
+                    "x-amdocs-npi": "paymentMethodInfo:authCode"
+                },
+                "status": {
+                    "description": "Current status of the payment method.",
+                    "type": "string"
+                },
+                "statusDate": {
+                    "format": "date-time",
+                    "description": "Last time the status changed.",
+                    "type": "string"
+                },
+                "details": {
+                    "description": "Details of payment method. For example, bank account number, bank name, so on.",
+                    "type": "object"
+                },
+                "validFor": {
+                    "$ref": "#/definitions/TimePeriod"
+                },
+                "relatedParty": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatedPartyRef"
+                    }
+                },
+                "controlFields": {
+                    "$ref": "#/definitions/ControlFields"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "PaymentMethodExtension"
+                    }
+                }
+            }
+        },
         "RelatedPartyRef": {
             "description": "Party or party role that is linked to a specific entity\n",
             "type": "object",
@@ -3929,6 +7029,10 @@
                 },
                 "@referredType": {
                     "description": "Name of the type of the referred resource entity\n",
+                    "type": "string"
+                },
+                "@type": {
+                    "description": "Describes if it's Customer/Individual/Organazation\nPatchable - No\n",
                     "type": "string"
                 },
                 "lastName": {
@@ -3965,37 +7069,332 @@
                 }
             }
         },
-        "TimePeriod": {
-            "description": "Time period\n",
+        "ErrorResponse": {
+            "description": "Response containing descriptive error text, error code\ntype: object\n",
             "type": "object",
             "properties": {
-                "startDateTime": {
-                    "format": "date-time",
-                    "description": "Start date and time of the period\n",
+                "code": {
+                    "description": "The code associated with the error\n",
                     "type": "string"
                 },
-                "endDateTime": {
-                    "format": "date-time",
-                    "description": "End date and time of the period\n",
+                "message": {
+                    "description": "The message associated with the error",
                     "type": "string"
                 },
-                "extensions": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "object"
-                    },
-                    "x-amdocs": {
-                        "refDefinition": "TimePeriodExtensions"
-                    }
+                "traceId": {
+                    "description": "A unique trace id used to correlate an error returned to a client with the server\n",
+                    "type": "string"
                 },
-                "extension": {
+                "link": {
+                    "format": "url",
+                    "description": "Hypertext reference of the item\n",
+                    "type": "string"
+                },
+                "rel": {
+                    "description": "Relation type for the item\n",
+                    "default": "help",
+                    "type": "string"
+                }
+            }
+        },
+        "PaymentMethodStatus": {
+            "description": "Represents the Status of payment method.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
                     "type": "object",
-                    "additionalProperties": {
-                        "type": "object"
-                    },
-                    "x-amdocs": {
-                        "refDefinition": "TimePeriodExtension"
+                    "properties": {
+                        "paymentMethodStatus": {
+                            "description": "The value of the status of payment method.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "transitionToStatus": {
+                            "description": "The list of statuses eligible for transition.\n",
+                            "minItems": 0,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/PaymentMethodStatus_transitionToStatus"
+                            }
+                        },
+                        "statusChangeReason": {
+                            "description": "The list of status change reason codes.\n",
+                            "minItems": 0,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/PaymentMethodStatus_statusChangeReason"
+                            }
+                        }
                     }
+                }
+            ]
+        },
+        "PaymentMethodType": {
+            "description": "Represents the PaymentMethod Type.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "paymentMethodType": {
+                            "description": "The value of the payment method type.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "RelatedPartyType": {
+            "description": "Represents the Related Party Type.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "relatedPartyType": {
+                            "description": "The value of the related party type.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "relatedPartyRole": {
+                            "description": "The roles of the related party.\n",
+                            "minItems": 0,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/RelatedPartyRole"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "RelatedPartyRole": {
+            "description": "Represents the Related Party Role.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "relatedPartyRole": {
+                            "description": "The value of the related party role.\n",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "relatedPartyType": {
+                            "description": "The value of the related party type.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "AccountNumberType": {
+            "description": "Represents the Account Number Type.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "accountNumberType": {
+                            "description": "The value of the account number type.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "BankAccountDebitBank": {
+            "description": "Represents the bank for Account debit.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "bankAccountDebitBank": {
+                            "description": "The value of the bank.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "TokenizedCardBrand": {
+            "description": "Represents the brand for tokenized card.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "tokenizedCardBrand": {
+                            "description": "The value of brand.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "TokenizedCardType": {
+            "description": "Represents the type of tokenized card.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "tokenizedCardType": {
+                            "description": "The value of type.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "TokenizedCardTokenType": {
+            "description": "Represents the type of tokenized card token.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "tokenizedCardTokenType": {
+                            "description": "The value of token type.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "TokenizedCardIssuer": {
+            "description": "Represents the issuer of tokenized card .\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "tokenizedCardIssuer": {
+                            "description": "The value of tokenized card issuer.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "CheckBank": {
+            "description": "Represents the check issuing bank.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "checkBank": {
+                            "description": "The value of bank.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "VoucherValueUnit": {
+            "description": "Represents the unit for voucher value.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "voucherValueUnit": {
+                            "description": "The value of unit.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "VoucherCampaign": {
+            "description": "Represents the campaign related to voucher.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "voucherCampaign": {
+                            "description": "The value of campaign.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "DigitalWalletService": {
+            "description": "Represents the digital wallet service.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ReferenceData"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "digitalWalletService": {
+                            "description": "The value of digital wallet service.\n",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            ]
+        },
+        "PaymentMethodStatus_transitionToStatus": {
+            "type": "object",
+            "properties": {
+                "transitionToStatus": {
+                    "description": "The value of the status of payment method.\n",
+                    "type": "string",
+                    "readOnly": true
+                }
+            }
+        },
+        "PaymentMethodStatus_statusChangeReason": {
+            "type": "object",
+            "properties": {
+                "statusChangeReason": {
+                    "description": "The value of the status change reason.\n",
+                    "type": "string",
+                    "readOnly": true
                 }
             }
         }
