@@ -12,49 +12,6 @@
         "http"
     ],
     "paths": {
-        "/request": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "document"
-                ],
-                "parameters": [
-                    {
-                        "name": "body",
-                        "schema": {
-                            "$ref": "#/definitions/requestinfo"
-                        },
-                        "in": "body",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Value not found"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    },
-                    "405": {
-                        "description": "Validation error"
-                    }
-                },
-                "operationId": "createDocuments",
-                "summary": "Create documents related with one order and step",
-                "description": "Create documents related with one order and step. \n\nReturns internal identifier for this request"
-            }
-        },
         "/request/{requestId}": {
             "get": {
                 "consumes": [
@@ -97,7 +54,7 @@
                 "description": "Returns request information and a list of documents related with it."
             }
         },
-        "/request/getDashBoardInfo": {
+        "/request/summary": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -146,7 +103,10 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/summary_request_list"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/summary_request_item"
+                            }
                         }
                     },
                     "400": {
@@ -159,12 +119,12 @@
                         "description": "Validation error"
                     }
                 },
-                "operationId": "getDashBoardInfo",
+                "operationId": "requestsummary",
                 "summary": "Request information summary group in cathegories",
                 "description": "This operation provides request cathegories and sumatory of requests in each cathegory.\n\n**Mandatory**\nNone\n\n**Supported filters**\nNot supported\n\n**Supported sort**\nNot supported\n\n**Suported page**\nNot supported\n\n&nbsp;  "
             }
         },
-        "/request/getRequestList": {
+        "/request": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -229,9 +189,83 @@
                         "description": "Validation error"
                     }
                 },
-                "operationId": "getRequestList",
+                "operationId": "requestlist",
                 "summary": "Consulta listado de peticiones con un criterio de busqueda/Get request list using query",
                 "description": "This operation provides a request list based on filter parameters \n\n**Mandatory**\nNone\n\n**Supported filters**\n* brand\n* channel\n* stack\n* step\n* status\n\n**Supported sort**\n* brand\n* channel\n* stack\n* step\n* status\n* createddate\n* statusdate\n\n**Suported page**\nSupported. Default page 1 pagesize 20.\n\n&nbsp;  "
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "document"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/requestinfo"
+                        },
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Value not found"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "405": {
+                        "description": "Validation error"
+                    }
+                },
+                "operationId": "createDocuments",
+                "summary": "Create documents related with one order and step",
+                "description": "Create documents related with one order and step. \n\nReturns internal identifier for this request"
+            }
+        },
+        "/roles": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Value not found"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "405": {
+                        "description": "Validation error"
+                    }
+                },
+                "operationId": "userroles",
+                "summary": "Returns user roles from token",
+                "description": "Returns user roles from token"
             }
         }
     },
@@ -452,24 +486,6 @@
                     "format": "base64",
                     "description": "Number of requests in this cathegory",
                     "type": "integer"
-                }
-            }
-        },
-        "summary_request_list": {
-            "type": "object",
-            "properties": {
-                "roles": {
-                    "description": "Lista de roles del usuario validado/Role list of validated user",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "list": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/summary_request_item"
-                    }
                 }
             }
         },
