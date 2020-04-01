@@ -1,0 +1,151 @@
+{
+  "id": "Individual_01101404-0555-442e-8882-aaa2a02205f6",
+  "href": "http://party-individual-service-care-cd-drop31.ilocpde22.corp.amdocs.com/partyManagement/v1/individual/Individual_01101404-0555-442e-8882-aaa2a02205f6",
+  "createdOn": "2020-01-10T13:10:12Z",
+  "lastModifiedOn": "2020-01-10T13:10:12Z",
+  "givenName": "Rayko",
+  "middleName": "Stoyanov",
+  "familyName": "Pepelanov",
+  "formattedName": "Sr. Rayko Stoyanov Pepelanov",
+  "fullName": "givenName674627 middleName6042 familyName654554",
+  "preferredGivenName": "preferredGivenName",
+  "birthDate": "1980-08-18T12:16:47.447Z",
+  "countryOfBirth": "USA",
+  "deathDate": "2017-08-18T12:16:47.447Z",
+  "gender": "Male",
+  "location": "http://goo.gl/maps/l8F9L",
+  "maritalStatus": "Single",
+  "nationality": "USA",
+  "placeOfBirth": "Texas",
+  "status": "Initialized",
+  "residencyType": "Owner",
+  "title": "Mr",
+  "language": "English",
+  "personRank": 0,
+  "profileImageURL": "profileImageURL",
+  "contactMedium": [
+    {
+      "id": "Individual_01101404-0555-442e-8882-aaa2a02205f6_ContactMedium_05040151-4415-4b3c-a2a2-0082820a0167",
+      "type": "postalAddress",
+      "preferred": true,
+      "validFor": {
+        "startDateTime": "1980-08-18T12:16:47.448Z",
+        "endDateTime": "2030-08-18T12:16:47.448Z"
+      },
+      "characteristic": {
+        "type": "work",
+        "city": "Chicago479647",
+        "country": "USA",
+        "postCode": "11111",
+        "stateOrProvince": "TX",
+        "street1": "21 JamesStreet601576",
+        "street2": "21 JamesStreet",
+        "place": {
+          "id": "GeographicAddress_15115441-5005-4c15-a822-a00aa0820d3c",
+          "@referredType": "GeographicAddress",
+          "@type": "PlaceRef",
+          "subPlace": [
+            {
+              "id": "GeographicAddress_15115441-5005-4c15-a822-a00aa0820d3c_GeographicSubAddress_11411104-0155-4963-a2a0-882282820d96",
+              "@referredType": "GeographicSubAddress",
+              "@type": "SubPlaceRef"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "Individual_01101404-0555-442e-8882-aaa2a02205f6_ContactMedium_11144014-5405-4f3b-8008-2a0888820144",
+      "type": "email",
+      "preferred": true,
+      "validFor": {
+        "startDateTime": "1980-08-18T12:16:47.448Z",
+        "endDateTime": "2030-08-18T12:16:47.448Z"
+      },
+      "characteristic": {
+        "type": "personal",
+        "emailAddress": "Auto9824@amdocs.com"
+      }
+    },
+    {
+      "id": "Individual_01101404-0555-442e-8882-aaa2a02205f6_ContactMedium_11111154-4010-4b2a-8aa8-222a22280967",
+      "type": "telephone",
+      "preferred": true,
+      "validFor": {
+        "startDateTime": "2020-01-10T13:10:03.324Z"
+      },
+      "characteristic": {
+        "type": "work",
+        "number": "+918898952774"
+      }
+    }
+  ],
+  "disability": [
+    {
+      "id": "Individual_01101404-0555-442e-8882-aaa2a02205f6_Disability_11001015-0001-42dc-80a0-220aa20008c4",
+      "disability": "Autism"
+    }
+  ],
+  "identification": [
+    {
+      "id": "Individual_01101404-0555-442e-8882-aaa2a02205f6_IndividualIdentification_00014510-4111-42d3-82a2-a0a0a8080f89",
+      "identificationId": "APR00PM4883602853",
+      "issuingDate": "2017-08-18T12:16:47.448Z",
+      "validTill": "2030-08-18T12:16:47.448Z",
+      "issuingAuthority": "SocialSecurityNumberAuthority",
+      "type": "SocialSecurityNumber",
+      "primary": false
+    },
+    {
+      "id": "Individual_01101404-0555-442e-8882-aaa2a02205f6_IndividualIdentification_00501154-0045-42d5-8828-20000288058e",
+      "identificationId": "PASS8264002573",
+      "issuingDate": "2017-08-18T12:16:47.448Z",
+      "validTill": "2030-08-18T12:16:47.448Z",
+      "issuingAuthority": "PassportAuthority",
+      "type": "Passport",
+      "primary": false
+    }
+  ],
+  "characteristic": [
+    {
+      "name": "Hobby",
+      "value": "Reading"
+    }
+  ],
+  "otherName": [
+    {
+      "id": "Individual_01101404-0555-442e-8882-aaa2a02205f6_OtherName_04104154-5400-47cc-8aa8-8a0a880008c4",
+      "title": "Mr.",
+      "givenName": "givenName3039",
+      "familyName": "familyName6167",
+      "middleName": "middleName",
+      "fullName": "givenName3039 middleName familyName6167",
+      "formattedName": "Mr. givenName3039 familyName6167",
+      "validFor": {
+        "startDateTime": "1980-08-18T12:16:47.448Z",
+        "endDateTime": "2030-08-18T12:16:47.448Z"
+      }
+    }
+  ],
+  "externalReference": [
+    {
+      "type": "Facebook",
+      "href": "http://facebook.com",
+      "id": "Individual_01101404-0555-442e-8882-aaa2a02205f6_ExternalReference_10544004-4410-4637-a822-a20802000b4c",
+      "avatar": "http://old_avatar",
+      "socialName": "socialName1010",
+      "socialId": "1210131014102239",
+      "status": "Active",
+      "userName": "UserName_7877773772",
+      "characteristic": [
+        {
+          "name": "Followers",
+          "value": "256"
+        }
+      ]
+    }
+  ],
+  "extensions": {
+    "ospSecondFamilyName": "FamilyName"
+  }  
+}

@@ -1,0 +1,44 @@
+{
+	"id": "GeographicAddress_15115441-5005-4c15-a822-a00aa0820d3c",
+	"href": "https://geographicaddress-geographicaddress-service:8080/geographicAddressManagement/v1/geographicAddress/GeographicAddress_15115441-5005-4c15-a822-a00aa0820d3c",
+	"streetNr": "1",
+	"displayText": "0787",
+	"postcode": "1234567",
+	"stateOrProvince": "DC",
+	"country": "USA",
+	"status": "validated",
+	"@type": "UrbanPropertyAddress",
+	"createdOn": "2019-11-12T15:14:56Z",
+	"lastModifiedOn": "2019-11-12T15:14:56Z",
+	"extensions": {
+		"ospDwelingId": "string",
+		"externalIdentifier": [
+			{
+				"name": "string",
+				"value": "string"
+			}
+		]
+	},
+	"geographicSubAddress": [
+		{
+			"id": "GeographicAddress_15115441-5005-4c15-a822-a00aa0820d3c_GeographicSubAddress_11505154-1055-40c7-a002-aa0aaa8803eb",
+			"name": "Mr",
+			"subUnitType": "APT",
+			"subUnitNumber": "string",
+			"levelType": "basement",
+			"levelNumber": "12345",
+			"buildingName": "string",
+			"privateStreetNumber": "string",
+			"privateStreetName": "string",
+			"@type": "GeographicSubAddress",
+			"status": "validated",
+			"extensions": {
+				"buildingNameSuffix": "string",
+				"stairCase": "string",
+				"doorType": "string",
+				"door": "string",
+				"stairCaseSuffix": "string"
+			}
+		}
+	]
+}

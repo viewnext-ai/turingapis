@@ -1,0 +1,206 @@
+{
+  "id": "BillingAccount_7488231501212391525",
+  "href": "http://account-billingaccount-service-care-cd-drop31.ilocpde22.corp.amdocs.com/accountManagement/v1/billingAccount/BillingAccount_7117147467508056688",
+  "name": "BillingAcct1607",
+  "description": "Test Billing Account",
+  "state": "Active",
+  "createdOn": "2020-01-10T13:11:26Z",
+  "lastModified": "2020-01-10T13:11:26Z",
+  "type": "AccountType1",
+  "@baseType": "Account",
+  "currencyCode": "USD",
+  "accountType": "AccountType1",
+  "accountSubType": "AccountSubType11",
+  "stateDate": "2017-12-28T04:13:17.832Z",
+  "stateReason": "X",
+  "stateIssueDate": "2017-12-28T04:13:17.832Z",
+  "statusLastActivity": "Test ststus last Activity",
+  "openDate": "2017-12-28T04:13:17.832Z",
+  "waiveLatePaymentFee": true,
+  "validFor": {
+    "startDateTime": "2018-02-28T04:13:17.832Z",
+    "endDateTime": "2030-12-28T04:13:17.832Z"
+  },
+  "preferred": true,
+  "contact": [
+    {
+      "id": "BillingAccount_7117147467508056688_Contact_503516093761062237",
+      "contactName": "contactName_6839",
+      "contactType": "Primary",
+      "partyRoleType": "Individual",
+      "contactMedium": [
+        {
+          "id": "BillingAccount_7117147467508056688_ContactMedium_5882992756836768216",
+          "type": "postalAddress",
+          "preferred": true,
+          "validFor": {
+            "startDateTime": "2018-02-28T04:13:17.832Z",
+            "endDateTime": "2030-12-28T04:13:17.832Z"
+          },
+          "characteristic": {
+            "type": "invoice",
+            "city": "City221",
+            "country": "USA",
+            "postCode": "PostCode2211",
+            "stateOrProvince": "FL",
+            "street1": "BAStreet174532015 1445482062",
+            "street2": "street2BA9323786534 StreetName23316526867",
+            "place": {
+              "id": "GeographicAddress_01110550-4441-4d7d-8082-282280aa0d26",
+              "@referredType": "GeographicAddress",
+              "@type": "PlaceRef",
+              "subPlace": [
+                {
+                  "id": "GeographicAddress_01110550-4441-4d7d-8082-282280aa0d26_GeographicSubAddress_04051401-0005-4c5b-80aa-a8288aaa0f6e",
+                  "@referredType": "GeographicSubAddress",
+                  "@type": "SubPlaceRef"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "relatedParty": {
+        "id": "Individual_15115001-0051-45c2-a000-a22022a80d01",
+        "href": "String_href",
+        "name": "RelatedPartyRef_6839",
+        "role": "billReceiver",
+        "type": "Individual",
+        "@referredType": "Individual",
+        "validFor": {
+          "startDateTime": "2018-02-28T04:13:17.832Z",
+          "endDateTime": "2030-12-28T04:13:17.832Z"
+        }
+      }
+    }
+  ],
+  "accountBalance": [
+    {
+      "id": "BillingAccount_7117147467508056688_AccountBalance_4636928610074750340",
+      "amount": {
+        "unit": "USD",
+        "value": 123
+      },
+      "type": "Type1",
+      "validFor": {
+        "startDateTime": "2018-02-28T04:13:17.832Z",
+        "endDateTime": "2030-12-28T04:13:17.832Z"
+      }
+    }
+  ],
+  "taxExemption": [
+    {
+      "id": "BillingAccount_7117147467508056688_AccountTaxExemption_9203649189473397385",
+      "certificateNumber": "Cerificate_8931",
+      "issuingJurisdiction": "Jurisdiction1",
+      "reason": "Reason1",
+      "validFor": {
+        "startDateTime": "2018-02-28T04:13:17.832Z",
+        "endDateTime": "2030-12-28T04:13:17.832Z"
+      }
+    }
+  ],
+  "relatedParty": [
+    {
+      "id": "Customer_4623231487212799747",
+      "href": "http://account-billingaccount-service-care-cd-drop31.ilocpde22.corp.amdocs.com/customerManagement/v1/customerEntity/Customer_4623231487212799747",
+      "name": "Amit4598",
+      "role": "Customer",
+      "type": "Customer",
+      "@referredType": "Customer",
+      "validFor": {
+        "startDateTime": "2018-02-28T04:13:17.832Z",
+        "endDateTime": "2030-12-28T04:13:17.832Z"
+      }
+    },
+    {
+      "id": "Individual_15115001-0051-45c2-a000-a22022a80d01",
+      "name": "givenName855437 familyName894179",
+      "role": "Owner",
+      "type": "individual",
+      "@referredType": "individual"
+    }
+  ],
+  "paymentStatus": "Paid",
+  "paymentPlan": [
+    {
+      "numberOfPayments": 1,
+      "paymentFrequency": "Month",
+      "priority": 1,
+      "status": "Active",
+      "totalAmount": {
+        "unit": "USD",
+        "value": 6839
+      },
+      "type": "PlanType1",
+      "validFor": {
+        "startDateTime": "2018-02-28T04:13:17.832Z",
+        "endDateTime": "2030-12-28T04:13:17.832Z"
+      },
+      "paymentMethod": {
+        "id": "PaymentMethod_2453538656249272180",
+        "href": "Test Href",
+        "name": "PaymentMethodName_6839",
+        "type": "BankAccountDebit",
+        "validFor": {
+          "startDateTime": "2018-02-28T04:13:17.832Z",
+          "endDateTime": "2030-12-28T04:13:17.832Z"
+        }
+      }
+    }
+  ],
+  "financialAccount": {
+    "id": "FinancialAccount_9061323241900367522",
+    "href": "FinancialAccount",
+    "name": "financialAccountName_6839",
+    "role": "FinancialAccount"
+  },
+  "defaultPaymentMethod": {
+    "id": "PaymentMethod_2453538656249272180",
+    "href": "Test Href",
+    "name": "PaymentMethodName_6839",
+    "type": "BankAccountDebit",
+    "validFor": {
+      "startDateTime": "2018-02-28T04:13:17.832Z",
+      "endDateTime": "2030-12-28T04:13:17.832Z"
+    }
+  },
+  "billStructure": {
+    "documentType": "Bill",
+    "billItemTaxInd": true,
+    "produceBillInd": true,
+    "zeroBalanceInd": true,
+    "billFrequency": 1,
+    "dueDays": 3,
+    "presentationMedia": [
+      {
+        "id": "paper",
+        "href": "http://account-billingaccount-service-care-cd-drop31.ilocpde22.corp.amdocs.com/accountManagement/v1/billPresentationMedia/paper",
+        "name": "paper"
+      }
+    ],
+    "format": {
+      "id": "Email",
+      "href": "http://account-billingaccount-service-care-cd-drop31.ilocpde22.corp.amdocs.com/accountManagement/v1/billFormat/Email",
+      "name": "Email"
+    },
+    "cycleSpecification": {
+      "id": "2",
+      "href": "http://account-billingaccount-service-care-cd-drop31.ilocpde22.corp.amdocs.com/accountManagement/v1/billingCycleSpecification/2",
+      "name": "Monthly Residential Cycle close on the 14th",
+      "frequency": "M",
+      "billingDateShift": 14,
+      "externalIdentifier": [
+        {
+          "type": "ABPCycleCode",
+          "id": "2",
+          "version": "v1",
+          "extensions": {
+            "key": "value"
+          }
+        }
+      ]
+    }
+  },
+  "ratingType": "postpaid"
+}

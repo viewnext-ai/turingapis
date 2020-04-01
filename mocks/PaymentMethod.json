@@ -1,0 +1,45 @@
+{
+  "id": "PaymentMethod_8242642705611105773",
+  "href": "http://paymentmethod-digital-care-integration-env.ilocpde12.corp.amdocs.com/paymentMethod/v1/paymentMethod/PaymentMethod_8242642705611105773",
+  "createdOn": "2019-10-22T05:23:35.000Z",
+  "lastModifiedOn": "2019-10-22T05:23:35.000Z",
+  "@baseType": "BankAccountDebit",
+  "type": "BankAccountDebit",
+  "@schemaLocation": null,
+  "name": "My Account",
+  "description": "szda",
+  "preferred": true,
+  "authorizationCode": "ABC12320191022082335",
+  "status": "new",
+  "statusDate": "2010-10-08T11:00:32.229Z",
+  "details": {
+    "accountNumber": "20191022082335",
+    "accountNumberType": "AccNoType1",
+    "bic": "ICI007_12345",
+    "owner": "XYZ_ABC20191022082335",
+    "bank": "Bank1",
+    "extensions": {}
+  },
+  "validFor": {
+    "startDateTime": "2010-09-10T11:00:32.229Z",
+    "endDateTime": "2022-12-10T11:00:32.229Z",
+    "extension": {}
+  },
+  "relatedParty": [
+    {
+      "id": "Customer_2528591230622988141",
+      "href": null,
+      "name": "Amit_xyz20191022082335",
+      "role": "Subscriber",
+      "type": "Customer",
+      "@referredType": "Customer",
+      "validFor": {
+        "startDateTime": "2010-09-10T11:00:32.229Z",
+        "endDateTime": "2022-12-10T11:00:32.229Z",
+        "extension": {}
+      }
+    }
+  ],
+  "controlFields": null,
+  "extensions": {}
+}

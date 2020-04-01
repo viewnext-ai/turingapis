@@ -1,0 +1,106 @@
+{
+  "id": "FinancialAccount_6809414483115000197",
+  "href": "http://financialaccount-financialaccount-service-care-cd-drop31.ilocpde22.corp.amdocs.com/accountManagement/v1/financialAccount/FinancialAccount_6809414483115000197",
+  "name": "FinanncialAcct5837",
+  "state": "Active",
+  "createdOn": "2020-01-10T13:11:17Z",
+  "lastModified": "2020-01-10T13:11:17Z",
+  "type": "Individual",
+  "@baseType": "Account",
+  "creditLimit": {
+    "unit": "USD",
+    "value": 3215
+  },
+  "contact": [
+    {
+      "id": "FinancialAccount_6809414483115000197_Contact_99424212577262966",
+      "contactName": "contactName_common2169",
+      "contactType": "Primary",
+      "partyRoleType": "account manager",
+      "contactMedium": [
+        {
+          "id": "FinancialAccount_6809414483115000197_Contact_ContactMedium_6357080427826311870",
+          "type": "postalAddress",
+          "preferred": true,
+          "validFor": {
+            "startDateTime": "2018-02-28T04:13:17.832Z",
+            "endDateTime": "2030-12-28T04:13:17.832Z"
+          },
+          "characteristic": {
+            "type": "invoice",
+            "city": "City221",
+            "country": "USA",
+            "postCode": "PostCode2211",
+            "stateOrProvince": "FL",
+            "street1": "FinStreet106112564 6270294865",
+            "street2": "street2Fin1185196118 StreetName10689708912",
+            "place": {
+              "id": "GeographicAddress_01505550-0015-4873-a2a8-aa2820880d24",
+              "@referredType": "GeographicAddress",
+              "@type": "PlaceRef",
+              "subPlace": [
+                {
+                  "id": "GeographicAddress_01505550-0015-4873-a2a8-aa2820880d24_GeographicSubAddress_10541010-4045-4809-8a2a-8aaa202a05c2",
+                  "@referredType": "GeographicSubAddress",
+                  "@type": "SubPlaceRef"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "relatedParty": {
+        "id": "Individual_00551051-4515-41c6-882a-a22088800f20",
+        "href": "String_href",
+        "name": "RelatedPartyRef_common2169",
+        "role": "payer",
+        "type": "Individual",
+        "@referredType": "Individual",
+        "validFor": {
+          "startDateTime": "2018-02-28T04:13:17.832Z",
+          "endDateTime": "2030-12-28T04:13:17.832Z"
+        }
+      }
+    }
+  ],
+  "accountBalance": [
+    {
+      "id": "FinancialAccount_6809414483115000197_AccountBalance_1681124961807445574",
+      "amount": {
+        "unit": "USD",
+        "value": 123
+      },
+      "type": "Type1",
+      "validFor": {
+        "startDateTime": "2018-02-28T04:13:17.832Z",
+        "endDateTime": "2030-12-28T04:13:17.832Z"
+      }
+    }
+  ],
+  "taxExemption": [
+    {
+      "id": "FinancialAccount_6809414483115000197_AccountTaxExemption_3725362659597351827",
+      "certificateNumber": "Cerificate_5320",
+      "issuingJurisdiction": "Jurisdiction1",
+      "reason": "Reason1",
+      "validFor": {
+        "startDateTime": "2018-02-28T04:13:17.832Z",
+        "endDateTime": "2030-12-28T04:13:17.832Z"
+      }
+    }
+  ],
+  "relatedParty": [
+    {
+      "id": "Customer_4623231487212799747",
+      "href": "String_href",
+      "name": "RelatedParty_common2169",
+      "role": "Customer",
+      "type": "Customer",
+      "@referredType": "Customer",
+      "validFor": {
+        "startDateTime": "2018-02-28T04:13:17.832Z",
+        "endDateTime": "2030-12-28T04:13:17.832Z"
+      }
+    }
+  ]
+}

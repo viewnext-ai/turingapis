@@ -1,0 +1,292 @@
+{
+  "id": "Customer_20200305-1623-53ln-RQZX-95hasMTLJWa4",
+  "href": "http://customer-customer-service-care-cd-drop31.ilocpde22.corp.amdocs.com/customerManagement/v1/customer/Customer_20200305-1623-53ln-RQZX-95hasMTLJWa4",
+  "name": "Amit4598",
+  "status": "Active",
+  "statusReason": "Reason4",
+  "validFor": {
+    "startDateTime": "2017-08-18T12:16:47.448Z",
+    "endDateTime": "2030-08-18T12:16:47.448Z"
+  },
+  "characteristic": [
+    {
+      "name": "Amit4598_characteristic",
+      "value": "Reading"
+    }
+  ],
+  "engagedParty": {
+    "type": "PartyRef",
+    "refType": "Individual",
+    "id": "Individual_01101404-0555-442e-8882-aaa2a02205f6",
+    "name": "givenName645130 familyName610747"
+  },
+  "relatedParty": [
+    {
+      "id": "Individual_01101404-0555-442e-8882-aaa2a02205f6",
+      "name": "Amit4598_relatedParty",
+      "role": "Subscriber",
+      "@type": "Individual",
+      "validFor": {
+        "startDateTime": "2017-08-18T12:16:47.448Z",
+        "endDateTime": "2030-08-18T12:16:47.448Z"
+      }
+    }
+  ],
+  "account": [
+    {
+      "type": "AccountRef",
+      "id": "FinancialAccount_6809414483115000197",
+      "href": "http://customer-customer-service-care-cd-drop31.ilocpde22.corp.amdocs.com/accountManagement/v1/financialAccount/FinancialAccount_6809414483115000197",
+      "name": "Amit4598_account",
+      "description": "Personal FA Account",
+      "preferred": false,
+      "refType": "FinancialAccount"
+    },
+    {
+      "type": "AccountRef",
+      "id": "BillingAccount_7488231501212391525",
+      "href": "http://customer-customer-service-care-cd-drop31.ilocpde22.corp.amdocs.com/accountManagement/v1/billingAccount/BillingAccount_7488231501212391525",
+      "name": "Amit4598_account",
+      "description": "Personal BA Account",
+      "preferred": true,
+      "refType": "BillingAccount"
+    }
+  ],
+  "paymentMethod": [
+    {
+      "id": "PaymentMethod_8242642705611105773",
+      "href": "http://paymentmethod-digital-care-integration-env.ilocpde12.corp.amdocs.com/paymentMethod/v1/paymentMethod/PaymentMethod_8242642705611105773",
+      "name": "My Account",
+      "type": "BankAccountDebit",
+      "preferred": true,
+      "validFor": {
+        "startDateTime": "2020-03-27T12:13:29.774Z",
+        "endDateTime": "2020-03-27T12:13:29.774Z"
+      }
+    }
+  ],
+  "contactMedium": [
+    {
+      "id": "Customer_20200305-1623-53ln-RQZX-95hasMTLJWa4_ContactMedium_7677389343827123430",
+      "type": "postalAddress",
+      "preferred": true,
+      "validFor": {
+        "startDateTime": "2017-08-18T12:16:47.448Z",
+        "endDateTime": "2030-08-18T12:16:47.448Z"
+      },
+      "characteristic": {
+        "type": "invoice",
+        "city": "City221",
+        "country": "USA",
+        "postCode": "PostCode22117889",
+        "stateOrProvince": "FL",
+        "street1": "MStreet1M 83869416",
+        "street2": "Nstreet2N2829787159 StreetName8418697373",
+        "place": {
+          "id": "GeographicAddress_01441445-1144-485c-a800-0220228a0fb9",
+          "@referredType": "GeographicAddress",
+          "subPlace": [
+            {
+              "id": "GeographicAddress_01441445-1144-485c-a800-0220228a0fb9_GeographicSubAddress_15514454-0515-482f-8202-820200000d11",
+              "@referredType": "GeographicSubAddress",
+              "@type": "SubPlaceRef"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "Customer_20200305-1623-53ln-RQZX-95hasMTLJWa4_ContactMedium_6743546185331258733",
+      "type": "email",
+      "preferred": true,
+      "validFor": {
+        "startDateTime": "2017-08-18T12:16:47.448Z",
+        "endDateTime": "2030-08-18T12:16:47.448Z"
+      },
+      "characteristic": {
+        "type": "personal",
+        "emailAddress": "Auto3333@amdocs.com"
+      }
+    },
+    {
+      "id": "Customer_20200305-1623-53ln-RQZX-95hasMTLJWa4_ContactMedium_1952070954053063294",
+      "type": "telephone",
+      "preferred": true,
+      "validFor": {
+        "startDateTime": "2020-01-10T13:10:19.037Z"
+      },
+      "characteristic": {
+        "type": "work",
+        "number": "+914492161162"
+      }
+    },
+    {
+      "id": "Customer_20200305-1623-53ln-RQZX-95hasMTLJWa4_ContactMedium_2353010489683518542",
+      "type": "postalAddress",
+      "preferred": true,
+      "validFor": {
+        "startDateTime": "1980-08-18T12:16:47.448Z",
+        "endDateTime": "2030-08-18T12:16:47.448Z"
+      },
+      "characteristic": {
+        "type": "work",
+        "city": "Chicago853712",
+        "country": "USA",
+        "postCode": "11111",
+        "stateOrProvince": "TX",
+        "street1": "21 JamesStreet140571",
+        "street2": "21 JamesStreet",
+        "place": {
+          "id": "GeographicAddress_15545415-4100-4846-828a-02a2aaaa05b4",
+          "@referredType": "GeographicAddress",
+          "subPlace": [
+            {
+              "id": "GeographicAddress_15545415-4100-4846-828a-02a2aaaa05b4_GeographicSubAddress_10001100-1001-4979-80a8-800aa022059a",
+              "@referredType": "GeographicSubAddress",
+              "@type": "SubPlaceRef"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "Customer_20200305-1623-53ln-RQZX-95hasMTLJWa4_ContactMedium_8168220615489685090",
+      "type": "email",
+      "preferred": false,
+      "validFor": {
+        "startDateTime": "1980-08-18T12:16:47.448Z",
+        "endDateTime": "2030-08-18T12:16:47.448Z"
+      },
+      "characteristic": {
+        "type": "personal",
+        "emailAddress": "Auto8392@amdocs.com"
+      }
+    },
+    {
+      "id": "Customer_20200305-1623-53ln-RQZX-95hasMTLJWa4_ContactMedium_4928207834109352675",
+      "type": "telephone",
+      "preferred": false,
+      "validFor": {
+        "startDateTime": "2020-01-10T13:10:15.837Z"
+      },
+      "characteristic": {
+        "type": "work",
+        "number": "+918030682545"
+      }
+    },
+    {
+      "id": "Customer_20200305-1623-53ln-RQZX-95hasMTLJWa4_ContactMedium_5268754690223167796",
+      "type": "postalAddress",
+      "preferred": false,
+      "validFor": {
+        "startDateTime": "2020-01-10T13:10:19.037Z"
+      },
+      "characteristic": {
+        "type": "invoice",
+        "city": "City221",
+        "country": "USA",
+        "postCode": "PostCode221138934",
+        "stateOrProvince": "FL",
+        "street1": "CMstreet1CM 456646711",
+        "street2": "Cstreet2C919426497 StreetName8659118212",
+        "place": {
+          "id": "GeographicAddress_04010154-0140-4949-8282-82a2a2020f38",
+          "@referredType": "GeographicAddress",
+          "subPlace": [
+            {
+              "id": "GeographicAddress_04010154-0140-4949-8282-82a2a2020f38_GeographicSubAddress_01504454-4044-486b-8088-000aa02a07ba",
+              "@referredType": "GeographicSubAddress",
+              "@type": "SubPlaceRef"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "Customer_20200305-1623-53ln-RQZX-95hasMTLJWa4_ContactMedium_1098037160142885119",
+      "type": "email",
+      "preferred": true,
+      "validFor": {
+        "startDateTime": "2020-01-10T13:10:19.037Z"
+      },
+      "characteristic": {
+        "type": "invoice",
+        "emailAddress": "auto516927@gmail.com"
+      }
+    },
+    {
+      "id": "Customer_20200305-1623-53ln-RQZX-95hasMTLJWa4_ContactMedium_1093747657713557292",
+      "type": "telephone",
+      "preferred": true,
+      "validFor": {
+        "startDateTime": "2020-01-10T13:10:19.037Z"
+      },
+      "characteristic": {
+        "type": "invoice",
+        "number": "9037930220"
+      }
+    },
+    {
+      "id": "Customer_20200305-1623-53ln-RQZX-95hasMTLJWa4_ContactMedium_666424543942539136",
+      "type": "postalAddress",
+      "preferred": false,
+      "validFor": {
+        "startDateTime": "2020-01-10T13:10:19.037Z"
+      },
+      "characteristic": {
+        "type": "invoice",
+        "city": "City221",
+        "country": "USA",
+        "postCode": "PostCode221128521",
+        "stateOrProvince": "FL",
+        "street1": "CMstreet1CM 584741725",
+        "street2": "Cstreet2C421580849 StreetName6525812438",
+        "place": {
+          "id": "GeographicAddress_15104050-1010-4c47-a800-a082a2aa051f",
+          "@referredType": "GeographicAddress",
+          "subPlace": [
+            {
+              "id": "GeographicAddress_15104050-1010-4c47-a800-a082a2aa051f_GeographicSubAddress_05440441-1000-4c2c-82a0-28a0a02a0d31",
+              "@referredType": "GeographicSubAddress",
+              "@type": "SubPlaceRef"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "Customer_20200305-1623-53ln-RQZX-95hasMTLJWa4_ContactMedium_19592421510148833",
+      "type": "email",
+      "preferred": false,
+      "validFor": {
+        "startDateTime": "2020-01-10T13:10:19.037Z"
+      },
+      "characteristic": {
+        "type": "invoice",
+        "emailAddress": "auto280536@gmail.com"
+      }
+    },
+    {
+      "id": "Customer_20200305-1623-53ln-RQZX-95hasMTLJWa4_ContactMedium_8290268247636706721",
+      "type": "telephone",
+      "preferred": false,
+      "validFor": {
+        "startDateTime": "2020-01-10T13:10:19.037Z"
+      },
+      "characteristic": {
+        "type": "invoice",
+        "number": "9420886610"
+      }
+    }
+  ],
+  "createdOn": "2020-01-10T13:10:24Z",
+  "lastModifiedOn": "2020-01-10T13:10:36Z",
+  "customerType": "Individual",
+  "customerSubType": "Individual",
+  "acquisitionDate": "2017-10-25T05:57:48.843Z",
+  "description": "nothing to describe",
+  "rank": 0,
+  "extensions": {
+    "brand": "Orange"
+  }
+}
