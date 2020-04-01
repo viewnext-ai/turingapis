@@ -1,0 +1,3318 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "This API manages the account management resource. It enables creation, update and retrieval of account information. It also allows creation and query of bill items allowing customer to check their invoice. \n",
+    "version" : "1.0",
+    "title" : "Account Management",
+    "contact" : {
+      "name" : "Amdocs Inc.",
+      "url" : "http://www.amdocs.com",
+      "email" : "support@amdocs.com"
+    },
+    "license" : {
+      "name" : "Amdocs Inc.",
+      "url" : "http://www.amdocs.com"
+    },
+    "x-amdocs" : {
+      "exposed" : "public",
+      "service-principals" : [ "account-billingaccount-app-id", "financialaccount-financialaccount-app-id" ]
+    }
+  },
+  "host" : "amdocs.com",
+  "basePath" : "/accountManagement/v1",
+  "tags" : [ {
+    "name" : "Billing Account"
+  }, {
+    "name" : "Financial Account"
+  } ],
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/billingAccount" : {
+      "get" : {
+        "tags" : [ "Billing Account" ],
+        "summary" : "Search or filter billing accounts",
+        "description" : "This operation provides an ability to search or filter the Billing account based on different criteria supported by a filter, such as, Customer ID, Financial account ID, Billing Account IDs, and Display ID.\n\n###### TMF Open API compliant\n\n\n**Mandatory**\n- filter or filters query parameter needs to be populated\n\n**Supported Filters**\n\n- id (billing account id)\n- relatedParty.id\n- finacialAccount.Id\n- relatedParty.id + name\n- finacialAccount.Id + name\n- relatedParty.id + billStructure.presentationMedia.id\n- relatedParty.id + billStructure.cycleSpecification.id\n- relatedParty.id + paymentPlan.paymentMethod.id\n- relatedParty.id + billStructure.format.id\n- relatedParty.id + paymentStatus\n- relatedParty.id + relatedParty.role\n- relatedParty.id + relatedParty.type\n- financialAccount.id + billStructure.presentationMedia.id\n- financialAccount.id + billStructure.cycleSpecification.id\n- financialAccount.id + paymentPlan.paymentMethod.id\n- financialAccount.id + billStructure.format.id\n- financialAccount.id + paymentStatus\n- financialAccount.id + relatedParty.role\n- financialAccount.id + relatedParty.type\n\nNote: Only == operator is supported\n\n&nbsp;\n**Supported sort**\nNot supported\n",
+        "operationId" : "searchBillingAccount",
+        "consumes" : [ "application/json;charset=utf-8" ],
+        "produces" : [ "application/json;charset=utf-8" ],
+        "parameters" : [ {
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "The locale of the client\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "salesChannel",
+          "in" : "query",
+          "description" : "Sales Channel.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "filters",
+          "in" : "query",
+          "description" : "Query parameter to specify the search filters. Attribute filters are specified in the following way:\n_?filters=([attributeName][operator][value],\\u2026,[value])[&|;]\\u2026[&|;]([attributeName][operator][value],\\u2026,[value])_\n\nSupported operators are:\n* Equality: == (equals), != (not equals)\n* Contains: =@ (contains), !@ (does not contain)\n* Less than: < (less than), <= (less than or equal to)\n* Greater than: > (greater than),  >= (greater than or equal to)\n* RegExp: =~ (match), !~ (does not match)\n\nComma separated values for an attribute are evaluated with OR operator. & is the separator for multiple queries to be evaluated with AND operator while the ; is the separator for multiple queries to be evaluated with OR operator.\n",
+          "required" : false,
+          "type" : "string",
+          "x-dox-Since" : 1.0
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "Sort attributes\n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "*OK* - Billing accounts are retrieved successfully.\n",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/BillingAccount"
+              }
+            },
+            "headers" : {
+              "Etag" : {
+                "type" : "string",
+                "description" : "entity tag\n",
+                "x-dox-Since" : 1
+              }
+            }
+          },
+          "400" : {
+            "description" : "*Bad Request* - The server cannot process the request due to malformed syntax. The response can be caused by missing mandatory query parameters, invalid value in the query parameters, validation exceptions, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "409" : {
+            "description" : "*Conflict* - The server cannot complete the request due to a conflict with the current state of the resource.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "500" : {
+            "description" : "*Internal Server Error* - The server encountered an unexpected condition that prevented it from fulfilling the request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "502" : {
+            "description" : "*Bad Gateway* - The server encountered an unexpected condition when calling another service.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "503" : {
+            "description" : "*Service Unavailable* - The service being called is unavailable.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-amdocs" : {
+          "route-service" : "account-billingaccount-service",
+          "public-roles" : [ "D1_AccountManagement_searchBillingAccount" ],
+          "private-roles" : [ "D1P_AccountManagement_read", "FndP_APIGateway_gw" ]
+        }
+      },
+      "post" : {
+        "tags" : [ "Billing Account" ],
+        "summary" : "Creates a billing account",
+        "description" : "This operation creates a billing account.\n\n###### TMF Open API compliant\n\n**Mandatory**\n- name\n- relatedParty.id (Customer)\n- financialAccount.id\n\n&nbsp;\n\n**Read Only**\n- id\n- href\n- lastModified\n\n\n**Business Rules**\n- name, relatedParty.id & financialAccount.id are mandatory\n\n**Reference values:**\n- contact.contactType (AccountManagementRefData:ContactType)\n- status (AccountManagementRefData:BAStatus)\n- relatedParty.role (AccountManagementRefData:RelatedPartyRole)\n- relatedParty.type (AccountManagementRefData:RelatedPartyType )\n- accountBalance.type (AccountManagementRefData:AccountBalanceType)\n- contact.partyRoleType (AccountManagementRefData:PartyRoleType)\n- billStructure.documentType ( AccountManagementRefData:BillStructureDocType)\n- paymentPlan.status (AccountManagementRefData:PaymentPlanStatus)\n- paymentPlan.type (AccountManagementRefData:PaymentPlanType)\n- account.accountType (AccountManagementRefData:AccountType)\n- account.accountSubType (AccountManagementRefData:AccountSubType)\n- contactMedium.type=\"postal address\" \n    if address is provided as formatted address then following fields are mandatory\n      - medium.type\n      - medium.characteristic.type\n      - medium.street1\n      - medium.postCode\n      - medium.country\n    if address is provided as identifiers then following fields are mandatory\n      - medium.type\n      - medium.characteristic.type\n      - medium.characteristic.place.id\n      - medium.characteristic.place.@referredType (GeographicAddress is supported)\n",
+        "operationId" : "createBillingAccount",
+        "consumes" : [ "application/json;charset=utf-8" ],
+        "produces" : [ "application/json;charset=utf-8" ],
+        "parameters" : [ {
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "The locale of the client\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "salesChannel",
+          "in" : "query",
+          "description" : "Sales Channel.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "Billing Account",
+          "description" : "Billing Account details\n",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/BillingAccount"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "*Created* - Billing Account is created successfully.\n",
+            "schema" : {
+              "$ref" : "#/definitions/BillingAccount"
+            },
+            "headers" : {
+              "Etag" : {
+                "type" : "string",
+                "description" : "entity tag\n",
+                "x-dox-Since" : 1
+              }
+            }
+          },
+          "400" : {
+            "description" : "*Bad Request* - The server cannot process the request due to malformed syntax. The response can be caused by missing mandatory query parameters, invalid value in the query parameters, validation exceptions, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "409" : {
+            "description" : "*Conflict* - The server cannot complete the request due to a conflict with the current state of the resource.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "500" : {
+            "description" : "*Internal Server Error* - The server encountered an unexpected condition that prevented it from fulfilling the request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "502" : {
+            "description" : "*Bad Gateway* - The server encountered an unexpected condition when calling another service.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "503" : {
+            "description" : "*Service Unavailable* - The service being called is unavailable.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-amdocs" : {
+          "route-service" : "account-billingaccount-service",
+          "public-roles" : [ "D1_AccountManagement_createBillingAccount" ],
+          "private-roles" : [ "D1P_AccountManagement_write", "FndP_APIGateway_gw" ]
+        }
+      }
+    },
+    "/billingAccount/{billingAccountId}" : {
+      "get" : {
+        "tags" : [ "Billing Account" ],
+        "summary" : "Fetch billing account by id",
+        "description" : "This operation retrieves a billing account by ID.\n\n ###### TMF Open API compliant\n",
+        "operationId" : "getBillingAccount",
+        "consumes" : [ "application/json;charset=utf-8" ],
+        "produces" : [ "application/json;charset=utf-8" ],
+        "parameters" : [ {
+          "name" : "billingAccountId",
+          "in" : "path",
+          "description" : "Billing account id\n",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "The locale of the client\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "salesChannel",
+          "in" : "query",
+          "description" : "Sales Channel.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "The subset of attributes which are expected in the response.\n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "*OK* - The billing account is retrieved successfully.\n",
+            "schema" : {
+              "$ref" : "#/definitions/BillingAccount"
+            },
+            "headers" : {
+              "Etag" : {
+                "type" : "string",
+                "description" : "entity tag\n",
+                "x-dox-Since" : 1
+              }
+            }
+          },
+          "400" : {
+            "description" : "*Bad Request* - The server cannot process the request due to malformed syntax. The response can be caused by missing mandatory query parameters, invalid value in the query parameters, validation exceptions, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "404" : {
+            "description" : "*Not Found* - The server did not find anything matching the request URI. The response can be caused by missing path parameters, invalid web resource, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "405" : {
+            "description" : "*Method Not Allowed* - The server rejected the request because the HTTP method used by the resource is not supported by that resource.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "409" : {
+            "description" : "*Conflict* - The server cannot complete the request due to a conflict with the current state of the resource.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "500" : {
+            "description" : "*Internal Server Error* - The server encountered an unexpected condition that prevented it from fulfilling the request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "502" : {
+            "description" : "*Bad Gateway* - The server encountered an unexpected condition when calling another service.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "503" : {
+            "description" : "*Service Unavailable* - The service being called is unavailable.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-amdocs" : {
+          "route-service" : "account-billingaccount-service",
+          "public-roles" : [ "D1_AccountManagement_getBillingAccount" ],
+          "private-roles" : [ "D1P_AccountManagement_read", "FndP_APIGateway_gw" ]
+        }
+      },
+      "patch" : {
+        "tags" : [ "Billing Account" ],
+        "summary" : "Update billing account partially",
+        "description" : "This operation allows a partial update to the billing account.\n###### TMF Open API compliant\n\n\nPatchable:\n\n- name (replace)\n- description (add, replace, remove)\n- state (add, replace, remove)\n- type (add, replace, remove)\n- currencyCode (add, replace, remove)\n- accountType (add, replace, remove)\n- accountSubType (add, replace, remove)\n- stateDate (add, replace, remove)\n- stateReason (add, replace, remove)\n- stateIssueDate (add, replace, remove)\n- statusLastActivity (add, replace, remove)\n- openDate (add, replace, remove)\n- waiveLatePaymentFee (add, replace, remove)\n- validFor (add, replace, remove)        \n- creditLimit (add, replace, remove)\n- contact (add, replace, remove)\n- accountBalance (add, replace, remove)\n- taxExemption (add, replace, remove)\n- relatedParty (add, remove)\n- paymentStatus (add, replace, remove)\n- paymentPlan (add, replace, remove)\n- financialAccount (replace, remove)\n- defaultPaymentMethod (replace, remove)\n- billStructure (add, replace, remove)\n",
+        "operationId" : "patchBillingAccount",
+        "consumes" : [ "application/json;charset=utf-8" ],
+        "produces" : [ "application/json;charset=utf-8" ],
+        "parameters" : [ {
+          "name" : "billingAccountId",
+          "in" : "path",
+          "description" : "Billing account id\n",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "The locale of the client\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "If-Match",
+          "in" : "header",
+          "description" : "The If-Match HTTP request header makes the request conditional. \nFor GET and HEAD methods, the server will send back the requested resource only if it matches one of the listed ETags. \nFor PUT and other non-safe methods, it will only upload the resource in this case\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "salesChannel",
+          "in" : "query",
+          "description" : "Sales Channel.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "BillingAccount",
+          "description" : "This is a patch request to update the Billing Account resource.\n",
+          "required" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/PatchElement"
+            },
+            "example" : "[{\"path\":\"/name\",\"op\":\"replace\",\"value\":\"test1\"}]"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "*OK* - Billing Account updated successfully.\n",
+            "schema" : {
+              "$ref" : "#/definitions/BillingAccount"
+            },
+            "headers" : {
+              "Etag" : {
+                "type" : "string",
+                "description" : "entity tag\n",
+                "x-dox-Since" : 1
+              }
+            }
+          },
+          "400" : {
+            "description" : "*Bad Request* - The server cannot process the request due to malformed syntax. The response can be caused by missing mandatory query parameters, invalid value in the query parameters, validation exceptions, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "404" : {
+            "description" : "*Not Found* - The server did not find anything matching the request URI. The response can be caused by missing path parameters, invalid web resource, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "409" : {
+            "description" : "*Conflict* - The server cannot complete the request due to a conflict with the current state of the resource.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "500" : {
+            "description" : "*Internal Server Error* - The server encountered an unexpected condition that prevented it from fulfilling the request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "502" : {
+            "description" : "*Bad Gateway* - The server encountered an unexpected condition when calling another service.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-amdocs" : {
+          "route-service" : "account-billingaccount-service",
+          "private-roles" : [ "D1P_AccountManagement_write", "FndP_APIGateway_gw" ]
+        }
+      }
+    },
+    "/financialAccount" : {
+      "get" : {
+        "tags" : [ "Financial Account" ],
+        "summary" : "List of financial accounts based on filters",
+        "description" : "This operation provides an ability to search or filter financial accounts based on different criteria.\n###### TMF Open API compliant\n\n**Mandatory**\n- filters or filter query parameter needs to be populated\n\n**Supported filters**\n- relatedPartyRef.id\n- displayId (deprecated)\n\n**Supported sort**\nNot supported\n\n&nbsp;  \n",
+        "operationId" : "searchFinancialAccount",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "The locale of the client\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "salesChannel",
+          "in" : "query",
+          "description" : "Sales Channel.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "filters",
+          "in" : "query",
+          "description" : "Query parameter to specify the search filters. Attribute filters are specified in the following way:\n_?filters=([attributeName][operator][value],\\u2026,[value])[&|;]\\u2026[&|;]([attributeName][operator][value],\\u2026,[value])_\n\nSupported operators are:\n* Equality: == (equals), != (not equals)\n* Contains: =@ (contains), !@ (does not contain)\n* Less than: < (less than), <= (less than or equal to)\n* Greater than: > (greater than),  >= (greater than or equal to)\n* RegExp: =~ (match), !~ (does not match)\n\nComma separated values for an attribute are evaluated with OR operator. & is the separator for multiple queries to be evaluated with AND operator while the ; is the separator for multiple queries to be evaluated with OR operator.\n",
+          "required" : false,
+          "type" : "string",
+          "x-dox-Since" : 1.0
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "Sort attributes\n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "*OK* - Financial accounts are retrieved successfully.\n",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/FinancialAccount"
+              }
+            },
+            "headers" : {
+              "Etag" : {
+                "type" : "string",
+                "description" : "entity tag\n",
+                "x-dox-Since" : 1
+              }
+            }
+          },
+          "400" : {
+            "description" : "*Bad Request* - The server cannot process the request due to malformed syntax. The response can be caused by missing mandatory query parameters, invalid value in the query parameters, validation exceptions, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "409" : {
+            "description" : "*Conflict* - The server cannot complete the request due to a conflict with the current state of the resource.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "500" : {
+            "description" : "*Internal Server Error* - The server encountered an unexpected condition that prevented it from fulfilling the request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "502" : {
+            "description" : "*Bad Gateway* - The server encountered an unexpected condition when calling another service.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "503" : {
+            "description" : "*Service Unavailable* - The service being called is unavailable.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-amdocs" : {
+          "route-service" : "financialaccount-financialaccount-service",
+          "public-roles" : [ "D1_AccountManagement_searchFinancialAccount" ],
+          "private-roles" : [ "D1P_AccountManagement_read", "FndP_APIGateway_gw" ]
+        }
+      },
+      "post" : {
+        "tags" : [ "Financial Account" ],
+        "summary" : "Creates financial account",
+        "description" : "This operation creates a financial account.\n&nbsp;\n###### TMF Open API compliant\n **Mandatory:**\n- name\n- relatedParty.id (Customer)\n- relatedParty.type (Customer)\n- contact.contactType & contact.validFor is mandatory if Contact exists\n- relatedParty.id, relatedParty.role & relatedParty.type are mandatory if RelatedParty exists\n- taxExemption.issuingJurisdiction is mandatory if TaxExemption exists\n- contactMedium.type is mandatory if ContactMedium exists\n- contactMedium.type=\"postal address\" (configurable)\n    if address is provided as formatted address then following fields are mandatory\n      - medium.type\n      - medium.characteristic.type\n      - medium.street1\n      - medium.postCode\n      - medium.country\n    if address is provided as identifiers then following fields are mandatory\n      - medium.type\n      - medium.characteristic.type\n      - medium.characteristic.place.id\n      - medium.characteristic.place.@referredType (GeographicAddress is supported)\n\n&nbsp;\n\n**Read only:**\n- id\n- href\n- contact.id\n- contact.contactMedium.id\n- contact.relatedPartyRef.id\n- contact.relatedPartyRef.href\n- accountBalance.id\n- taxExemption.id\n- relatedParty.id\n- relatedParty.href\n- relatedParty.role\n- relatedParty.type\n\n\n&nbsp;\n\n**Business rules:**\n- There should be atleast one related party of role customer\n- There should be atleast one primary individual (individual.role == primary) associated to the financial account\n- There cannot be 2 related parties for the financial account with the same id\n- validFor.startDateTime cannot be after validFor.endDateTime\n\n&nbsp;\n\n**Reference values:**\n- status (AccountManagementRefData:FAStatus)\n- relatedParty.role (AccountManagementRefData:RelatedPartyRole)\n- relatedParty.type (AccountManagementRefData:RelatedPartyType)\n- AccountBalance.type (AccountManagementRefData:AccountBalanceType)\n- Contact.partyRoleType (AccountManagementRefData:PartyRoleType)\n\n&nbsp;\n",
+        "operationId" : "createFinancialAccount",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "The locale of the client\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "salesChannel",
+          "in" : "query",
+          "description" : "Sales Channel.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "Financial Account",
+          "description" : "Financial Account details\n",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/FinancialAccount"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "*Created* - Financial Account is created successfully.\n",
+            "schema" : {
+              "$ref" : "#/definitions/FinancialAccount"
+            },
+            "examples" : {
+              "Example 1" : {
+                "id" : "FinancialAccount_00504515-1401-453a-aa28-88a020000095",
+                "href" : "http://server:port/accountManagement/v1/financialAccount/FinancialAccount_00504515-1401-453a-aa28-88a020000095",
+                "name" : "Thomas Clinic",
+                "state" : "Out of Collection",
+                "lastModified" : "2018-11-28T09:09:36.000+0000",
+                "contact" : [ ],
+                "accountBalance" : [ ],
+                "taxExemption" : [ ],
+                "relatedParty" : [ {
+                  "id" : "123213",
+                  "role" : "Customer",
+                  "type" : "Customer"
+                } ],
+                "controlFields" : {
+                  "createdOn" : "2018-11-28T09:09:36.000+0000",
+                  "lastModifiedOn" : "2018-11-28T09:09:36.000+0000"
+                },
+                "extensions" : { }
+              }
+            },
+            "headers" : {
+              "Etag" : {
+                "type" : "string",
+                "description" : "entity tag\n",
+                "x-dox-Since" : 1
+              }
+            }
+          },
+          "400" : {
+            "description" : "*Bad Request* - The server cannot process the request due to malformed syntax. The response can be caused by missing mandatory query parameters, invalid value in the query parameters, validation exceptions, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "409" : {
+            "description" : "*Conflict* - The server cannot complete the request due to a conflict with the current state of the resource.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "500" : {
+            "description" : "*Internal Server Error* - The server encountered an unexpected condition that prevented it from fulfilling the request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "502" : {
+            "description" : "*Bad Gateway* - The server encountered an unexpected condition when calling another service.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "503" : {
+            "description" : "*Service Unavailable* - The service being called is unavailable.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-amdocs" : {
+          "route-service" : "financialaccount-financialaccount-service",
+          "public-roles" : [ "D1_AccountManagement_createFinancialAccount" ],
+          "private-roles" : [ "D1P_AccountManagement_write", "FndP_APIGateway_gw" ]
+        }
+      }
+    },
+    "/financialAccount/{financialAccountId}" : {
+      "get" : {
+        "tags" : [ "Financial Account" ],
+        "summary" : "Retrieves financial account by id",
+        "description" : "This operation retrieves a financial account by ID.\n###### TMF Open API compliant\n",
+        "operationId" : "getFinancialAccount",
+        "parameters" : [ {
+          "name" : "financialAccountId",
+          "in" : "path",
+          "description" : "Financial Account id\n",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "The locale of the client\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "salesChannel",
+          "in" : "query",
+          "description" : "Sales Channel.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "The subset of attributes which are expected in the response.\n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "*OK* - The financial account is retrieved successfully.\n",
+            "schema" : {
+              "$ref" : "#/definitions/FinancialAccount"
+            },
+            "examples" : {
+              "example1" : {
+                "id" : "FAID",
+                "displayId" : "string",
+                "href" : "string",
+                "name" : "FAwithFullPayload",
+                "state" : "Active",
+                "lastModified" : "2017-10-04T10:06:49.924+0000",
+                "type" : "Account",
+                "creditLimit" : {
+                  "unit" : "USD",
+                  "value" : 2000
+                },
+                "contact" : [ {
+                  "id" : "ContactId1",
+                  "contactName" : "Vaibhav",
+                  "contactType" : "primary",
+                  "partyRoleType" : "Contact",
+                  "contactMedium" : [ {
+                    "id" : "ContactMediumId1",
+                    "type" : "Email",
+                    "preferred" : true,
+                    "validFor" : {
+                      "startDateTime" : "2017-12-27T09:05:24.812+0000",
+                      "endDateTime" : "2017-12-29T09:05:24.812+0000"
+                    },
+                    "characteristic" : {
+                      "type" : "email",
+                      "emailAddress" : "test@test.com"
+                    }
+                  } ],
+                  "relatedPartyRef" : {
+                    "id" : "4",
+                    "href" : "http://related-party-service:8080/financialaccount/v1/relatedParty/1",
+                    "name" : "SomeCustomer1",
+                    "role" : "Customer",
+                    "type" : "Individual",
+                    "validFor" : {
+                      "startDateTime" : "2017-12-27T09:05:24.812+0000",
+                      "endDateTime" : "2017-12-27T09:05:24.812+0000"
+                    }
+                  }
+                }, {
+                  "id" : "ContactId2",
+                  "contactName" : "Vaibhav",
+                  "contactType" : "primary",
+                  "partyRoleType" : "Contact",
+                  "contactMedium" : [ {
+                    "id" : "ContactMediumId1",
+                    "type" : "TelephoneNumber",
+                    "preferred" : true,
+                    "validFor" : {
+                      "startDateTime" : "2017-12-27T09:05:24.812+0000",
+                      "endDateTime" : "2017-12-29T09:05:24.812+0000"
+                    },
+                    "characteristic" : {
+                      "type" : "number",
+                      "number" : "89475144541"
+                    }
+                  } ],
+                  "relatedPartyRef" : {
+                    "id" : "4",
+                    "href" : "http://related-party-service:8080/financialaccount/v1/relatedParty/1",
+                    "name" : "SomeCustomer1",
+                    "role" : "Customer",
+                    "type" : "Individual",
+                    "validFor" : {
+                      "startDateTime" : "2017-12-27T09:05:24.812+0000",
+                      "endDateTime" : "2017-12-27T09:05:24.812+0000"
+                    }
+                  }
+                } ],
+                "accountBalance" : [ {
+                  "id" : "AB1",
+                  "amount" : {
+                    "unit" : "USD",
+                    "value" : 200
+                  },
+                  "type" : "depositbalance",
+                  "validFor" : {
+                    "startDateTime" : "2017-12-27T09:05:24.813+0000",
+                    "endDateTime" : "2017-12-27T09:05:24.813+0000"
+                  }
+                } ],
+                "taxExemption" : [ {
+                  "id" : "taxExemptionId",
+                  "certificateNumber" : "123213",
+                  "issuingJurisdiction" : "Jurisdiction1",
+                  "reason" : "Not Known",
+                  "validFor" : {
+                    "startDateTime" : "2017-12-27T09:05:24.813+0000",
+                    "endDateTime" : "2017-12-27T09:05:24.813+0000"
+                  }
+                } ],
+                "relatedParty" : [ {
+                  "id" : "1",
+                  "href" : "http://related-party-service:8080/financialaccount/v1/relatedParty/1",
+                  "name" : "Customer1",
+                  "role" : "Customer",
+                  "type" : "Customer",
+                  "validFor" : {
+                    "startDateTime" : "2017-12-27T09:05:24.813+0000",
+                    "endDateTime" : "2017-12-27T09:05:24.813+0000"
+                  }
+                }, {
+                  "id" : "2",
+                  "href" : "http://related-party-service:8080/financialaccount/v1/relatedParty/2",
+                  "name" : "Individual1",
+                  "role" : "Primary",
+                  "type" : "Individual",
+                  "validFor" : {
+                    "startDateTime" : "2017-12-27T09:05:24.813+0000",
+                    "endDateTime" : "2017-12-27T09:05:24.813+0000"
+                  }
+                }, {
+                  "id" : "3",
+                  "href" : "http://related-party-service:8080/financialaccount/v1/relatedParty/3",
+                  "name" : "Individual2",
+                  "role" : "Secondary",
+                  "type" : "Individual",
+                  "validFor" : {
+                    "startDateTime" : "2017-12-27T09:05:24.813+0000",
+                    "endDateTime" : "2017-12-27T09:05:24.813+0000"
+                  }
+                } ]
+              }
+            },
+            "headers" : {
+              "Etag" : {
+                "type" : "string",
+                "description" : "entity tag\n",
+                "x-dox-Since" : 1
+              }
+            }
+          },
+          "400" : {
+            "description" : "*Bad Request* - The server cannot process the request due to malformed syntax. The response can be caused by missing mandatory query parameters, invalid value in the query parameters, validation exceptions, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "404" : {
+            "description" : "*Not Found* - The server did not find anything matching the request URI. The response can be caused by missing path parameters, invalid web resource, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "405" : {
+            "description" : "*Method Not Allowed* - The server rejected the request because the HTTP method used by the resource is not supported by that resource.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "409" : {
+            "description" : "*Conflict* - The server cannot complete the request due to a conflict with the current state of the resource.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "500" : {
+            "description" : "*Internal Server Error* - The server encountered an unexpected condition that prevented it from fulfilling the request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "502" : {
+            "description" : "*Bad Gateway* - The server encountered an unexpected condition when calling another service.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "503" : {
+            "description" : "*Service Unavailable* - The service being called is unavailable.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-amdocs" : {
+          "route-service" : "financialaccount-financialaccount-service",
+          "public-roles" : [ "D1_AccountManagement_getFinancialAccount" ],
+          "private-roles" : [ "D1P_AccountManagement_read", "FndP_APIGateway_gw" ]
+        }
+      },
+      "patch" : {
+        "tags" : [ "Financial Account" ],
+        "summary" : "Partial update of financial account",
+        "description" : "This operation allows a partial update to the financial account.\n###### TMF Open API compliant\n\n**Patchable attributes:**\n  - name (replace, remove)\n  - description (replace, remove)\n  - state (replace, remove)\n  - type (replace, remove)\n  - creditLimit (add, replace, remove)\n  - creditLimit.unit (replace, remove)\n  - creditLimit.value (replace, remove)\n  - contact (add, replace, remove)\n  - contact.id (replace, remove)\n  - contact.contactName (replace, remove)\n  - contact.contactType (replace, remove)\n  - contact.partyRoleType (replace, remove)\n  - contact.contactMedium (replace, remove)\n  - contact.contactMedium.type (replace, remove)\n  - contact.contactMedium.preferred (replace, remove)\n  - contact.contactMedium.validFor (replace, remove)      \n  - contact.contactMedium.validFor.startDateTime (replace, remove)\n  - contact.contactMedium.validFor.endDateTime (replace, remove)\n  - contact.contactMedium.characteristic (replace, remove)\n  - contact.contactMedium.characteristic.type (replace, remove)\n  - contact.contactMedium.characteristic.emailAddress (replace, remove)\n  - contact.contactMedium.characteristic.number (replace, remove)\n  - contact.contactMedium.characteristic.city (replace, remove)\n  - contact.contactMedium.characteristic.country (replace, remove)\n  - contact.contactMedium.characteristic.postCode (replace, remove)\n  - contact.contactMedium.characteristic.stateOrProvince (replace, remove)\n  - contact.contactMedium.characteristic.street1 (replace, remove)\n  - contact.contactMedium.characteristic.street2 (replace, remove)\n  - accountBalance (add, replace, remove)\n  - accountBalance.id (replace, remove)\n  - accountBalance.amount (replace, remove)\n  - accountBalance.type (replace, remove)\n  - accountBalance.validFor (replace, remove)\n  - accountBalance.validFor.startDateTime (replace, remove)\n  - accountBalance.validFor.endDateTime (replace, remove)\n  - taxExemption (add, replace, remove)\n  - taxExemption.id (replace, remove)\n  - taxExemption.certificateNumber (replace, remove)\n  - taxExemption.issuingJurisdiction (replace, remove)\n  - taxExemption.reason (add, replace, remove)\n  - taxExemption.validFor (replace, remove)\n  - taxExemption.validFor.startDateTime (replace, remove)\n  - taxExemption.validFor.endDateTime (replace, remove)\n  - relatedParty (add, replace, remove)\n  - relatedParty.name (replace, remove)\n  - relatedParty.validFor (replace, remove)\n  - relatedParty.validFor.startDateTime (replace, remove)\n  - relatedParty.validFor.endDateTime (replace, remove)\n",
+        "operationId" : "patchFinancialAccount",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "financialAccountId",
+          "in" : "path",
+          "description" : "Financial Account id\n",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "The locale of the client\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "If-Match",
+          "in" : "header",
+          "description" : "The If-Match HTTP request header makes the request conditional. \nFor GET and HEAD methods, the server will send back the requested resource only if it matches one of the listed ETags. \nFor PUT and other non-safe methods, it will only upload the resource in this case\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "salesChannel",
+          "in" : "query",
+          "description" : "Sales Channel.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "FinancialAccount",
+          "description" : "The patch request to update a Financial Account resource.\n",
+          "required" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/PatchElement"
+            },
+            "example" : {
+              "path" : "/name",
+              "op" : "replace",
+              "value" : "ChangedFAName"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "*OK* - Financial Account is updated successfully.\n",
+            "schema" : {
+              "$ref" : "#/definitions/FinancialAccount"
+            },
+            "examples" : {
+              "ReplaceNameExample" : {
+                "id" : "FinancialAccount_00504515-1401-453a-aa28-88a020000095",
+                "href" : "http://server:port/accountManagement/v1/financialAccount/FinancialAccount_00504515-1401-453a-aa28-88a020000095",
+                "name" : "ChangedFAName",
+                "state" : "Out of Collection",
+                "lastModified" : "2018-11-28T09:09:36.000+0000",
+                "contact" : [ ],
+                "accountBalance" : [ ],
+                "taxExemption" : [ ],
+                "relatedParty" : [ {
+                  "id" : "123213",
+                  "role" : "Customer",
+                  "type" : "Customer"
+                } ]
+              }
+            },
+            "headers" : {
+              "Etag" : {
+                "type" : "string",
+                "description" : "entity tag\n",
+                "x-dox-Since" : 1
+              }
+            }
+          },
+          "400" : {
+            "description" : "*Bad Request* - The server cannot process the request due to malformed syntax. The response can be caused by missing mandatory query parameters, invalid value in the query parameters, validation exceptions, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "404" : {
+            "description" : "*Not Found* - The server did not find anything matching the request URI. The response can be caused by missing path parameters, invalid web resource, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "409" : {
+            "description" : "*Conflict* - The server cannot complete the request due to a conflict with the current state of the resource.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "500" : {
+            "description" : "*Internal Server Error* - The server encountered an unexpected condition that prevented it from fulfilling the request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "502" : {
+            "description" : "*Bad Gateway* - The server encountered an unexpected condition when calling another service.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-amdocs" : {
+          "route-service" : "financialaccount-financialaccount-service",
+          "public-roles" : [ "D1_AccountManagement_patchFinancialAccount" ],
+          "private-roles" : [ "D1P_AccountManagement_write", "FndP_APIGateway_gw" ]
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "BillingAccount" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/PartyAccount"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "ratingType" : {
+            "type" : "string",
+            "description" : "Rating Type associated with Billing Account. One of two possible value postpaid or prepaid must be filled.\n"
+          }
+        }
+      } ],
+      "description" : "An account of money owed by a party to another entity in exchange for goods or services that have been delivered or used. A billing account used for billing purposes. It includes a description of the bill structure, such as frequency, presentation media, format and so on.\n"
+    },
+    "PartyAccount" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/Account"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "paymentStatus" : {
+            "type" : "string",
+            "description" : "status of payment\n"
+          },
+          "paymentPlan" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/PaymentPlan"
+            }
+          },
+          "financialAccount" : {
+            "$ref" : "#/definitions/FinancialAccountRef"
+          },
+          "defaultPaymentMethod" : {
+            "$ref" : "#/definitions/PaymentMethodRef"
+          },
+          "billStructure" : {
+            "$ref" : "#/definitions/BillStructure"
+          },
+          "extensions" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "object",
+              "properties" : { }
+            },
+            "x-amdocs" : {
+              "refDefinition" : "PartyAccountExtension"
+            }
+          }
+        }
+      } ],
+      "description" : "An account of money owed by a party to another entity in exchange for goods or services that have been delivered or used. PartyAccount used for billing or for settlement purposes concerning a given party (an organization or an individual).\n"
+    },
+    "Account" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "A unique identifier of the account.\n"
+        },
+        "href" : {
+          "type" : "string",
+          "description" : "A URI reference of the account.\n"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "The name of the account.\n",
+          "x-amdocs-pii" : "nameInfo:name"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "A description of the account.\n"
+        },
+        "state" : {
+          "type" : "string",
+          "description" : "It contains the lifecycle state, such as Active, Closed, Suspended, and so on.\n"
+        },
+        "createdOn" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "The date and time when the entity was created.\n"
+        },
+        "lastModified" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "The date of the last modification of the account.\n"
+        },
+        "type" : {
+          "type" : "string",
+          "description" : "A categorization of an account, such as individual, joint, and so on, whose instances share some of the same characteristics.\n"
+        },
+        "@baseType" : {
+          "type" : "string",
+          "description" : "Base type of entity\n"
+        },
+        "@schemaLocation" : {
+          "type" : "string",
+          "description" : "A uri where the data model can be retrieved.\n"
+        },
+        "currencyCode" : {
+          "type" : "string",
+          "description" : "The currency code.\n"
+        },
+        "accountType" : {
+          "type" : "string",
+          "description" : "The type of account.\n"
+        },
+        "accountSubType" : {
+          "type" : "string",
+          "description" : "The subtype of an account.\n"
+        },
+        "stateDate" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "The date on which the current status becomes effective.\n"
+        },
+        "stateReason" : {
+          "type" : "string",
+          "description" : "The reason for the corresponding status, which is taken from the last activity that changed the status.\n"
+        },
+        "stateIssueDate" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "The date on which the status was changed.\n"
+        },
+        "statusLastActivity" : {
+          "type" : "string",
+          "description" : "The last activity that caused the status modification.\n"
+        },
+        "openDate" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "The date on which the account was opened.\n"
+        },
+        "waiveLatePaymentFee" : {
+          "type" : "boolean",
+          "description" : "Defines if a late payment fees should be calculated for this account or if the account is waived from late payment fees.\n"
+        },
+        "validFor" : {
+          "$ref" : "#/definitions/TimePeriod"
+        },
+        "creditLimit" : {
+          "$ref" : "#/definitions/Money"
+        },
+        "contact" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Contact"
+          }
+        },
+        "accountBalance" : {
+          "type" : "array",
+          "description" : "The balances linked to the account.\n",
+          "items" : {
+            "$ref" : "#/definitions/AccountBalance"
+          }
+        },
+        "taxExemption" : {
+          "type" : "array",
+          "description" : "A proof of freedom from taxes imposed by a taxing jurisdiction.\n",
+          "items" : {
+            "$ref" : "#/definitions/AccountTaxExemption"
+          }
+        },
+        "relatedParty" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/RelatedPartyRef"
+          }
+        },
+        "controlFields" : {
+          "$ref" : "#/definitions/ControlFields"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "AccountExtension"
+          }
+        }
+      },
+      "description" : "This is the base for all type of accounts, such as, party account, settlement account, etc. It contains a set of common attributes.\n"
+    },
+    "TimePeriod" : {
+      "type" : "object",
+      "properties" : {
+        "startDateTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "The time period start date and time.\n"
+        },
+        "endDateTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "The time period end date and time.\n"
+        },
+        "extension" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "TimePeriodExtension"
+          }
+        }
+      },
+      "description" : "Time period\n"
+    },
+    "Money" : {
+      "type" : "object",
+      "properties" : {
+        "unit" : {
+          "type" : "string",
+          "example" : "USD",
+          "description" : "Currency (ISO4217 norm uses 3 letters to define the currency).\n"
+        },
+        "value" : {
+          "type" : "number",
+          "format" : "float",
+          "example" : 20.0,
+          "description" : "A positive floating point number\n"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "MoneyExtension"
+          }
+        }
+      },
+      "description" : "Monetory Amount\n"
+    },
+    "Contact" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier\n"
+        },
+        "contactName" : {
+          "type" : "string",
+          "description" : "A displayable name for a contact.\n",
+          "x-amdocs-pii" : "nameInfo:name"
+        },
+        "contactType" : {
+          "type" : "string",
+          "description" : "The type of contact, primary or secondary.\n"
+        },
+        "partyRoleType" : {
+          "type" : "string",
+          "description" : "It identifies what kind of party role type is linked to the contact (account manager...).\n"
+        },
+        "contactMedium" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/ContactMedium"
+          }
+        },
+        "validFor" : {
+          "description" : "",
+          "$ref" : "#/definitions/TimePeriod"
+        },
+        "relatedParty" : {
+          "description" : "A related party defines party or party role linked to a specific entity.\n",
+          "$ref" : "#/definitions/RelatedPartyRef"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "ContactExtension"
+          }
+        }
+      },
+      "description" : "It contains a reference to the related party.\n"
+    },
+    "ContactMedium" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique, auto-generated identifier\n"
+        },
+        "type" : {
+          "type" : "string",
+          "description" : "Contact medium type like email address, telephone number, postal address.\n"
+        },
+        "preferred" : {
+          "type" : "boolean",
+          "description" : "An indicator for a preferred contact medium of communication.\n"
+        },
+        "validFor" : {
+          "$ref" : "#/definitions/TimePeriod"
+        },
+        "characteristic" : {
+          "$ref" : "#/definitions/MediumCharacteristics"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "ContactMediumExtension"
+          }
+        }
+      },
+      "description" : "Contact medium associated to the customer. For example, email address, telephone number, and so on. \n"
+    },
+    "MediumCharacteristics" : {
+      "type" : "object",
+      "properties" : {
+        "type" : {
+          "type" : "string",
+          "description" : "The type of medium, fax or mobile phone.\n"
+        },
+        "emailAddress" : {
+          "type" : "string",
+          "description" : "The contact's email address for the ContactMedium type, email.\n",
+          "x-amdocs-pii" : "contactInfo:email"
+        },
+        "number" : {
+          "type" : "string",
+          "description" : "The contact's phone number for Contact Medium type, telephone number.\n",
+          "x-amdocs-pii" : "contactInfo:telephoneNumber"
+        },
+        "city" : {
+          "type" : "string",
+          "description" : "The city name for the contact's address for Contact Medium type, postal address.\n",
+          "x-amdocs-pii" : "contactInfo:city"
+        },
+        "country" : {
+          "type" : "string",
+          "description" : "The country ISO code for the contact's address for Contact Medium type, postal address.\n",
+          "x-amdocs-pii" : "contactInfo:country"
+        },
+        "postCode" : {
+          "type" : "string",
+          "description" : "The postcode for the contact's address for Contact Medium type, postal address.\n",
+          "x-amdocs-pii" : "contactInfo:postCode"
+        },
+        "stateOrProvince" : {
+          "type" : "string",
+          "description" : "The state or province from contact's address for Contact Medium type, postal address.\n",
+          "x-amdocs-pii" : "contactInfo:state"
+        },
+        "street1" : {
+          "type" : "string",
+          "description" : "The first street line for the contact's address for Contact Medium type, postal address.\n",
+          "x-amdocs-pii" : "contactInfo:addressLine"
+        },
+        "street2" : {
+          "type" : "string",
+          "description" : "The second street line for the contact's address for Contact Medium type, postal address.\n",
+          "x-amdocs-pii" : "contactInfo:addressLine"
+        },
+        "place" : {
+          "$ref" : "#/definitions/PlaceRef"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "MediumCharacteristicExtension"
+          }
+        }
+      },
+      "description" : "The medium information for a customer. For example, email address, mobile number, or fax number. \n"
+    },
+    "PlaceRef" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier of GeographicAddress,GeographicSite or GeographicLocation\n"
+        },
+        "@referredType" : {
+          "type" : "string",
+          "description" : "Describes the type of entity such as GeographicAddress, GeographicSite or GeographicLocation\n"
+        },
+        "@type" : {
+          "type" : "string",
+          "description" : "Describes the type of entity \n"
+        },
+        "subPlace" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/SubPlaceRef"
+          }
+        }
+      },
+      "description" : "A place reference is a pointer to either GeographicAddress,GeographicSubAddress,GeographicLocation\n"
+    },
+    "SubPlaceRef" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier of entity such as GeographicSubAddress\n"
+        },
+        "@referredType" : {
+          "type" : "string",
+          "description" : "Describes the type of entity such as GeographicSubAddress \n"
+        },
+        "@type" : {
+          "type" : "string",
+          "description" : "Describes the type of entity \n"
+        }
+      },
+      "description" : "A subplace reference is a pointer to GeographicSubAddress\n"
+    },
+    "RelatedPartyRef" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique id of an existing party.\n"
+        },
+        "href" : {
+          "type" : "string",
+          "description" : "The self href for the existing related party.\n"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "The name of related party.\n",
+          "x-dox-pii" : "nameInfo:name"
+        },
+        "role" : {
+          "type" : "string",
+          "description" : "The role of related party\n"
+        },
+        "type" : {
+          "type" : "string",
+          "description" : "Describes if it's Customer/Individual/Organazation\nPatchable - No\n"
+        },
+        "@referredType" : {
+          "type" : "string",
+          "description" : "The type of the party/party role such as Individual/Organization/Customer/User etc.\n"
+        },
+        "validFor" : {
+          "$ref" : "#/definitions/TimePeriod"
+        }
+      },
+      "description" : "Contains reference to the related party.\n"
+    },
+    "AccountBalance" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier\n"
+        },
+        "amount" : {
+          "$ref" : "#/definitions/Money"
+        },
+        "type" : {
+          "type" : "string",
+          "description" : "The type of the balance, deposit balance, disputed balance, loyalty balance, or receivable balance.\n"
+        },
+        "validFor" : {
+          "$ref" : "#/definitions/TimePeriod"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "AccountBalanceExtension"
+          }
+        }
+      },
+      "description" : "A proof of freedom from taxes imposed by a taxing jurisdiction.\n"
+    },
+    "AccountTaxExemption" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier\n"
+        },
+        "certificateNumber" : {
+          "type" : "string",
+          "description" : "An identifier of a document that shows proof of exemption from taxes for the taxing jurisdiction.\n",
+          "x-amdocs-pii" : "governmentIdentityInfo:identificationId"
+        },
+        "issuingJurisdiction" : {
+          "type" : "string",
+          "description" : "The name of the taxing jurisdiction for which taxes are exempted.\n"
+        },
+        "reason" : {
+          "type" : "string",
+          "description" : "The reason for the tax exemption.\n"
+        },
+        "validFor" : {
+          "$ref" : "#/definitions/TimePeriod"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "ContactExtension"
+          }
+        }
+      },
+      "description" : "A proof of freedom from taxes imposed by a taxing juridiction.\n"
+    },
+    "ControlFields" : {
+      "type" : "object",
+      "properties" : {
+        "createdBy" : {
+          "type" : "string",
+          "description" : "The system identification of the user that created the instance.\n"
+        },
+        "createdOn" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "The date and time when the instance was created.\n"
+        },
+        "lastModifiedBy" : {
+          "type" : "string",
+          "description" : "The system identification of the user who last modified the instance.\n"
+        },
+        "lastModifiedOn" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "The date and time when the instance was last modified.\n"
+        },
+        "modelVersion" : {
+          "type" : "string",
+          "description" : "It records the model version to allow on-the-fly upgrade of persisted data.\n"
+        }
+      }
+    },
+    "PaymentPlan" : {
+      "type" : "object",
+      "properties" : {
+        "numberOfPayments" : {
+          "type" : "integer",
+          "description" : "The number of payments used to spread the global payment.\n"
+        },
+        "paymentFrequency" : {
+          "type" : "string",
+          "description" : "The frequency of the payments, such as monthly and bi-monthly.\n"
+        },
+        "priority" : {
+          "type" : "integer",
+          "description" : "The priority of the payment plan.\n"
+        },
+        "status" : {
+          "type" : "string",
+          "description" : "The status of the payment plan, effective or ineffective.\n"
+        },
+        "totalAmount" : {
+          "$ref" : "#/definitions/Money"
+        },
+        "type" : {
+          "type" : "string",
+          "description" : "Type of payment plan\n"
+        },
+        "validFor" : {
+          "$ref" : "#/definitions/TimePeriod"
+        },
+        "paymentMethod" : {
+          "$ref" : "#/definitions/PaymentMethodRef"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "PaymentPlanExtension"
+          }
+        }
+      },
+      "description" : "It defines a plan for payment, when a party wants to spread the payments.\n"
+    },
+    "PaymentMethodRef" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique id of an existing Payment Method.\nPatchable - No\n"
+        },
+        "href" : {
+          "type" : "string",
+          "description" : "Hypertext reference to the existing related Payment Method.\n"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "The name of related Payment Method.\n",
+          "x-dox-npi" : "paymentMethodInfo:name"
+        },
+        "type" : {
+          "type" : "string",
+          "description" : "Describes the type of Payment method like Credit Card, BankAccount etc.\n",
+          "x-dox-npi" : "paymentMethodInfo:type"
+        },
+        "preferred" : {
+          "type" : "boolean",
+          "description" : "If the method is the preferred one by the owner. Typically used when querying for the payment methods of a specific customer or account.\n"
+        },
+        "validFor" : {
+          "$ref" : "#/definitions/TimePeriod"
+        }
+      },
+      "description" : "A payment method defines a specific mean of payment (e.g. direct debit/credit card)\n"
+    },
+    "FinancialAccountRef" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "A unique identifier of an existing financial account.\n"
+        },
+        "href" : {
+          "type" : "string",
+          "description" : "A hypertext reference to the existing financial account.\n"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "The name of the financial account.\n",
+          "x-amdocs-pii" : "nameInfo:name"
+        },
+        "role" : {
+          "type" : "string",
+          "description" : "Account role (should be used to identify in which balance to add to aggregation).\n"
+        }
+      },
+      "description" : "It contains a reference to the financial account.\n"
+    },
+    "BillStructure" : {
+      "type" : "object",
+      "properties" : {
+        "documentType" : {
+          "type" : "string",
+          "description" : "It indicates whether the billing document is an invoice or a bill.\n"
+        },
+        "billItemTaxInd" : {
+          "type" : "boolean",
+          "description" : "It indicates whether the tax is calculated for each charge or for the total amount of the bill.\n"
+        },
+        "produceBillInd" : {
+          "type" : "boolean",
+          "description" : "It indicates whether a bill is produced.\n"
+        },
+        "zeroBalanceInd" : {
+          "type" : "boolean",
+          "description" : "It indicates whether to zero the balance of the billing account at the billing run, such as in the case of internal employees.\n"
+        },
+        "billFrequency" : {
+          "type" : "integer",
+          "description" : "The bill frequency multiplier is defined in the customer's billing account. This means that different billing account for the same customer can be billed on different schedules.\n"
+        },
+        "dueDays" : {
+          "type" : "integer",
+          "description" : "It defines the number of days to add to the invoice date to get the due date.\n"
+        },
+        "presentationMedia" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/BillPresentationMediaRef"
+          }
+        },
+        "format" : {
+          "$ref" : "#/definitions/BillFormatRef"
+        },
+        "cycleSpecification" : {
+          "$ref" : "#/definitions/BillingCycleSpecificationRef"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "BillStructureExtension"
+          }
+        }
+      },
+      "description" : "The structure of the bill for the billing account.\n"
+    },
+    "BillPresentationMediaRef" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier of the bill presentation media.\n"
+        },
+        "href" : {
+          "type" : "string",
+          "description" : "Reference of the bill presentation media.\n"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "A short descriptive name.\n"
+        }
+      },
+      "description" : "A means of communicating a bill, supported by the associated bill format. For example, post mail, email, or web page.\n"
+    },
+    "BillFormatRef" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier of the bill format.\n"
+        },
+        "href" : {
+          "type" : "string",
+          "description" : "Reference of the bill format.\n"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "A short descriptive name.\n"
+        }
+      },
+      "description" : "A bill format is a description in the way in which a bill is presented.\n"
+    },
+    "BillingCycleSpecificationRef" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier of the billing cycle specification.\n"
+        },
+        "href" : {
+          "type" : "string",
+          "description" : "A reference of the billing cycle specification.\n"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "A short descriptive name.\n"
+        },
+        "frequency" : {
+          "type" : "string",
+          "description" : "The frequency of the billing cycle, for instance, a monthly billing cycle.\n"
+        },
+        "billingDateShift" : {
+          "type" : "integer",
+          "description" : "An offset of a billing or settlement date. The offset is expressed as number of days with regard to the start of the billing or settlement period.\n"
+        },
+        "externalIdentifier" : {
+          "type" : "array",
+          "description" : "A list of external identifiers related to the billing cycle specification.\n",
+          "items" : {
+            "$ref" : "#/definitions/ExternalIdentifier"
+          }
+        }
+      },
+      "description" : "A description of when to initiate a billing cycle and the various sub steps of a billing cycle.\n",
+      "example" : {
+        "id" : "BillingCycleSpecification_53e24112-c251-4396-9ebd-90ab04cc5e19",
+        "href" : "http://server:port/accountManagement/v1/billingCycleSpecification/BillingCycleSpecification_53e24112-c251-4396-9ebd-90ab04cc5e19",
+        "name" : "TestBillingCycleSpecification",
+        "frequency" : "month"
+      }
+    },
+    "ExternalIdentifier" : {
+      "type" : "object",
+      "properties" : {
+        "type" : {
+          "type" : "string",
+          "description" : "Type of the external system\n"
+        },
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier in the external system\n"
+        },
+        "version" : {
+          "type" : "string",
+          "description" : "Version of the related entity in the external system\n"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "ExternalIdentifierExtensions"
+          }
+        }
+      },
+      "description" : "Reference to an external system identifier\n"
+    },
+    "ErrorResponse" : {
+      "type" : "object",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "description" : "The code that is associated with the error.\n",
+          "readOnly" : true
+        },
+        "message" : {
+          "type" : "string",
+          "description" : "The message that is associated with the error.\n",
+          "readOnly" : true
+        },
+        "traceId" : {
+          "type" : "string",
+          "description" : "A unique trace ID that is used to correlate an error returned to a client with the server.\n",
+          "readOnly" : true
+        }
+      },
+      "description" : "A response containing descriptive error text or error code.\ntype: object\n"
+    },
+    "PatchElement" : {
+      "properties" : {
+        "op" : {
+          "type" : "string",
+          "description" : "The operation associated with this patched resource part. Valid values are 'add' or 'remove' or 'replace'.\n"
+        },
+        "path" : {
+          "type" : "string",
+          "description" : "The path of this resource part within the patched resource. For example, '/note' or '/name' or '/orderItem/quantity'.\n"
+        },
+        "value" : {
+          "type" : "object",
+          "description" : "The value of the patched resource part\n",
+          "properties" : { }
+        }
+      },
+      "description" : "The patched resource part\n"
+    },
+    "BillingAccountStateCount" : {
+      "type" : "object",
+      "properties" : {
+        "state" : {
+          "type" : "string",
+          "description" : "It contains the lifecycle state, such as Active, Closed, Suspended, and so on."
+        },
+        "count" : {
+          "type" : "number",
+          "format" : "int",
+          "description" : "It contains the count of the state."
+        }
+      }
+    },
+    "Error" : {
+      "type" : "object",
+      "required" : [ "code", "reason" ],
+      "discriminator" : "@type",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "description" : "Error code relevant to an application, defined in the API or in a common list\n"
+        },
+        "reason" : {
+          "type" : "string",
+          "description" : "Explanation of the reason for the error that can be displayed to a user\n"
+        },
+        "message" : {
+          "type" : "string",
+          "description" : "Additional information about the error  and corrective actions related to the error that can be displayed to a user\n"
+        },
+        "status" : {
+          "type" : "string",
+          "description" : "HTTP error code extension\n"
+        },
+        "referenceError" : {
+          "type" : "string",
+          "format" : "uri",
+          "description" : "URI of the documentation describing the error\n"
+        },
+        "traceId" : {
+          "type" : "string",
+          "description" : "Unique tracker ID that is used to facilitate the troubleshooting\n"
+        },
+        "@type" : {
+          "type" : "string",
+          "description" : "Type of the error\n"
+        },
+        "characteristic" : {
+          "type" : "array",
+          "description" : "Charachteristic parameters that are associated with the error\n",
+          "items" : {
+            "$ref" : "#/definitions/ErrorCharacteristic"
+          }
+        }
+      },
+      "description" : "Error response. This object is used when an API throws an error, typically with a HTTP error response codes 3xx, 4xx, and 5xx\n"
+    },
+    "ErrorCharacteristic" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "description" : "Non-localized name identifier of the characteristic\n"
+        },
+        "value" : {
+          "type" : "string",
+          "description" : "Value of the characteristic\n"
+        }
+      },
+      "description" : "Parameter that is associated with the error entity\n"
+    },
+    "updatebillingAccountState" : {
+      "type" : "object",
+      "properties" : {
+        "state" : {
+          "type" : "string",
+          "description" : "The stae of billing account to be changed to.\n"
+        },
+        "relatedParty" : {
+          "$ref" : "#/definitions/RelatedPartyRef"
+        }
+      },
+      "description" : "Describes the new state for billing account\n"
+    },
+    "ValidationError" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/Error"
+      }, {
+        "properties" : {
+          "validationMessage" : {
+            "type" : "array",
+            "description" : "The validation messages\n",
+            "items" : {
+              "$ref" : "#/definitions/ValidationMessage"
+            }
+          }
+        }
+      } ],
+      "description" : "Validation error object that is used when an API throws an error, typically with a HTTP error response code 422\n"
+    },
+    "ValidationMessage" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Non-localized name identifier of the validation message\n"
+        },
+        "text" : {
+          "type" : "string",
+          "description" : "Localized descriptive validation message\n"
+        },
+        "type" : {
+          "type" : "string",
+          "description" : "Type of the validation message\n"
+        },
+        "subtype" : {
+          "type" : "string",
+          "description" : "Distinct code which represents the issue\n"
+        },
+        "parameter" : {
+          "type" : "array",
+          "description" : "Name/value pair of the validation message\n",
+          "items" : {
+            "$ref" : "#/definitions/ValidationMessageParameter"
+          }
+        },
+        "severity" : {
+          "type" : "string",
+          "description" : "Severity of the validation message\n"
+        },
+        "path" : {
+          "type" : "string",
+          "description" : "Path to the resource part to which the validation message is related\n"
+        },
+        "resource" : {
+          "type" : "array",
+          "description" : "Resource that is associated with the message\n",
+          "items" : {
+            "$ref" : "#/definitions/RelatedResource"
+          }
+        }
+      },
+      "description" : "Message associated with the validation failure\n"
+    },
+    "ValidationMessageParameter" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "description" : "Name of the parameter\n"
+        },
+        "value" : {
+          "type" : "array",
+          "description" : "Value of the parameter\n",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      },
+      "description" : "Name/value pair of the validation message parameter\n"
+    },
+    "RelatedResource" : {
+      "type" : "object",
+      "properties" : {
+        "type" : {
+          "type" : "string",
+          "description" : "Type of the resource\n"
+        },
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier of the resource\n"
+        },
+        "variable" : {
+          "type" : "array",
+          "description" : "Variables related to the resource\n",
+          "items" : {
+            "$ref" : "#/definitions/Variable"
+          }
+        },
+        "containedResource" : {
+          "type" : "array",
+          "description" : "Other resources, specs, or offers that are linked to the message but did not trigger the validation message\n",
+          "items" : {
+            "$ref" : "#/definitions/ContainedResource"
+          }
+        }
+      },
+      "description" : "Resource that is associated with the validation message (that is, triggered the validation failure)\n"
+    },
+    "Variable" : {
+      "type" : "object",
+      "properties" : {
+        "type" : {
+          "type" : "string",
+          "description" : "Type of the variable\n"
+        },
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier of the variable\n"
+        },
+        "value" : {
+          "type" : "array",
+          "description" : "Value(s) of the variable\n",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      },
+      "description" : "Variable that is associated with a resource\n"
+    },
+    "ContainedResource" : {
+      "type" : "object",
+      "properties" : {
+        "type" : {
+          "type" : "string",
+          "description" : "Type of the resource\n"
+        },
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier of the resource\n"
+        },
+        "variable" : {
+          "type" : "array",
+          "description" : "Variables that are related to the resource\n",
+          "items" : {
+            "$ref" : "#/definitions/Variable"
+          }
+        }
+      },
+      "description" : "Resources that are contained in the validation message\n"
+    },
+    "FinancialAccount" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/Account"
+      } ],
+      "description" : "An account of money owed by a party to another entity in exchange for goods or services that have been delivered or used. A financial (account receivable account/account payable) aggregates the amounts of one or more party accounts (billing or settlement) owned by a given party.\n"
+    },
+    "FinancialAccountStateCount" : {
+      "type" : "object",
+      "properties" : {
+        "state" : {
+          "type" : "string",
+          "description" : "It contains the lifecycle state, such as Active, Closed, Suspended, and so on."
+        },
+        "count" : {
+          "type" : "number",
+          "format" : "int",
+          "description" : "It contains the count of the state."
+        }
+      }
+    },
+    "updatefinancialAccountState" : {
+      "type" : "object",
+      "properties" : {
+        "state" : {
+          "type" : "string",
+          "description" : "The stae of billing financial to be changed to.\n"
+        },
+        "relatedParty" : {
+          "$ref" : "#/definitions/RelatedPartyRef"
+        }
+      },
+      "description" : "Describes the new state for financial account\n"
+    },
+    "FinancialAccountState" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "financialAccountState" : {
+            "type" : "string",
+            "description" : "The value of the FA state.\n",
+            "readOnly" : true
+          },
+          "transitionToStatus" : {
+            "type" : "array",
+            "description" : "The list of statuses eligible for transition.\n",
+            "items" : {
+              "$ref" : "#/definitions/FinancialAccountState_transitionToStatus"
+            },
+            "minItems" : 0
+          },
+          "statusChangeReason" : {
+            "type" : "array",
+            "description" : "The list of status change reason codes.\n",
+            "items" : {
+              "$ref" : "#/definitions/FinancialAccountState_statusChangeReason"
+            },
+            "minItems" : 0
+          }
+        }
+      } ],
+      "description" : "Represents the FA State.\n"
+    },
+    "ReferenceData" : {
+      "type" : "object",
+      "required" : [ "@type" ],
+      "properties" : {
+        "href" : {
+          "type" : "string",
+          "description" : "The reference to retrieve the details of the item.\n",
+          "readOnly" : true
+        },
+        "shortLabelDisplay" : {
+          "type" : "string",
+          "description" : "The displayable short text for the value of item.\n",
+          "readOnly" : true
+        },
+        "fullLabelDisplay" : {
+          "type" : "string",
+          "description" : "The full displayable text value of the item.\n",
+          "readOnly" : true
+        },
+        "selectionDisplay" : {
+          "type" : "string",
+          "description" : "The displayable text value for the item to be used for displaying the items on the UI.\n",
+          "readOnly" : true
+        },
+        "active" : {
+          "type" : "boolean",
+          "description" : "Indicator whether the item is active or not.\n",
+          "readOnly" : true
+        },
+        "default" : {
+          "type" : "boolean",
+          "description" : "Indicator whether the item is default in the list.\n"
+        },
+        "@type" : {
+          "type" : "string",
+          "description" : "Indicates the (class) type of ReferenceData.\n"
+        }
+      },
+      "description" : "Represents the Interaction Type.\n"
+    },
+    "BillingAccountState" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "billingAccountState" : {
+            "type" : "string",
+            "description" : "The value of the state of BA.\n",
+            "readOnly" : true
+          },
+          "transitionToStatus" : {
+            "type" : "array",
+            "description" : "The list of statuses eligible for transition.\n",
+            "items" : {
+              "$ref" : "#/definitions/BillingAccountState_transitionToStatus"
+            },
+            "minItems" : 0
+          },
+          "statusChangeReason" : {
+            "type" : "array",
+            "description" : "The list of status change reason codes.\n",
+            "items" : {
+              "$ref" : "#/definitions/FinancialAccountState_statusChangeReason"
+            },
+            "minItems" : 0
+          }
+        }
+      } ],
+      "description" : "Represents the State of BA.\n"
+    },
+    "BillingAccountType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "billingAccountType" : {
+            "type" : "string",
+            "description" : "The value of the type of Billing Account.\n",
+            "readOnly" : true
+          },
+          "billingAccountSubType" : {
+            "type" : "array",
+            "description" : "The value of the subtype of Billing Account\n",
+            "items" : {
+              "$ref" : "#/definitions/BillingAccountSubType"
+            },
+            "minItems" : 0
+          }
+        }
+      } ],
+      "description" : "Represents the type of Billing Account.\n"
+    },
+    "BillingAccountSubType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "billingAccountSubType" : {
+            "type" : "string",
+            "description" : "The value of the sub type of Account.\n",
+            "readOnly" : true
+          },
+          "billingAccountType" : {
+            "type" : "string",
+            "description" : "The value of the Billing AccountType.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the sub type of Account.\n"
+    },
+    "CurrencyCode" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "currencyCode" : {
+            "type" : "string",
+            "description" : "The value of the currency code.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the Currency Code.\n"
+    },
+    "CreditLimitUnit" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "creditLimitUnit" : {
+            "type" : "string",
+            "description" : "The value of the Credit Limit Unit.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the Credit Limit Unit.\n"
+    },
+    "BillingAccountRelatedPartyType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "billingAccountRelatedPartyType" : {
+            "type" : "string",
+            "description" : "The value of the related party type of Billing Account.\n",
+            "readOnly" : true
+          },
+          "billingAccountRelatedPartyRole" : {
+            "type" : "array",
+            "description" : "The roles of the related party\n",
+            "items" : {
+              "$ref" : "#/definitions/BillingAccountRelatedPartyRole"
+            },
+            "minItems" : 0
+          }
+        }
+      } ],
+      "description" : "Represents the Related Party Type of Billing Account.\n"
+    },
+    "BillingAccountRelatedPartyRole" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "billingAccountRelatedPartyRole" : {
+            "type" : "string",
+            "description" : "The value of the related party role.\n",
+            "readOnly" : true
+          },
+          "billingAccountRelatedPartyType" : {
+            "type" : "string",
+            "description" : "The value of the Billing AccountType RelatedPartyType.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the Related Party Role.\n"
+    },
+    "BillingAccountContactPartyRoleType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "billingAccountContactPartyRoleType" : {
+            "type" : "string",
+            "description" : "The value of the type of party role.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the type of party role.\n"
+    },
+    "BillingAccountContactType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "billingAccountContactType" : {
+            "type" : "string",
+            "description" : "The value of the Contact Type.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the Contact Type.\n"
+    },
+    "BillingAccountContactMediumType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "billingAccountContactMediumType" : {
+            "type" : "string",
+            "description" : "The value of the contactMedium type.\n",
+            "readOnly" : true
+          },
+          "mediumType" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/MediumType"
+            },
+            "minItems" : 0
+          }
+        }
+      } ],
+      "description" : "Represents the Contact Medium Type.\n"
+    },
+    "MediumType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "mediumType" : {
+            "type" : "string",
+            "description" : "The value of the MediumType.\n",
+            "readOnly" : true
+          },
+          "billingAccountContactMediumType" : {
+            "type" : "string",
+            "description" : "The value of the contactMedium type.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents Preferred Medium Type.\n"
+    },
+    "BillingAccountContactMediumCountry" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "billingAccountContactMediumCountry" : {
+            "type" : "string",
+            "description" : "The code for the country used to populate the 'country' attribute in target mediums\n",
+            "readOnly" : true
+          },
+          "iso3166Alpha2" : {
+            "type" : "string",
+            "description" : "The ISO-3166 Alpha-2 code for the country\n"
+          },
+          "iso3166Alpha3" : {
+            "type" : "string",
+            "description" : "The ISO-3166 Alpha-3 code for the country\n"
+          },
+          "iso3166Numeric" : {
+            "type" : "string",
+            "description" : "The ISO-3166 Numeric code for the country\n"
+          },
+          "postalDisplay" : {
+            "type" : "string",
+            "description" : "The country name to be used as part of postal address\n"
+          },
+          "stateOrProvince" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/StateOrProvince"
+            },
+            "minItems" : 0
+          }
+        }
+      } ],
+      "description" : "Provides the reference data and display values for a particular country\n"
+    },
+    "StateOrProvince" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "stateOrProvince" : {
+            "type" : "string",
+            "description" : "The value of the StateOrProvince.\n",
+            "readOnly" : true
+          },
+          "billingAccountContactMediumCountry" : {
+            "type" : "string",
+            "description" : "The value of the country.\n",
+            "readOnly" : true
+          },
+          "city" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/City"
+            },
+            "minItems" : 0
+          }
+        }
+      } ],
+      "description" : "Represents the StateOrProvince.\n"
+    },
+    "City" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "city" : {
+            "type" : "string",
+            "description" : "The value of the StateOrProvince.\n",
+            "readOnly" : true
+          },
+          "stateOrProvince" : {
+            "type" : "string",
+            "description" : "The State or Province of the city.\n",
+            "readOnly" : true
+          },
+          "postCode" : {
+            "type" : "array",
+            "description" : "Postal codes in the city\n",
+            "items" : {
+              "$ref" : "#/definitions/PostCode"
+            },
+            "minItems" : 0
+          }
+        }
+      } ],
+      "description" : "Represents the City.\n"
+    },
+    "PostCode" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "postCode" : {
+            "type" : "string",
+            "description" : "The value of the StateOrProvince.\n",
+            "readOnly" : true
+          },
+          "city" : {
+            "type" : "string",
+            "description" : "The City of the post code.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the Post Code.\n"
+    },
+    "BillingAccountContactRelatedPartyType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "billingAccountContactRelatedPartyType" : {
+            "type" : "string",
+            "description" : "The value of the related party type of Billing Account Contact.\n",
+            "readOnly" : true
+          },
+          "billingAccountContactRelatedPartyRole" : {
+            "type" : "array",
+            "description" : "The roles of the related party\n",
+            "items" : {
+              "$ref" : "#/definitions/BillingAccountContactRelatedPartyRole"
+            },
+            "minItems" : 0
+          }
+        }
+      } ],
+      "description" : "Represents the Related Party Type of Billing Account Contact.\n"
+    },
+    "BillingAccountContactRelatedPartyRole" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "billingAccountContactRelatedPartyRole" : {
+            "type" : "string",
+            "description" : "The value of the related party role.\n",
+            "readOnly" : true
+          },
+          "billingAccountContactRelatedPartyType" : {
+            "type" : "string",
+            "description" : "The value of the Billing AccountType ContactRelatedPartyType.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the Related Party Role.\n"
+    },
+    "BillingAccountPaymentPlanType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "billingAccountPaymentPlanType" : {
+            "type" : "string",
+            "description" : "The value of the type of payment plan.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the type of payment plan.\n"
+    },
+    "BillingAccountPaymentStatus" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "billingAccountPaymentStatus" : {
+            "type" : "string",
+            "description" : "The value of the Payment Status.\n",
+            "readOnly" : true
+          },
+          "transitionToStatus" : {
+            "type" : "array",
+            "description" : "The list of statuses eligible for transition.\n",
+            "items" : {
+              "$ref" : "#/definitions/BillingAccountPaymentStatus_transitionToStatus"
+            },
+            "minItems" : 0
+          },
+          "statusChangeReason" : {
+            "type" : "array",
+            "description" : "The list of status change reason codes.\n",
+            "items" : {
+              "$ref" : "#/definitions/FinancialAccountState_statusChangeReason"
+            },
+            "minItems" : 0
+          }
+        }
+      } ],
+      "description" : "Represents the Payment Status.\n"
+    },
+    "BillingAccountPaymentPlanStatus" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "billingAccountPaymentPlanStatus" : {
+            "type" : "string",
+            "description" : "The value of the status of payment plan.\n",
+            "readOnly" : true
+          },
+          "transitionToStatus" : {
+            "type" : "array",
+            "description" : "The list of statuses eligible for transition.\n",
+            "items" : {
+              "$ref" : "#/definitions/BillingAccountPaymentPlanStatus_transitionToStatus"
+            },
+            "minItems" : 0
+          },
+          "statusChangeReason" : {
+            "type" : "array",
+            "description" : "The list of status change reason codes.\n",
+            "items" : {
+              "$ref" : "#/definitions/FinancialAccountState_statusChangeReason"
+            },
+            "minItems" : 0
+          }
+        }
+      } ],
+      "description" : "Represents the status of payment plan.\n"
+    },
+    "BillStructureDocType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "billStructureDocType" : {
+            "type" : "string",
+            "description" : "The value of the Bill doc type.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the type of Bill doc.\n"
+    },
+    "BillStructureBillFrequency" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "billStructureBillFrequency" : {
+            "type" : "string",
+            "description" : "The value of the Bill Frequency.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the Bill Frequency.\n"
+    },
+    "BillStructureDueDays" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "billStructureDueDays" : {
+            "type" : "string",
+            "description" : "The value of the Bill Structure Due Days.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the Bill Structure Due Days.\n"
+    },
+    "BillStructureCycleSpecFrequency" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "billStructureCycleSpecFrequency" : {
+            "type" : "string",
+            "description" : "The value of the Bill Structure Cycle Specification Frequency.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the Bill Structure Cycle Specification Frequency.\n"
+    },
+    "BillStructureCycleSpecBillingShiftDate" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "billStructureCycleSpecBillingShiftDate" : {
+            "type" : "string",
+            "description" : "The value of the Bill Structure Cycle Specification Billing Shif Date.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the Bill Structure Cycle Specification Billing Shif Date.\n"
+    },
+    "FinancialAccountType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "financialAccountType" : {
+            "type" : "string",
+            "description" : "The value of the type of Financial Account.\n",
+            "readOnly" : true
+          },
+          "financialAccountSubType" : {
+            "type" : "array",
+            "description" : "The value of the subtype of Financial Account\n",
+            "items" : {
+              "$ref" : "#/definitions/FinancialAccountSubType"
+            },
+            "minItems" : 0
+          }
+        }
+      } ],
+      "description" : "Represents the type of Financial Account.\n"
+    },
+    "FinancialAccountSubType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "financialAccountSubType" : {
+            "type" : "string",
+            "description" : "The value of the sub type of Account.\n",
+            "readOnly" : true
+          },
+          "financialAccountType" : {
+            "type" : "string",
+            "description" : "The value of the Financial AccountType.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the sub type of Account.\n"
+    },
+    "FinancialAccountContactRelatedPartyType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "financialAccountContactRelatedPartyType" : {
+            "type" : "string",
+            "description" : "The value of the related party typeof Financial Account Contact.\n",
+            "readOnly" : true
+          },
+          "financialAccountContactRelatedPartyRole" : {
+            "type" : "array",
+            "description" : "The roles of the related party\n",
+            "items" : {
+              "$ref" : "#/definitions/FinancialAccountContactRelatedPartyRole"
+            },
+            "minItems" : 0
+          }
+        }
+      } ],
+      "description" : "Represents the Related Party Type of Financial Account Contact.\n"
+    },
+    "FinancialAccountContactRelatedPartyRole" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "financialAccountContactRelatedPartyRole" : {
+            "type" : "string",
+            "description" : "The value of the related party role.\n",
+            "readOnly" : true
+          },
+          "financialAccountContactRelatedPartyType" : {
+            "type" : "string",
+            "description" : "The value of the Financial AccountType ContactRelatedPartyType.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the Related Party Role.\n"
+    },
+    "HistoryItem" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier of the history record."
+        },
+        "modifiedBy" : {
+          "type" : "string",
+          "description" : "The user who modified the resource for given history field"
+        },
+        "modifiedOn" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "The date time at which resource was modified for given history field"
+        },
+        "salesChannel" : {
+          "type" : "string",
+          "description" : "Channel through which resource was modified for given history field"
+        },
+        "transactionID" : {
+          "type" : "string",
+          "description" : "Transaction ID through which resource is modified"
+        },
+        "itemType" : {
+          "type" : "string",
+          "description" : "Type of history item"
+        },
+        "HistoryData" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/HistoryData"
+          }
+        },
+        "entity" : {
+          "$ref" : "#/definitions/EntityRef"
+        }
+      }
+    },
+    "HistoryData" : {
+      "type" : "object",
+      "properties" : {
+        "value" : {
+          "type" : "object",
+          "description" : "Any object depending on resource for which history is captured",
+          "properties" : { }
+        }
+      }
+    },
+    "EntityRef" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier of a related entity."
+        },
+        "href" : {
+          "type" : "string",
+          "description" : "UniqueReference of the related entity."
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "Name of the related entity."
+        },
+        "@referredType" : {
+          "type" : "string",
+          "description" : "The actual type of the target instance when needed for disambiguation."
+        }
+      }
+    },
+    "BillingAccountSearchResult" : {
+      "type" : "object",
+      "required" : [ "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier of the Billing Account."
+        }
+      }
+    },
+    "FinancialAccountSearchResult" : {
+      "type" : "object",
+      "required" : [ "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier of the Financial Account."
+        }
+      }
+    },
+    "FinancialAccountRelatedPartyType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "financialAccountRelatedPartyType" : {
+            "type" : "string",
+            "description" : "The value of the related party typeof Financial Account.\n",
+            "readOnly" : true
+          },
+          "financialAccountRelatedPartyRole" : {
+            "type" : "array",
+            "description" : "The roles of the related party\n",
+            "items" : {
+              "$ref" : "#/definitions/FinancialAccountRelatedPartyRole"
+            },
+            "minItems" : 0
+          }
+        }
+      } ],
+      "description" : "Represents the Related Party Type of Financial Account.\n"
+    },
+    "FinancialAccountRelatedPartyRole" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "financialAccountRelatedPartyRole" : {
+            "type" : "string",
+            "description" : "The value of the related party role.\n",
+            "readOnly" : true
+          },
+          "financialAccountRelatedPartyType" : {
+            "type" : "string",
+            "description" : "The value of the Financial AccountType RelatedPartyType.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the Related Party Role.\n"
+    },
+    "FinancialAccountBalanceType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "financialAccountBalanceType" : {
+            "type" : "string",
+            "description" : "The value of type of account balance.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the account balance type.\n"
+    },
+    "FinancialAccountBalanceAmountUnit" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "financialAccountBalanceAmountUnit" : {
+            "type" : "string",
+            "description" : "The value of the unit of Account Balance.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the unit of Account Balance.\n"
+    },
+    "TaxExemptionReason" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "taxExemptionReason" : {
+            "type" : "string",
+            "description" : "The value of the tax exemption reason.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the tax exemption reason.\n"
+    },
+    "TaxExemptionIssuingJurisdiction" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "taxExemptionIssuingJurisdiction" : {
+            "type" : "string",
+            "description" : "The value of the tax exemption issuing jurisdiction.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the tax exemption issuing jurisdiction.\n"
+    },
+    "BillingCycleSpecification" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier of the billing cycle specification.\n"
+        },
+        "href" : {
+          "type" : "string",
+          "description" : "Reference of the billing cycle specification.\n"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "Short descriptive name.\n"
+        },
+        "active" : {
+          "type" : "boolean",
+          "description" : "Indicator whether the item is active or not.\n",
+          "readOnly" : true
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Explanatory text for this bill cycle specification\n"
+        },
+        "type" : {
+          "type" : "string",
+          "description" : "Reserved for describing type of entity. In this case it would be BillingCycleSpecification\n"
+        },
+        "frequency" : {
+          "type" : "string",
+          "description" : "Frequency of the billing cycle (monthly for instance).\n"
+        },
+        "billingDateShift" : {
+          "type" : "integer",
+          "description" : "An offset of a billing/settlement date. The offset is expressed as number of days with regard to the start of the billing/settlement period.\n"
+        },
+        "billingPeriod" : {
+          "type" : "string",
+          "description" : "Billing time period. It can be recurring, for example week, month, quarter of year, year.\n"
+        },
+        "chargeDateOffset" : {
+          "type" : "integer",
+          "description" : "An offset of a date through which charges previously received by the billing system will appear on the bill. The offset is expressed as number of days with regard to the start of the BillingPeriod.\n"
+        },
+        "creditDateOffset" : {
+          "type" : "integer",
+          "description" : "An offset of a date through which credits previously received by the billing system will appear on the bill. The offset is expressed as number of days with regard to the start of the BillingPeriod.\n"
+        },
+        "mailingDateOffset" : {
+          "type" : "integer",
+          "description" : "An offset of a customer bill mailing date. The offset is expressed as number of days with regard to the start of the BillingPeriod.\n"
+        },
+        "paymentDueDateOffset" : {
+          "type" : "integer",
+          "description" : "An offset of a payment due date. The offset is expressed as number of days with regard to the start of the BillingPeriod.\n"
+        },
+        "validFor" : {
+          "$ref" : "#/definitions/TimePeriod"
+        },
+        "externalIdentifier" : {
+          "type" : "array",
+          "description" : "A list of external identifiers related to the billing cycle specification.\n",
+          "items" : {
+            "$ref" : "#/definitions/ExternalIdentifier"
+          }
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "BillingCycleSpecificationExtension"
+          }
+        }
+      },
+      "description" : "A description of when to initiate a billing cycle and the various sub steps of a billing cycle.\n",
+      "example" : {
+        "name" : "xyz",
+        "description" : "billingaccount",
+        "type" : "BillingCycleSpecification",
+        "frequency" : "month",
+        "billingDateShift" : 23,
+        "billingPeriod" : "month",
+        "chargeDateOffset" : 22,
+        "creditDateOffset" : 22,
+        "mailingDateOffset" : 22,
+        "paymentDueDateOffset" : 22,
+        "validFor" : {
+          "startDateTime" : "2020-02-15T05:37:00.059+0000",
+          "endDateTime" : "2021-02-15T05:37:00.059+0000"
+        }
+      }
+    },
+    "BillPresentationMedia" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "The unique identifier of the bill presentation media.\n"
+        },
+        "href" : {
+          "type" : "string",
+          "description" : "A reference of the bill presentation media.\n"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "A short descriptive name.\n"
+        },
+        "active" : {
+          "type" : "boolean",
+          "description" : "It indicates whether the item is active or not.\n",
+          "readOnly" : true
+        },
+        "default" : {
+          "type" : "boolean",
+          "description" : "It indicates whether the item is default in the list.             \n"
+        },
+        "type" : {
+          "type" : "string",
+          "description" : "Reserved for describing the type of entity. In this case, it would be BillPresentationMedia.\n"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "BillPresentationMediaExtension"
+          }
+        }
+      },
+      "description" : "A means of communicating a bill, supported by the associated bill format. For example, post mail, email, or web page.\n",
+      "example" : {
+        "name" : "Abhishek",
+        "type" : "BillPresentationMedia"
+      }
+    },
+    "BillFormat" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "A unique identifier of the bill format.\n"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "An explanatory text for this bill format.\n"
+        },
+        "href" : {
+          "type" : "string",
+          "description" : "A reference of the bill format.\n"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "A short descriptive name.\n"
+        },
+        "type" : {
+          "type" : "string",
+          "description" : "This is reserved for describing the type of entity. In this case, it would be BillFormat.\n"
+        },
+        "active" : {
+          "type" : "boolean",
+          "description" : "It indicates whether the item is active or not.\n",
+          "readOnly" : true
+        },
+        "default" : {
+          "type" : "boolean",
+          "description" : "It indicates whether the item is default in the list.              \n"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "BillFormatExtension"
+          }
+        }
+      },
+      "description" : "A bill format is a description of the way in which a bill is presented.\n",
+      "example" : {
+        "id" : "BillFormat_00514500-1011-450d-8008-2088222a0200",
+        "href" : "http://server:port/accountManagement/v1/billFormat/BillFormat_00514500-1011-450d-8008-2088222a0200",
+        "name" : "Abhishek",
+        "type" : "BillFormat",
+        "extensions" : { }
+      }
+    },
+    "AccountRef" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique id of an account entity.\n"
+        },
+        "href" : {
+          "type" : "string",
+          "description" : "The self href for the account entity.\n"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "The name of account entity.\n"
+        },
+        "@referredType" : {
+          "type" : "string",
+          "description" : "The type of the Entity such as Billing Account, Finanacial Account etc.\n"
+        },
+        "role" : {
+          "type" : "string",
+          "description" : "role of account entity.\n"
+        }
+      },
+      "description" : "Contains reference to the Account Ref such as Billing Account, Finanacial Account etc.\n"
+    },
+    "AccountRefValidation" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/AccountRef"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "allowed" : {
+            "type" : "string",
+            "description" : "in input this will always be false.  In respose it will specify whether this entity has passed the validation or not.\n",
+            "enum" : [ "ALLOWED", "NOTALLOWED" ]
+          }
+        }
+      } ],
+      "description" : "AccountRefValidation resource\n"
+    },
+    "ChangeCycle" : {
+      "type" : "object",
+      "required" : [ "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier of the Change Cycle."
+        },
+        "href" : {
+          "type" : "string",
+          "description" : "A hypertext reference to the existing Change Cycle."
+        },
+        "createdOn" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "Date and time when the entity was created. Set internally by system.\n"
+        },
+        "lastModifiedOn" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "Date and time when the entity was last modified. Set internally by system.\n"
+        },
+        "account" : {
+          "$ref" : "#/definitions/PartyAccountRef"
+        },
+        "state" : {
+          "type" : "string",
+          "description" : "It contains the lifecycle state - initiated, inProgress, completed, cancled.\n"
+        },
+        "toCycle" : {
+          "$ref" : "#/definitions/BillingCycleSpecificationRef"
+        }
+      }
+    },
+    "PartyAccountRef" : {
+      "type" : "object",
+      "discriminator" : "type",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "The unique id of an existing account.\n",
+          "readOnly" : true
+        },
+        "href" : {
+          "type" : "string",
+          "description" : "The self href for the existing account.\n",
+          "readOnly" : true
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "The name of account.\n",
+          "readOnly" : true,
+          "x-amdocs-pii" : "nameInfo:name"
+        },
+        "@type" : {
+          "type" : "string",
+          "description" : "A categorization of an account, such as individual, joint, and so forth, whose instances share some of the same characteristics. \n"
+        },
+        "@referredType" : {
+          "type" : "string",
+          "description" : "Name of the type of the referred resource entity\n"
+        }
+      },
+      "description" : "The reference to the account. It can be a billing account or the settlement account.\n"
+    },
+    "FinancialAccountState_transitionToStatus" : {
+      "type" : "object",
+      "properties" : {
+        "transitionToStatus" : {
+          "type" : "string",
+          "description" : "The value of the state of Financial Account.\n",
+          "readOnly" : true
+        }
+      }
+    },
+    "FinancialAccountState_statusChangeReason" : {
+      "type" : "object",
+      "properties" : {
+        "statusChangeReason" : {
+          "type" : "string",
+          "description" : "The value of the status change reason.\n",
+          "readOnly" : true
+        }
+      }
+    },
+    "BillingAccountState_transitionToStatus" : {
+      "type" : "object",
+      "properties" : {
+        "transitionToStatus" : {
+          "type" : "string",
+          "description" : "The value of the state of Billing Account.\n",
+          "readOnly" : true
+        }
+      }
+    },
+    "BillingAccountPaymentStatus_transitionToStatus" : {
+      "type" : "object",
+      "properties" : {
+        "transitionToStatus" : {
+          "type" : "string",
+          "description" : "The value of the status of payment.\n",
+          "readOnly" : true
+        }
+      }
+    },
+    "BillingAccountPaymentPlanStatus_transitionToStatus" : {
+      "type" : "object",
+      "properties" : {
+        "transitionToStatus" : {
+          "type" : "string",
+          "description" : "The value of the status of Payment Plan.\n",
+          "readOnly" : true
+        }
+      }
+    }
+  },
+  "responses" : {
+    "400-BadRequest" : {
+      "description" : "*Bad Request* - The server cannot process the request due to malformed syntax. The response can be caused by missing mandatory query parameters, invalid value in the query parameters, validation exceptions, and so on.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorResponse"
+      }
+    },
+    "404-NotFound" : {
+      "description" : "*Not Found* - The server did not find anything matching the request URI. The response can be caused by missing path parameters, invalid web resource, and so on.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorResponse"
+      }
+    },
+    "405-MethodNotAllowed" : {
+      "description" : "*Method Not Allowed* - The server rejected the request because the HTTP method used by the resource is not supported by that resource.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorResponse"
+      }
+    },
+    "409-Conflict" : {
+      "description" : "*Conflict* - The server cannot complete the request due to a conflict with the current state of the resource.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorResponse"
+      }
+    },
+    "500-InternalServerError" : {
+      "description" : "*Internal Server Error* - The server encountered an unexpected condition that prevented it from fulfilling the request.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorResponse"
+      }
+    },
+    "502-BadGateway" : {
+      "description" : "*Bad Gateway* - The server encountered an unexpected condition when calling another service.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorResponse"
+      }
+    },
+    "503-ServiceUnavailable" : {
+      "description" : "*Service Unavailable* - The service being called is unavailable.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorResponse"
+      }
+    }
+  },
+  "x-dox-DesignDocs" : [ {
+    "description" : "The Account Management sub-domain provides a standardized mechanism for the management of billing and settlement accounts, as well as for financial accounting (account receivable) in B2C contexts.  It allows creation, update and retrieval of account information. It also allows creation and query of bill items allowing customer to check their invoice.\n"
+  } ]
+}
