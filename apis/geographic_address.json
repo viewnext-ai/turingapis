@@ -1,0 +1,1531 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "The Geographic Address Management subdomain provides a standardized client interface to an address management system.. \n",
+    "version" : "1.0",
+    "title" : "Geographic Address Management",
+    "contact" : {
+      "name" : "Amdocs Inc.",
+      "url" : "http://www.amdocs.com",
+      "email" : "support@amdocs.com"
+    },
+    "license" : {
+      "name" : "Amdocs Inc.",
+      "url" : "http://www.amdocs.com"
+    },
+    "x-amdocs" : {
+      "exposed" : "public",
+      "service-principals" : [ "geographicaddress-geographicaddress-app-id" ]
+    }
+  },
+  "host" : "amdocs.com",
+  "basePath" : "/geographicAddressManagement/v1",
+  "tags" : [ {
+    "name" : "Geographic Address"
+  } ],
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/geographicAddress" : {
+      "get" : {
+        "tags" : [ "Geographic Address" ],
+        "summary" : "Retrieve geographic addresses based on given filters",
+        "description" : "This operation provides an ability to filter GeographicAddress based on different criteria.\n\n**Mandatory&#58;**\n    One of the following parameters is mandatory \n      filters  \n      fullText \n      \n **Supported Filters&#58;**\n  - search with exact match will be supported for following attributes/fields\n  \n      streetNr=< value >\n      streetNrSuffix=< value >\n      streetNrLast=< value >\n      streetNrLastSuffix=< value >\n      streetName=< value >\n      streetType=< value >\n      streetSuffix=< value >\n      postcode=< value >\n      locality=< value >\n      city=< value >\n      stateOrProvince=< value >\n      country=< value >\n      status=< value >\n      @type=< value >\n      geographicSubAddress.name=< value >\n      geographicSubAddress.geographicSubAddressType=< value >\n      geographicSubAddress.subUnitType=< value >\n      geographicSubAddress.subUnitNumber=< value >\n      geographicSubAddress.levelType=< value >\n      geographicSubAddress.levelNumber=< value >\n      geographicSubAddress.buildingName=< value >\n      geographicSubAddress.privateStreetNumber=< value >\n      geographicSubAddress.privateStreetName=< value >\n      geographicSubAddress.@type=< value >\n      \n **Supported Sort&#58;**\n - none\n \n **Business rules&#58;**\n  - operation will perform search in internal as well as external geographic addresses and merge the result\n  - Internal search result will not return geographicLocation information. External search result may or may not return the geographic location information depending on the implementation.\n  - \n\n **Configuration&#58;**      \n    searchInExternalSystem - configuration to enable/disable in external geographic addresses search\n  \n  Note: Retrieval/update for geographicLocation is not supported in the current version  \n",
+        "operationId" : "geographicAddressLookup",
+        "parameters" : [ {
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "The locale of the client\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "description" : "Requested index for start of resources to be provided in response requested by client\n",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32",
+          "x-dox-Since" : 1.0
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Requested number of resources to be provided in response requested by client\n",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32",
+          "x-dox-Since" : 1.0
+        }, {
+          "name" : "salesChannel",
+          "in" : "query",
+          "description" : "Sales Channel.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "filters",
+          "in" : "query",
+          "description" : "Query parameter to specify the search filters. Attribute filters are specified in the following way:\n_?filters=([attributeName][operator][value],\\u2026,[value])[&]\\u2026[&]([attributeName][operator][value],\\u2026,[value])_\n\nSupported operators are:\n* Equality: == (equals)\n\nmultiple queries will be evaluated with AND (&) operator.\n",
+          "required" : false,
+          "type" : "string",
+          "x-dox-Since" : 1.0
+        }, {
+          "name" : "fullText",
+          "in" : "query",
+          "description" : "Query parameter to specify the free text. Cross-field search will be performed to match the specified word/s and fetch one or more relevant documents of the same type.\n_?fullText=[value])_\n",
+          "required" : false,
+          "type" : "string",
+          "x-dox-Since" : 1.0
+        }, {
+          "name" : "fuzzy",
+          "in" : "query",
+          "description" : "Query parameter to specify if we need approximate searches (sounds like, etc.)\n",
+          "required" : false,
+          "type" : "boolean",
+          "x-dox-Since" : 1.0
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "Sort attributes\n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "*OK* - Geographic address retrieved successfully.\n",
+            "headers" : {
+              "X-Total-Count" : {
+                "type" : "integer",
+                "description" : "Total number of records present in the system.\n"
+              }
+            },
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/GeographicAddress"
+              }
+            }
+          },
+          "400" : {
+            "description" : "*Bad Request* - The server cannot process the request due to a malformed syntax. The response can be caused by missing mandatory query parameters, invalid value in the query parameters, validation exceptions, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "404" : {
+            "description" : "*Not Found* - The server did not find anything matching the request URI. The response can be caused by missing path parameters, invalid web resource, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "500" : {
+            "description" : "*Internal Server Error* - The server encountered an unexpected condition that prevented it from fulfilling the request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "default" : {
+            "description" : "*Internal Server Error* - The server encountered an unexpected condition that prevented it from fulfilling the request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-amdocs" : {
+          "route-service" : "geographicaddress-geographicaddress-service",
+          "public-roles" : [ "D1_GeographicAddressManagement_getAddress" ],
+          "private-roles" : [ "D1P_GeographicAddressManagement_read", "FndP_APIGateway_gw" ]
+        }
+      },
+      "post" : {
+        "tags" : [ "Geographic Address" ],
+        "summary" : "Create geographic address",
+        "description" : "This operation creates geographic address.\n\n**Mandatory&#58;**\n- @Type\n- Status\n- If Type is Country\n  Country is mandatory and displayText is optional\n  All other fields should NOT be populated\n- If Type is StateOrProvince \n  Country and StateOrProvince are mandatory and displayText is optional\n  All other fields should NOT be populated\n- If type is UrbanPropertyAddress\n  Country and PostCode are mandatoty\n\n**Dulplicate Check&#58;**\n- Find existence of Geographic Address (using fielded search)\n  If the address provided by user already exists then\n   - Check sub addresses are provided by user and compare (each) sub address/s\n   - If sub address does not exist then\n     Create sub address against the address entity.\n     Any field with empty value will be treated as null while persisting it.\n     Return only provided subaddress in the input not all if any exists.\n     \n- \n",
+        "operationId" : "createGeographicAddress",
+        "parameters" : [ {
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "The locale of the client\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "salesChannel",
+          "in" : "query",
+          "description" : "Sales Channel.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "GeographicAddress",
+          "description" : "The details of the Geographic Address\n",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/GeographicAddress"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "*OK* - The operation is successful\n",
+            "headers" : {
+              "Etag" : {
+                "type" : "string",
+                "description" : "The entity tag\n",
+                "x-dox-Since" : 1
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/GeographicAddress"
+            }
+          },
+          "201" : {
+            "description" : "*OK* - The GeographicAddress was created successfully.\n",
+            "headers" : {
+              "Etag" : {
+                "type" : "string",
+                "description" : "The entity tag\n",
+                "x-dox-Since" : 1
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/GeographicAddress"
+            }
+          },
+          "400" : {
+            "description" : "*Bad Request* - The server cannot process the request due to a malformed syntax. The response can be caused by missing mandatory query parameters, invalid value in the query parameters, validation exceptions, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "409" : {
+            "description" : "*Conflict* - The server cannot complete the request due to a conflict with the current state of the resource.\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "422" : {
+            "description" : "*Unprocessable Entity* - The server understands the content type of the request entity, and the syntax of the request entity is correct, but was unable to process the contained instructions.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ValidationError"
+            }
+          },
+          "500" : {
+            "description" : "*Internal Server Error* - The server encountered an unexpected condition that prevented it from fulfilling the request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "502" : {
+            "description" : "*Bad Gateway* - The server encountered an unexpected condition when calling another service.\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "default" : {
+            "description" : "*Internal Server Error* - The server encountered an unexpected condition that prevented it from fulfilling the request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-amdocs" : {
+          "route-service" : "geographicaddress-geographicaddress-service",
+          "public-roles" : [ "D1_GeographicAddressManagement_createAddress" ],
+          "private-roles" : [ "D1P_GeographicAddressManagement_write", "FndP_APIGateway_gw" ]
+        }
+      }
+    },
+    "/geographicAddress/{id}" : {
+      "get" : {
+        "tags" : [ "Geographic Address" ],
+        "summary" : "Retrieve a geographic address",
+        "description" : "This operation retrieves an addresse by given identifier.\n\n**Mandatory&#58;**\n  id \n \n **Business rules&#58;**\n  If subAddressId is provided then only that subAddress would be returned (along with address) otherwise all the subaddresses under address would be returned.\n\n **Configuration&#58;**  \n \n Note: Retrieval/update for geographicLocation is not supported in the current version\n",
+        "operationId" : "geographicAddressLookupById",
+        "parameters" : [ {
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "The locale of the client\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "salesChannel",
+          "in" : "query",
+          "description" : "Sales Channel.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "The subset of attributes which are expected in the response.\n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "filters",
+          "in" : "query",
+          "description" : "Query parameter to specify the search filters. Attribute filters are specified in the following way:\n_?filters=([attributeName][operator][value],\\u2026,[value])[&|;]\\u2026[&|;]([attributeName][operator][value],\\u2026,[value])_\n\nSupported operators are:\n* Equality: == (equals), != (not equals)\n* Contains: =@ (contains), !@ (does not contain)\n* Less than: < (less than), <= (less than or equal to)\n* Greater than: > (greater than),  >= (greater than or equal to)\n* RegExp: =~ (match), !~ (does not match)\n\nComma separated values for an attribute are evaluated with OR operator. & is the separator for multiple queries to be evaluated with AND operator while the ; is the separator for multiple queries to be evaluated with OR operator.\n",
+          "required" : false,
+          "type" : "string",
+          "x-dox-Since" : 1.0
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The identifier of the GeographicAddress",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "subAddressId",
+          "in" : "query",
+          "description" : "The identifier of the GeographicSubAddress",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK - address retrieved",
+            "schema" : {
+              "$ref" : "#/definitions/GeographicAddress"
+            }
+          },
+          "400" : {
+            "description" : "*Bad Request* - The server cannot process the request due to a malformed syntax. The response can be caused by missing mandatory query parameters, invalid value in the query parameters, validation exceptions, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "404" : {
+            "description" : "*Not Found* - The server did not find anything matching the request URI. The response can be caused by missing path parameters, invalid web resource, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "500" : {
+            "description" : "*Internal Server Error* - The server encountered an unexpected condition that prevented it from fulfilling the request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "default" : {
+            "description" : "*Internal Server Error* - The server encountered an unexpected condition that prevented it from fulfilling the request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-amdocs" : {
+          "route-service" : "geographicaddress-geographicaddress-service",
+          "public-roles" : [ "D1_GeographicAddressManagement_getAddress" ],
+          "private-roles" : [ "D1P_GeographicAddressManagement_read", "FndP_APIGateway_gw" ]
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "GeographicAddressBridgeValidation" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string"
+        },
+        "href" : {
+          "type" : "string"
+        },
+        "status" : {
+          "type" : "string",
+          "description" : "Valid values are 'In Progress', 'Terminated With Error', 'Done'\n",
+          "enum" : [ "In Progress", "Terminated With Error", "Done" ]
+        },
+        "validationDate" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "validationResult" : {
+          "type" : "string",
+          "enum" : [ "Success", "Partial", "Fail" ]
+        },
+        "provideAlternative" : {
+          "type" : "boolean"
+        },
+        "validAddress" : {
+          "$ref" : "#/definitions/GeographicAddress"
+        },
+        "alternateGeographicAddress" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/AlternateGeographicAddress"
+          }
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "GeographicAddressValidationExtension"
+          }
+        }
+      }
+    },
+    "AlternateGeographicAddress" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/GeographicAddress"
+      } ]
+    },
+    "GeographicAddress" : {
+      "type" : "object",
+      "required" : [ "country" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier of the geographic address\n"
+        },
+        "href" : {
+          "type" : "string",
+          "description" : "URI to access the geographic address resource\n"
+        },
+        "streetNr" : {
+          "type" : "string",
+          "description" : "The number identifying a specific property on a public street. It may be combined with streetNrLast for ranged addresses.\n"
+        },
+        "streetNrSuffix" : {
+          "type" : "string",
+          "description" : "The first street number suffix.\n"
+        },
+        "streetNrLast" : {
+          "type" : "string",
+          "description" : "The last number in a range of street numbers allocated to a property.\n"
+        },
+        "streetNrLastSuffix" : {
+          "type" : "string",
+          "description" : "The last street number suffix for a ranged address.\n"
+        },
+        "streetName" : {
+          "type" : "string",
+          "description" : "The name of the street or other street type.\n"
+        },
+        "streetType" : {
+          "type" : "string",
+          "description" : "The type of street. Alley, avenue, boulevard, brae, crescent, drive, highway, lane, terrace, parade, place, tarn, way, or wharf\n"
+        },
+        "streetSuffix" : {
+          "type" : "string",
+          "description" : "A modifier denoting a particular direction.\n"
+        },
+        "displayText" : {
+          "type" : "string",
+          "description" : "The display text for the address. For example in case of @type=Country the displayText would contain long displayble string.\n"
+        },
+        "postcode" : {
+          "type" : "string",
+          "description" : "The descriptor of postal delivery area, used to speed & simplify delivery of mail (also known as zipcode).\n"
+        },
+        "locality" : {
+          "type" : "string",
+          "description" : "An area of defined or undefined boundaries within a local authority or other legislatively defined area, usually rural or semi-rural in nature'\n"
+        },
+        "city" : {
+          "type" : "string",
+          "description" : "The city that the geographic address is in.\n"
+        },
+        "stateOrProvince" : {
+          "type" : "string",
+          "description" : "The State or Province that the geographic address is in.\n"
+        },
+        "country" : {
+          "type" : "string",
+          "description" : "The country that the geographic address is in.\n"
+        },
+        "status" : {
+          "type" : "string",
+          "description" : "Status of the geographic address. Validated or Unvalidated.    \n"
+        },
+        "@type" : {
+          "type" : "string",
+          "description" : "Indicates the type of the resource. Here can be 'UrbanPropertyAddress', FormattedAddress, apanesePropertyAddress , AustralianPropertyAddress, etc\n"
+        },
+        "@schemaLocation" : {
+          "type" : "string",
+          "description" : "A link to the schema describing this REST Resource.\n"
+        },
+        "createdOn" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "Date and time when the entity was created.\n"
+        },
+        "lastModifiedOn" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "Date and time when the entity was last updated.\n"
+        },
+        "geographicSubAddress" : {
+          "type" : "array",
+          "description" : "A list of geographic sub addresses (GeographicSubAddress [*])\n",
+          "items" : {
+            "$ref" : "#/definitions/GeographicSubAddress"
+          }
+        },
+        "geographicLocation" : {
+          "$ref" : "#/definitions/GeographicLocationRefOrValue"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "$ref" : "#/definitions/GeographicAddressExtension"
+        }
+      },
+      "description" : "A geographic address is a structured, textual way of describing how to find a Property in an urban area."
+    },
+    "GeographicSubAddress" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Identifier for a GeographicSubAddress\n"
+        },
+        "href" : {
+          "type" : "string",
+          "description" : "URI to access the geographic address sub-resource\n"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "Name of geographicSubAddress to identify it with a meaningful identification\n"
+        },
+        "subAddressType" : {
+          "type" : "string",
+          "description" : "Type of sub-address. Can be sub-unit or private street \n"
+        },
+        "subUnitType" : {
+          "type" : "string",
+          "description" : "The type of subunit e.g. BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT, WHARF\n"
+        },
+        "subUnitNumber" : {
+          "type" : "string",
+          "description" : "The discrimator used for the subunit often just a simple number e.g. FLAT No, may also be a range.\n"
+        },
+        "levelType" : {
+          "type" : "string",
+          "description" : "This describes the level types within a building.\n"
+        },
+        "levelNumber" : {
+          "type" : "string",
+          "description" : "This is used where a level type may be repeated.\n"
+        },
+        "buildingName" : {
+          "type" : "string",
+          "description" : "This allows for buildings that have well-known names.\n"
+        },
+        "privateStreetNumber" : {
+          "type" : "string",
+          "description" : "A private street numbers internal to a private street.\n"
+        },
+        "privateStreetName" : {
+          "type" : "string",
+          "description" : "Private streets internal to a property may have internal names.\n"
+        },
+        "@type" : {
+          "type" : "string",
+          "description" : "Type of the resource for this subAdress like GeographicSubAddress\n"
+        },
+        "@schemaLocation" : {
+          "type" : "string",
+          "description" : "A Link to the schema describing this REST Resource.\n"
+        },
+        "status" : {
+          "type" : "string",
+          "description" : "Status of geographic sub address. Validated, Unvalidated            \n"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "$ref" : "#/definitions/GeographicSubAddressExtension"
+        }
+      }
+    },
+    "GeographicLocationRefOrValue" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Identifier for a GeographicLocation"
+        },
+        "href" : {
+          "type" : "string",
+          "description" : "URI to access the geographic location"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "Name of GeographicLocation"
+        },
+        "geometryType" : {
+          "type" : "string",
+          "description" : "Type allows describing geographic location form; it could be a point, line, polygon, etc.\n"
+        },
+        "accuracy" : {
+          "type" : "string",
+          "description" : "Accuracy of co-ordinate specified"
+        },
+        "spatialRef" : {
+          "type" : "string",
+          "description" : "Geocoding referential"
+        },
+        "geometry" : {
+          "type" : "array",
+          "description" : "A list of geographic points (GeographicPoint [*])",
+          "items" : {
+            "$ref" : "#/definitions/GeographicPoint"
+          }
+        }
+      }
+    },
+    "GeographicPoint" : {
+      "type" : "object",
+      "properties" : {
+        "x" : {
+          "type" : "string",
+          "description" : "x-coordinate. usually latitude"
+        },
+        "y" : {
+          "type" : "string",
+          "description" : "y-coordinate. usually longitude"
+        },
+        "z" : {
+          "type" : "string",
+          "description" : "z-coordinate. usually elevation"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "GeographicPointExtension"
+          }
+        }
+      }
+    },
+    "Error" : {
+      "type" : "object",
+      "required" : [ "code", "reason" ],
+      "discriminator" : "@type",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "description" : "Error code relevant to an application, defined in the API or in a common list\n"
+        },
+        "reason" : {
+          "type" : "string",
+          "description" : "Explanation of the reason for the error that can be displayed to a user\n"
+        },
+        "message" : {
+          "type" : "string",
+          "description" : "Additional information about the error  and corrective actions related to the error that can be displayed to a user\n"
+        },
+        "status" : {
+          "type" : "string",
+          "description" : "HTTP error code extension\n"
+        },
+        "referenceError" : {
+          "type" : "string",
+          "format" : "uri",
+          "description" : "URI of the documentation describing the error\n"
+        },
+        "traceId" : {
+          "type" : "string",
+          "description" : "Unique tracker ID that is used to facilitate the troubleshooting\n"
+        },
+        "@type" : {
+          "type" : "string",
+          "description" : "Type of the error\n"
+        },
+        "characteristic" : {
+          "type" : "array",
+          "description" : "Charachteristic parameters that are associated with the error\n",
+          "items" : {
+            "$ref" : "#/definitions/ErrorCharacteristic"
+          }
+        }
+      },
+      "description" : "Error response. This object is used when an API throws an error, typically with a HTTP error response codes 3xx, 4xx, and 5xx\n"
+    },
+    "ErrorCharacteristic" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "description" : "Non-localized name identifier of the characteristic\n"
+        },
+        "value" : {
+          "type" : "string",
+          "description" : "Value of the characteristic\n"
+        }
+      },
+      "description" : "Parameter that is associated with the error entity\n"
+    },
+    "ValidationError" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/Error"
+      }, {
+        "properties" : {
+          "validationMessage" : {
+            "type" : "array",
+            "description" : "The validation messages\n",
+            "items" : {
+              "$ref" : "#/definitions/ValidationMessage"
+            }
+          }
+        }
+      } ],
+      "description" : "Validation error object that is used when an API throws an error, typically with a HTTP error response code 422\n"
+    },
+    "ValidationMessage" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Non-localized name identifier of the validation message\n"
+        },
+        "text" : {
+          "type" : "string",
+          "description" : "Localized descriptive validation message\n"
+        },
+        "type" : {
+          "type" : "string",
+          "description" : "Type of the validation message\n"
+        },
+        "subtype" : {
+          "type" : "string",
+          "description" : "Distinct code which represents the issue\n"
+        },
+        "parameter" : {
+          "type" : "array",
+          "description" : "Name/value pair of the validation message\n",
+          "items" : {
+            "$ref" : "#/definitions/ValidationMessageParameter"
+          }
+        },
+        "severity" : {
+          "type" : "string",
+          "description" : "Severity of the validation message\n"
+        },
+        "path" : {
+          "type" : "string",
+          "description" : "Path to the resource part to which the validation message is related\n"
+        },
+        "resource" : {
+          "type" : "array",
+          "description" : "Resource that is associated with the message\n",
+          "items" : {
+            "$ref" : "#/definitions/RelatedResource"
+          }
+        }
+      },
+      "description" : "Message associated with the validation failure\n"
+    },
+    "ValidationMessageParameter" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "description" : "Name of the parameter\n"
+        },
+        "value" : {
+          "type" : "array",
+          "description" : "Value of the parameter\n",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      },
+      "description" : "Name/value pair of the validation message parameter\n"
+    },
+    "RelatedResource" : {
+      "type" : "object",
+      "properties" : {
+        "type" : {
+          "type" : "string",
+          "description" : "Type of the resource\n"
+        },
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier of the resource\n"
+        },
+        "variable" : {
+          "type" : "array",
+          "description" : "Variables related to the resource\n",
+          "items" : {
+            "$ref" : "#/definitions/Variable"
+          }
+        },
+        "containedResource" : {
+          "type" : "array",
+          "description" : "Other resources, specs, or offers that are linked to the message but did not trigger the validation message\n",
+          "items" : {
+            "$ref" : "#/definitions/ContainedResource"
+          }
+        }
+      },
+      "description" : "Resource that is associated with the validation message (that is, triggered the validation failure)\n"
+    },
+    "Variable" : {
+      "type" : "object",
+      "properties" : {
+        "type" : {
+          "type" : "string",
+          "description" : "Type of the variable\n"
+        },
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier of the variable\n"
+        },
+        "value" : {
+          "type" : "array",
+          "description" : "Value(s) of the variable\n",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      },
+      "description" : "Variable that is associated with a resource\n"
+    },
+    "ContainedResource" : {
+      "type" : "object",
+      "properties" : {
+        "type" : {
+          "type" : "string",
+          "description" : "Type of the resource\n"
+        },
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier of the resource\n"
+        },
+        "variable" : {
+          "type" : "array",
+          "description" : "Variables that are related to the resource\n",
+          "items" : {
+            "$ref" : "#/definitions/Variable"
+          }
+        }
+      },
+      "description" : "Resources that are contained in the validation message\n"
+    },
+    "PatchElement" : {
+      "properties" : {
+        "op" : {
+          "type" : "string",
+          "description" : "The operation associated with this patched resource part. Valid values are 'add' or 'remove' or 'replace'.\n"
+        },
+        "path" : {
+          "type" : "string",
+          "description" : "The path of this resource part within the patched resource. For example, '/note' or '/name' or '/orderItem/quantity'.\n"
+        },
+        "value" : {
+          "type" : "object",
+          "description" : "The value of the patched resource part\n",
+          "properties" : { }
+        }
+      },
+      "description" : "The patched resource part\n"
+    },
+    "MediumCharacteristic" : {
+      "type" : "object",
+      "properties" : {
+        "type" : {
+          "type" : "string",
+          "description" : "Type of medium (fax, mobile phone...).\n"
+        },
+        "emailAddress" : {
+          "type" : "string",
+          "description" : "The contact's email address for the ContactMedium type of email.\n",
+          "x-amdocs-pii" : "contactInfo:email"
+        },
+        "number" : {
+          "type" : "string",
+          "description" : "The contact's phone number for Contact Medium type telephone number.\n",
+          "x-amdocs-pii" : "contactInfo:telephoneNumber"
+        },
+        "city" : {
+          "type" : "string",
+          "description" : "The city name for the contact's address for Contact Medium type postal address.\n",
+          "x-amdocs-pii" : "contactInfo:city"
+        },
+        "country" : {
+          "type" : "string",
+          "description" : "The country ISO code for the contact's address for Contact Medium type postal address.\n",
+          "x-amdocs-pii" : "contactInfo:country"
+        },
+        "postCode" : {
+          "type" : "string",
+          "description" : "The postcode for the contact's address for Contact Medium type postal address.\n",
+          "x-amdocs-pii" : "contactInfo:postCode"
+        },
+        "stateOrProvince" : {
+          "type" : "string",
+          "description" : "The state or province from contact's address for Contact Medium type postal address.\n",
+          "x-amdocs-pii" : "contactInfo:state"
+        },
+        "street1" : {
+          "type" : "string",
+          "description" : "The first street line for the contact's address for Contact Medium type postal address.\n",
+          "x-amdocs-pii" : "contactInfo:addressLine"
+        },
+        "street2" : {
+          "type" : "string",
+          "description" : "The second street line for the contact's address for Contact Medium type postal address.\n",
+          "x-amdocs-pii" : "contactInfo:addressLine"
+        },
+        "place" : {
+          "$ref" : "#/definitions/PlaceRef"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "MediumCharacteristicExtension"
+          }
+        }
+      },
+      "description" : "Medium information for customer(e.g. email address, mobile number,fax number). \n"
+    },
+    "PlaceRef" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier of GeographicAddress,GeographicSite or GeographicLocation\n"
+        },
+        "@referredType" : {
+          "type" : "string",
+          "description" : "Describes the type of entity such as GeographicAddress, GeographicSite or GeographicLocation\n"
+        },
+        "@type" : {
+          "type" : "string",
+          "description" : "Describes the type of entity \n"
+        },
+        "subPlace" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/SubPlaceRef"
+          }
+        }
+      },
+      "description" : "A place reference is a pointer to either GeographicAddress,GeographicSubAddress,GeographicLocation\n"
+    },
+    "SubPlaceRef" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier of entity such as GeographicSubAddress\n"
+        },
+        "@referredType" : {
+          "type" : "string",
+          "description" : "Describes the type of entity such as GeographicSubAddress \n"
+        },
+        "@type" : {
+          "type" : "string",
+          "description" : "Describes the type of entity \n"
+        }
+      },
+      "description" : "A subplace reference is a pointer to GeographicSubAddress\n"
+    },
+    "GeographicAddressValidation" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string"
+        },
+        "href" : {
+          "type" : "string"
+        },
+        "status" : {
+          "type" : "string",
+          "description" : "Valid values are 'in progress', 'terminated With Error', 'done'\n"
+        },
+        "@type" : {
+          "type" : "string",
+          "description" : "Indicates the type of the resource\n"
+        },
+        "@schemaLocation" : {
+          "type" : "string",
+          "description" : "Link to schema describing this REST resource         \n"
+        },
+        "validationDate" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "validationResult" : {
+          "type" : "string",
+          "description" : "Valid Values are success,partial,fail \n"
+        },
+        "provideAlternative" : {
+          "type" : "boolean"
+        },
+        "validAddress" : {
+          "$ref" : "#/definitions/GeographicAddressResponseValidation"
+        },
+        "alternateGeographicAddress" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/GeographicAddressResponseValidation"
+          }
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "GeographicAddressValidationExtension"
+          }
+        }
+      }
+    },
+    "GeographicAddressResponseValidation" : {
+      "type" : "object",
+      "required" : [ "country" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier of the geographic address\n"
+        },
+        "href" : {
+          "type" : "string",
+          "description" : "URI to access the geographic address resource\n"
+        },
+        "streetNr" : {
+          "type" : "string",
+          "description" : "Number identifying a specific property on a public street. It may be combined with streetNrLast for ranged addresses\n"
+        },
+        "streetNrSuffix" : {
+          "type" : "string",
+          "description" : "The first street number suffix\n"
+        },
+        "streetNrLast" : {
+          "type" : "string",
+          "description" : "Last number in a range of street numbers allocated to a property\n"
+        },
+        "streetNrLastSuffix" : {
+          "type" : "string",
+          "description" : "Last street number suffix for a ranged address\n"
+        },
+        "streetName" : {
+          "type" : "string",
+          "description" : "Name of the street or other street type\n"
+        },
+        "streetType" : {
+          "type" : "string",
+          "description" : "Type of Street. Alley, avenue, boulevard, brae, crescent, drive, highway, lane, terrace, parade, place, tarn, way, wharf\n"
+        },
+        "streetSuffix" : {
+          "type" : "string",
+          "description" : "A modifier denoting a particular direction\n"
+        },
+        "displayText" : {
+          "type" : "string",
+          "description" : "The display text for the address. For example in case of @type=Country the displayText would contain long displayble string.\n"
+        },
+        "status" : {
+          "type" : "string",
+          "description" : "Status of the geographic address. Validated or Unvalidated.\n"
+        },
+        "postcode" : {
+          "type" : "string",
+          "description" : "Descriptor of postal delivery area, used to speed & simplify delivery of mail (also known as zipcode)\n"
+        },
+        "locality" : {
+          "type" : "string",
+          "description" : "An area of defined or undefined boundaries within a local authority or other legislatively defined area, usually rural or semi-rural in nature'\n"
+        },
+        "city" : {
+          "type" : "string",
+          "description" : "City that the geographic address is in\n"
+        },
+        "stateOrProvince" : {
+          "type" : "string",
+          "description" : "State or Province that the geographic address is in\n"
+        },
+        "country" : {
+          "type" : "string",
+          "description" : "Country that the geographic address is in\n"
+        },
+        "@type" : {
+          "type" : "string",
+          "description" : "Indicates the type of the resource. Here can be 'UrbanPropertyAddress', FormattedAddress, apanesePropertyAddress , AustralianPropertyAddress, etc\n"
+        },
+        "@schemaLocation" : {
+          "type" : "string",
+          "description" : "A Link to the schema describing this REST Resource\n"
+        },
+        "geographicSubAddress" : {
+          "type" : "array",
+          "description" : "A list of geographic sub addresses (GeographicSubAddress [*])\n",
+          "items" : {
+            "$ref" : "#/definitions/GeographicSubAddress"
+          }
+        },
+        "geographicLocation" : {
+          "$ref" : "#/definitions/GeographicLocationRefOrValue"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "GeographicAddressResponseValidationExtension"
+          }
+        }
+      },
+      "description" : "Structure used to describe an address validation request\n"
+    },
+    "GeographicAddressRequestValidation" : {
+      "type" : "object",
+      "required" : [ "country" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier of the geographic address\n"
+        },
+        "href" : {
+          "type" : "string",
+          "description" : "URI to access the geographic address resource\n"
+        },
+        "streetNr" : {
+          "type" : "string",
+          "description" : "Number identifying a specific property on a public street. It may be combined with streetNrLast for ranged addresses\n"
+        },
+        "streetNrSuffix" : {
+          "type" : "string",
+          "description" : "The first street number suffix\n"
+        },
+        "streetNrLast" : {
+          "type" : "string",
+          "description" : "Last number in a range of street numbers allocated to a property\n"
+        },
+        "streetNrLastSuffix" : {
+          "type" : "string",
+          "description" : "Last street number suffix for a ranged address\n"
+        },
+        "streetName" : {
+          "type" : "string",
+          "description" : "Name of the street or other street type\n"
+        },
+        "streetType" : {
+          "type" : "string",
+          "description" : "Type of Street. Alley, avenue, boulevard, brae, crescent, drive, highway, lane, terrace, parade, place, tarn, way, wharf\n"
+        },
+        "streetSuffix" : {
+          "type" : "string",
+          "description" : "A modifier denoting a particular direction\n"
+        },
+        "postcode" : {
+          "type" : "string",
+          "description" : "Descriptor of postal delivery area, used to speed & simplify delivery of mail (also known as zipcode)\n"
+        },
+        "locality" : {
+          "type" : "string",
+          "description" : "An area of defined or undefined boundaries within a local authority or other legislatively defined area, usually rural or semi-rural in nature'\n"
+        },
+        "city" : {
+          "type" : "string",
+          "description" : "City that the geographic address is in\n"
+        },
+        "stateOrProvince" : {
+          "type" : "string",
+          "description" : "State or Province that the geographic address is in\n"
+        },
+        "country" : {
+          "type" : "string",
+          "description" : "Country that the geographic address is in\n"
+        },
+        "@type" : {
+          "type" : "string",
+          "description" : "Indicates the type of the resource. Here can be 'UrbanPropertyAddress', FormattedAddress, apanesePropertyAddress , AustralianPropertyAddress, etc\n"
+        },
+        "@schemaLocation" : {
+          "type" : "string",
+          "description" : "A Link to the schema describing this REST Resource    \n"
+        },
+        "geographicLocation" : {
+          "$ref" : "#/definitions/GeographicLocationRefOrValue"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "GeographicAddressRequestValidationExtension"
+          }
+        }
+      },
+      "description" : "Structure used to describe an address validation request\n"
+    },
+    "GeographicAddressEntity" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier of the geographic address\n"
+        },
+        "href" : {
+          "type" : "string",
+          "description" : "URI to access the geographic address resource\n"
+        },
+        "streetNr" : {
+          "type" : "string",
+          "description" : "Number identifying a specific property on a public street. It may be combined with streetNrLast for ranged addresses\n"
+        },
+        "streetNrSuffix" : {
+          "type" : "string",
+          "description" : "The first street number suffix\n"
+        },
+        "streetNrLast" : {
+          "type" : "string",
+          "description" : "Last number in a range of street numbers allocated to a property\n"
+        },
+        "streetNrLastSuffix" : {
+          "type" : "string",
+          "description" : "Last street number suffix for a ranged address\n"
+        },
+        "streetName" : {
+          "type" : "string",
+          "description" : "Name of the street or other street type\n"
+        },
+        "streetType" : {
+          "type" : "string",
+          "description" : "Type of Street. Alley, avenue, boulevard, brae, crescent, drive, highway, lane, terrace, parade, place, tarn, way, wharf\n"
+        },
+        "streetSuffix" : {
+          "type" : "string",
+          "description" : "A modifier denoting a particular direction\n"
+        },
+        "postcode" : {
+          "type" : "string",
+          "description" : "Descriptor of postal delivery area, used to speed & simplify delivery of mail (also known as zipcode)\n"
+        },
+        "displayText" : {
+          "type" : "string",
+          "description" : "display text for address. For example in case of @type=Country the displayText would contain long displayble string.\n"
+        },
+        "locality" : {
+          "type" : "string",
+          "description" : "An area of defined or undefined boundaries within a local authority or other legislatively defined area, usually rural or semi-rural in nature'          \n"
+        },
+        "city" : {
+          "type" : "string",
+          "description" : "City that the geographic address is in\n"
+        },
+        "stateOrProvince" : {
+          "type" : "string",
+          "description" : "State or Province that the geographic address is in\n"
+        },
+        "country" : {
+          "type" : "string",
+          "description" : "Country that the geographic address is in\n"
+        },
+        "status" : {
+          "type" : "string",
+          "description" : "Status of geographic address. Validated, Unvalidated  \n"
+        },
+        "@type" : {
+          "type" : "string",
+          "description" : "Indicates the type of the resource. Here can be 'UrbanPropertyAddress', 'FormattedAddress', 'JapanesePropertyAddress' , 'AustralianPropertyAddress', etc.\n"
+        },
+        "@schemaLocation" : {
+          "type" : "string",
+          "description" : "A Link to the schema describing this REST Resource \n"
+        },
+        "createdOn" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "Date and time when the entity was created.\n"
+        },
+        "lastModifiedOn" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "Date and time when the entity was last updated.\n"
+        },
+        "geographicSubAddress" : {
+          "type" : "array",
+          "description" : "A list of geographic sub addresses (GeographicSubAddress [*])\n",
+          "items" : {
+            "$ref" : "#/definitions/GeographicSubAddress"
+          }
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "GeographicAddressEntityExtension"
+          }
+        }
+      },
+      "description" : "A geographic address is a structed textual way of describing how to find a Property in an urban area"
+    },
+    "AddressRole" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "addressRole" : {
+            "type" : "string",
+            "description" : "The value of the telephone medium type.\n",
+            "readOnly" : true
+          },
+          "invoice" : {
+            "type" : "boolean",
+            "description" : "Indicates whether address can be used for invoice address type.\n",
+            "readOnly" : true
+          },
+          "mailing" : {
+            "type" : "boolean",
+            "description" : "Indicates whether address can be used for mailing address type.\n",
+            "readOnly" : true
+          },
+          "shipping" : {
+            "type" : "boolean",
+            "description" : "Indicates whether address can be used for shipping address type.\n",
+            "readOnly" : true
+          },
+          "service" : {
+            "type" : "boolean",
+            "description" : "Indicates whether address can be used for service address type.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the address roles based on context (example Individual,Customer etc).\n"
+    },
+    "ReferenceData" : {
+      "type" : "object",
+      "properties" : {
+        "href" : {
+          "type" : "string",
+          "description" : "The reference to retrieve the details of the item.\n",
+          "readOnly" : true
+        },
+        "shortLabelDisplay" : {
+          "type" : "string",
+          "description" : "The displayable short text for the value of item.\n",
+          "readOnly" : true
+        },
+        "fullLabelDisplay" : {
+          "type" : "string",
+          "description" : "The full displayable text value of the item.\n",
+          "readOnly" : true
+        },
+        "selectionDisplay" : {
+          "type" : "string",
+          "description" : "The displayable text value for the item to be used for displaying the items on the UI.\n",
+          "readOnly" : true
+        },
+        "active" : {
+          "type" : "boolean",
+          "description" : "Indicator whether the item is active or not.\n",
+          "readOnly" : true
+        }
+      },
+      "description" : "Represents the Interaction Type.\n"
+    },
+    "ErrorResponse" : {
+      "type" : "object",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "description" : "The code associated with the error\n",
+          "readOnly" : true
+        },
+        "message" : {
+          "type" : "string",
+          "description" : "The message associated with the error",
+          "readOnly" : true
+        },
+        "traceId" : {
+          "type" : "string",
+          "description" : "A unique trace id used to correlate an error returned to a client with the server\n",
+          "readOnly" : true
+        }
+      },
+      "description" : "Response containing descriptive error text, error code\ntype: object\n"
+    },
+    "Country" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "country" : {
+            "type" : "string",
+            "description" : "The code for the country used to populate the 'country' attribute in target mediums.\nIt will contain the ISO-3166 Alpha-3 code for the country for eg USA. \nshortLabelDisplay filed is not supported.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Provides the reference data and display values for a particular country\n"
+    },
+    "StateOrProvince" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "stateOrProvince" : {
+            "type" : "string",
+            "description" : "The value of the StateOrProvince.\n",
+            "readOnly" : true
+          },
+          "country" : {
+            "type" : "string",
+            "description" : "The value of the Country.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the StateOrProvince.\n"
+    },
+    "SubUnitType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "subUnitType" : {
+            "type" : "string",
+            "description" : "The value of the SubUnitType.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the SubUnit Type.\n"
+    },
+    "StreetType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "streetType" : {
+            "type" : "string",
+            "description" : "The value of the type of street.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the StreetType.\n"
+    },
+    "LevelType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "levelType" : {
+            "type" : "string",
+            "description" : "The value of the level type.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the type of the level.\n"
+    },
+    "GeographicAddressExtension" : {
+      "type" : "object",
+      "properties" : {
+        "ospDwelingId" : {
+          "type" : "string",
+          "description" : "External identifier of MyAddress"
+        },
+        "externalIdentifier" : {
+          "type" : "array",
+          "description" : "Characteristics of external identifier",
+          "items" : {
+            "$ref" : "#/definitions/ExternalIdentifier"
+          }
+        }
+      }
+    },
+    "ExternalIdentifier" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "description" : "The name of the external identifier"
+        },
+        "value" : {
+          "type" : "string",
+          "description" : "The value of the external identifier"
+        }
+      }
+    },
+    "GeographicSubAddressExtension" : {
+      "type" : "object",
+      "properties" : {
+        "buildingNameSuffix" : {
+          "type" : "string",
+          "description" : "Suffix for the building name"
+        },
+        "stairCase" : {
+          "type" : "string",
+          "description" : "Stair case type"
+        },
+        "doorType" : {
+          "type" : "string",
+          "description" : "Door type"
+        },
+        "door" : {
+          "type" : "string",
+          "description" : "Door number"
+        },
+        "stairCaseSuffix" : {
+          "type" : "string",
+          "description" : "Suffix for the stair case"
+        }
+      }
+    }
+  },
+  "responses" : {
+    "400-BadRequest" : {
+      "description" : "*Bad Request* - Indicates that client has sent malformed request.\nPossibly missing mandatory query parameters, invalid value\nin query parameters, validation exception etc.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorResponse"
+      }
+    },
+    "500-InternalServerError" : {
+      "description" : "*Internal Server Error* - server failed in handling the\nclient request.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorResponse"
+      }
+    },
+    "503-ServiceUnavailable" : {
+      "description" : "*Service Unavailable* - The service being called is unavailable.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorResponse"
+      }
+    }
+  },
+  "x-dox-DesignDocs" : [ {
+    "description" : "The API of the subdomain enables searching for worldwide addresses. The API also enables validating geographic address data to make sure that it corresponds to a real geographic address..\n"
+  } ]
+}
