@@ -1,0 +1,1303 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "This API manages payment methods of a customer such as CreditCard, and Bankaccount so on. It enables retrieval of payment method by Id, retrieval of all payment methods associated to a customer by customer id. Also enables to create, update, and delete the payment method. This API is not PCI compliant and its expected that no PCI data is passed in the request to any of the operations.\n",
+    "version" : "1.0",
+    "title" : "Payment Method",
+    "contact" : {
+      "name" : "Amdocs Inc.",
+      "url" : "http://www.amdocs.com",
+      "email" : "support@amdocs.com"
+    },
+    "license" : {
+      "name" : "Amdocs Inc.",
+      "url" : "http://www.amdocs.com"
+    },
+    "x-amdocs" : {
+      "exposed" : "public",
+      "service-principals" : [ "paymentmethod-paymentmethod-app-id" ]
+    }
+  },
+  "host" : "amdocs.com",
+  "basePath" : "/paymentMethod/v1",
+  "tags" : [ {
+    "name" : "paymentMethod"
+  } ],
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/paymentMethod" : {
+      "get" : {
+        "tags" : [ "paymentMethod" ],
+        "summary" : "retrieves list of payment methods by party id",
+        "description" : "This operation retrieves a list of payment methods associated to a party by party id. \n###### TMF Open API compliant\n**Supported Filters&#58;**\n - relatedParty.id == '< value >'\n \n **Supported Sort&#58;**\n - none\n",
+        "operationId" : "searchPaymentMethod",
+        "parameters" : [ {
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "The locale of the client\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "salesChannel",
+          "in" : "query",
+          "description" : "Sales Channel.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "filter",
+          "in" : "query",
+          "description" : "This parameter is deprecated, use filters instead.\n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "filters",
+          "in" : "query",
+          "description" : "Query parameter to specify the search filters. Attribute filters are specified in the following way:\n_?filters=([attributeName][operator][value],\\u2026,[value])[&|;]\\u2026[&|;]([attributeName][operator][value],\\u2026,[value])_\n\nSupported operators are:\n* Equality: == (equals), != (not equals)\n* Contains: =@ (contains), !@ (does not contain)\n* Less than: < (less than), <= (less than or equal to)\n* Greater than: > (greater than),  >= (greater than or equal to)\n* RegExp: =~ (match), !~ (does not match)\n\nComma separated values for an attribute are evaluated with OR operator. & is the separator for multiple queries to be evaluated with AND operator while the ; is the separator for multiple queries to be evaluated with OR operator.\n",
+          "required" : false,
+          "type" : "string",
+          "x-dox-Since" : 1.0
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "Sort attributes\n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "*OK* - All Payment Methods retrieved successfully.\n",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/PaymentMethod"
+              }
+            }
+          },
+          "400" : {
+            "description" : "*Bad Request* - The server cannot process the request due to malformed syntax. The response can be caused by missing mandatory query parameters, invalid value in the query parameters, validation exceptions, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "404" : {
+            "description" : "*Not Found* - The server did not find anything matching the request URI. The response can be caused by missing path parameters, invalid web resource, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "405" : {
+            "description" : "*Method Not Allowed* - The server rejected the request because the HTTP method used by the resource is not supported by that resource.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "409" : {
+            "description" : "*Conflict* - The server cannot complete the request due to a conflict with the current state of the resource.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "500" : {
+            "description" : "*Internal Server Error* - The server encountered an unexpected condition that prevented it from fulfilling the request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "502" : {
+            "description" : "*Bad Gateway* - The server encountered an unexpected condition when calling another service.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "503" : {
+            "description" : "*Service Unavailable* - The service being called is unavailable.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-amdocs" : {
+          "route-service" : "paymentmethod-paymentmethod-service",
+          "public-roles" : [ "D1_PaymentMethod_searchPaymentMethod" ],
+          "private-roles" : [ "D1P_PaymentMethod_read", "FndP_APIGateway_gw" ]
+        }
+      },
+      "post" : {
+        "tags" : [ "paymentMethod" ],
+        "summary" : "creates payment method",
+        "description" : "This operation creates a Payment Method related to a party\n###### TMF Open API compliant\n**Mandatory&#58;** \n- type\n- relatedParty\n  - id\n  - referredType\n- details\n  - If paymentMethod.type = DigitalWallet, then \n    - service\n    - walletId\n  - If paymentMethod.type = Voucher, then\n    - code\n    - expirationDate\n    - campaign\n    - value\n      - amount\n      - units\n  - If paymentMethod.type = Check, then \n    - code\n    - payee\n    - bank\n    - drawer\n  - If paymentMethod.type = BankAccountDebit, then \n    - accountNumber\n    - accountNumberType\n  - If paymentMethod.type = TokenizedCard, then \n    - token\n\n**Read-only&#58;** \n- none\n\n**Business rules&#58;**\n- relatedParty (only 1 relatedParty is allowed)\n\n**Reference value&#58;**\n- paymentMethod.type = DigitalWallet, Voucher, Check, Cash, BankAccountDebit, TokenizedCard.\n",
+        "operationId" : "createPaymentMethod",
+        "parameters" : [ {
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "The locale of the client\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "salesChannel",
+          "in" : "query",
+          "description" : "Sales Channel.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "PaymentMethod",
+          "description" : "Payment Method details",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/PaymentMethod"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "*Created* - Payment Method got created successfully.\n",
+            "schema" : {
+              "$ref" : "#/definitions/PaymentMethod"
+            },
+            "examples" : {
+              "application/json example 1" : {
+                "id" : "PaymentMethod_05154501-0050-4510-82a0-88000a8a0081",
+                "href" : "https://paymentmethod-paymentmethod-service:8080/paymentMethod/v1/paymentMethod/PaymentMethod_05154501-0050-4510-82a0-88000a8a0081",
+                "type" : "TokenizedCard",
+                "name" : "John TokenizedCard PaymentMethod",
+                "description" : "TokenizedCard payment method for John",
+                "preferred" : true,
+                "authorizationCode" : "DEF678",
+                "status" : "active",
+                "statusDate" : "2016-06-18T11:00:32.229+0000",
+                "details" : {
+                  "brand" : "AMEX",
+                  "type" : "Gold",
+                  "lastFourDigits" : "2345",
+                  "expirationDate" : "2016-06-20T11:00:32.229+0000",
+                  "tokenType" : "TokenType",
+                  "token" : "alfdajblla-23232-3232",
+                  "issuer" : "MBOLAVA"
+                },
+                "validFor" : {
+                  "startDateTime" : "2015-09-10T11:00:32.229+0000",
+                  "endDateTime" : "2030-09-10T11:00:32.229+0000"
+                },
+                "relatedParty" : {
+                  "id" : "Customer_123456",
+                  "role" : "Primary",
+                  "validFor" : {
+                    "startDateTime" : "2015-11-10T11:00:32.229+0000",
+                    "endDateTime" : "2030-11-10T11:00:32.229+0000"
+                  }
+                }
+              },
+              "application/json example 2" : {
+                "id" : "PaymentMethod_01141404-4505-4141-aa08-002a082208a0",
+                "href" : "https://paymentmethod-paymentmethod-service:8080/paymentMethod/v1/paymentMethod/PaymentMethod_01141404-4505-4141-aa08-002a082208a0",
+                "type" : "BankAccountDebit",
+                "name" : "John payment method",
+                "description" : "Bank Account payment method for John",
+                "preferred" : true,
+                "authorizationCode" : "DEF678",
+                "status" : "active",
+                "statusDate" : "2016-06-18T11:00:32.229+0000",
+                "details" : {
+                  "accountNumber" : "123452121121",
+                  "accountNumberType" : "IBAN",
+                  "bic" : "GHY865",
+                  "owner" : "John",
+                  "bank" : "UIOP",
+                  "extensions" : { }
+                },
+                "validFor" : {
+                  "startDateTime" : "2015-09-10T11:00:32.229+0000",
+                  "endDateTime" : "2030-09-10T11:00:32.229+0000"
+                },
+                "relatedParty" : {
+                  "id" : "Customer_12345",
+                  "role" : "Secondary",
+                  "validFor" : {
+                    "startDateTime" : "2015-11-10T11:00:32.229+0000",
+                    "endDateTime" : "2030-11-10T11:00:32.229+0000"
+                  }
+                },
+                "controlFields" : {
+                  "createdBy" : "ManoUser",
+                  "createdOn" : "2018-11-29T07:34:02.000+0000",
+                  "lastModifiedBy" : "ManoUser",
+                  "lastModifiedOn" : "2018-11-29T09:15:09.000+0000"
+                },
+                "extensions" : { }
+              }
+            },
+            "headers" : {
+              "Etag" : {
+                "type" : "string",
+                "description" : "entity tag\n",
+                "x-dox-Since" : 1
+              }
+            }
+          },
+          "400" : {
+            "description" : "*Bad Request* - The server cannot process the request due to malformed syntax. The response can be caused by missing mandatory query parameters, invalid value in the query parameters, validation exceptions, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "409" : {
+            "description" : "*Conflict* - The server cannot complete the request due to a conflict with the current state of the resource.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "500" : {
+            "description" : "*Internal Server Error* - The server encountered an unexpected condition that prevented it from fulfilling the request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "502" : {
+            "description" : "*Bad Gateway* - The server encountered an unexpected condition when calling another service.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "503" : {
+            "description" : "*Service Unavailable* - The service being called is unavailable.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-amdocs" : {
+          "route-service" : "paymentmethod-paymentmethod-service",
+          "public-roles" : [ "D1_PaymentMethod_createPaymentMethod" ],
+          "private-roles" : [ "D1P_PaymentMethod_write", "FndP_APIGateway_gw" ]
+        }
+      }
+    },
+    "/paymentMethod/{paymentMethodId}" : {
+      "get" : {
+        "tags" : [ "paymentMethod" ],
+        "summary" : "retrieves the payment method by it's id",
+        "description" : "This operation retrieves the payment method by it's id.\n###### TMF Open API compliant\n**Filters&#58;** - paymentMethodId in the URL.\n",
+        "operationId" : "getPaymentMethod",
+        "parameters" : [ {
+          "name" : "paymentMethodId",
+          "in" : "path",
+          "description" : "paymentMethod id\n",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "The locale of the client\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "salesChannel",
+          "in" : "query",
+          "description" : "Sales Channel.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "The subset of attributes which are expected in the response.\n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "*OK* - The Payment Method was retrieved successfully.\n",
+            "schema" : {
+              "$ref" : "#/definitions/PaymentMethod"
+            },
+            "headers" : {
+              "Etag" : {
+                "type" : "string",
+                "description" : "entity tag generated while retrieving the payment method.\n",
+                "x-dox-Since" : 1
+              }
+            }
+          },
+          "400" : {
+            "description" : "*Bad Request* - The server cannot process the request due to malformed syntax. The response can be caused by missing mandatory query parameters, invalid value in the query parameters, validation exceptions, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "404" : {
+            "description" : "*Not Found* - The server did not find anything matching the request URI. The response can be caused by missing path parameters, invalid web resource, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "405" : {
+            "description" : "*Method Not Allowed* - The server rejected the request because the HTTP method used by the resource is not supported by that resource.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "409" : {
+            "description" : "*Conflict* - The server cannot complete the request due to a conflict with the current state of the resource.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "500" : {
+            "description" : "*Internal Server Error* - The server encountered an unexpected condition that prevented it from fulfilling the request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "502" : {
+            "description" : "*Bad Gateway* - The server encountered an unexpected condition when calling another service.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "503" : {
+            "description" : "*Service Unavailable* - The service being called is unavailable.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-amdocs" : {
+          "route-service" : "paymentmethod-paymentmethod-service",
+          "public-roles" : [ "D1_PaymentMethod_getPaymentMethod" ],
+          "private-roles" : [ "D1P_PaymentMethod_read", "FndP_APIGateway_gw" ]
+        }
+      },
+      "patch" : {
+        "tags" : [ "paymentMethod" ],
+        "summary" : "patches the payment method",
+        "description" : "This operation allows partial update on PaymentMethod resource. It includes fields only at level of PaymentMethod and Details, no sub resource should be updated using patch.\n###### TMF Open API compliant\n**Patchable elements&#58;**\n  - name (add, replace)\n  - description (add, replace)\n  - preferred (add, replace)\n  - Patchable attributes in paymentMethod.details are as below\n    - If paymentMethod.type = DigitalWallet, then \n      - service (add, replace)\n      - walletId (add, replace)\n      - walletUrl (add, replace)\n    - If paymentMethod.type = Voucher, then\n      - code (add, replace)\n      - expirationDate (add, replace)\n      - campaign (add, replace)\n      - value.amount (add, replace)\n      - value.units (add, replace)\n    - If paymentMethod.type = Check, then \n      - code (add, replace)\n      - payee (add, replace)\n      - bank (add, replace)\n      - date (add, replace)\n      - drawer (add, replace)\n    - If paymentMethod.type = BankAccountDebit, then \n      - accountNumber (add, replace)\n      - accountNumberType (add, replace)\n      - bic (add, replace)\n      - owner (add, replace)\n      - bank (add, replace)\n    - If paymentMethod.type = TokenizedCard, then \n      - brand (add, replace)\n      - type (add, replace)\n      - lastFourDigits (add, replace)\n      - expirationDate (add, replace)\n      - tokenType (add, replace)\n      - token (add, replace)\n      - issuer (add, replace)\n",
+        "operationId" : "patchPaymentMethod",
+        "parameters" : [ {
+          "name" : "paymentMethodId",
+          "in" : "path",
+          "description" : "paymentMethod id\n",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "The locale of the client\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "If-Match",
+          "in" : "header",
+          "description" : "The If-Match HTTP request header makes the request conditional. \nFor GET and HEAD methods, the server will send back the requested resource only if it matches one of the listed ETags. \nFor PUT and other non-safe methods, it will only upload the resource in this case\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "salesChannel",
+          "in" : "query",
+          "description" : "Sales Channel.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "PaymentMethodPatch",
+          "description" : "Patch request to update PaymentMethod resource\n",
+          "required" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/PatchElement"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "*OK* - PaymentMethod updated successfully.\n",
+            "schema" : {
+              "$ref" : "#/definitions/PaymentMethod"
+            },
+            "headers" : {
+              "Etag" : {
+                "type" : "string",
+                "description" : "entity tag\n",
+                "x-dox-Since" : 1
+              }
+            }
+          },
+          "400" : {
+            "description" : "*Bad Request* - The server cannot process the request due to malformed syntax. The response can be caused by missing mandatory query parameters, invalid value in the query parameters, validation exceptions, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "404" : {
+            "description" : "*Not Found* - The server did not find anything matching the request URI. The response can be caused by missing path parameters, invalid web resource, and so on.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "409" : {
+            "description" : "*Conflict* - The server cannot complete the request due to a conflict with the current state of the resource.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "500" : {
+            "description" : "*Internal Server Error* - The server encountered an unexpected condition that prevented it from fulfilling the request.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          },
+          "502" : {
+            "description" : "*Bad Gateway* - The server encountered an unexpected condition when calling another service.\n",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-amdocs" : {
+          "route-service" : "paymentmethod-paymentmethod-service",
+          "public-roles" : [ "D1_PaymentMethod_patchPaymentMethod" ],
+          "private-roles" : [ "D1P_PaymentMethod_write", "FndP_APIGateway_gw" ]
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "Custom" : {
+      "type" : "object",
+      "properties" : {
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "CustomPaymentMethodExtension"
+          }
+        }
+      },
+      "description" : "Represents custom payment method\n"
+    },
+    "Check" : {
+      "type" : "object",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "description" : "Unique identifier of the check\n",
+          "x-amdocs-npi" : "checkInfo:code"
+        },
+        "drawer" : {
+          "type" : "string",
+          "description" : "Person or entity writing the check\n",
+          "x-amdocs-npi" : "checkInfo:drawer"
+        },
+        "payee" : {
+          "type" : "string",
+          "description" : "Person or entity whom the check is addressed to\n",
+          "x-amdocs-npi" : "checkInfo:payee"
+        },
+        "bank" : {
+          "type" : "string",
+          "description" : "Bank performing the payment of the check\n",
+          "x-amdocs-npi" : "checkInfo:bank"
+        },
+        "date" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "Date when the check was signed\n",
+          "x-amdocs-npi" : "checkInfo:date"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "CheckExtension"
+          }
+        }
+      },
+      "description" : "Detailed information of check type payment method\n"
+    },
+    "Voucher" : {
+      "type" : "object",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "description" : "Code that identifies the voucher\nx-amdocs-npi: voucherInfo:code\n"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Description of the voucher. For example, \"get one and receive one free\"\n"
+        },
+        "value" : {
+          "description" : "Value of the voucher. For example, if it's a discount voucher, the value of the discount.\n",
+          "$ref" : "#/definitions/QuantityType"
+        },
+        "expirationDate" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "Expiration date of the voucher\n",
+          "x-amdocs-npi" : "voucherInfo:date"
+        },
+        "campaign" : {
+          "type" : "string",
+          "description" : "Campaign this voucher belongs to\n",
+          "x-amdocs-npi" : "voucherInfo:campaign"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "VoucherExtension"
+          }
+        }
+      },
+      "description" : "Detailed information of Voucher\n"
+    },
+    "DigitalWallet" : {
+      "type" : "object",
+      "properties" : {
+        "service" : {
+          "type" : "string",
+          "description" : "Organization, platform or currency backing the wallet (For example, PayPal, Yandex, BitCoin)\n",
+          "x-amdocs-npi" : "digitalWalletInfo:service"
+        },
+        "walletId" : {
+          "type" : "string",
+          "description" : "Unique identifier of the wallet in that service\n",
+          "x-amdocs-npi" : "digitalWalletInfo:walletId"
+        },
+        "walletUrl" : {
+          "type" : "string",
+          "description" : "URI pointing at the digital wallet\n"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "DigitalWalletExtension"
+          }
+        }
+      },
+      "description" : "Detailed information of Digital Wallet\n"
+    },
+    "BankAccountDebit" : {
+      "type" : "object",
+      "properties" : {
+        "accountNumber" : {
+          "type" : "string",
+          "description" : "Bank account number (this could refer the IBAN or SWIFT Number)\n",
+          "x-amdocs-npi" : "bankAccountInfo:accountNumber"
+        },
+        "accountNumberType" : {
+          "type" : "string",
+          "description" : "Type of the account (for example, IBAN,SWIFT)\n",
+          "x-amdocs-npi" : "bankAccountInfo:accountType"
+        },
+        "bic" : {
+          "type" : "string",
+          "description" : "The business identifier code or Swift code of the financial institution where the account is located.\n",
+          "x-amdocs-npi" : "bankAccountInfo:swiftCode"
+        },
+        "owner" : {
+          "type" : "string",
+          "description" : "The owner of the account\n",
+          "x-amdocs-npi" : "bankAccountInfo:accountOwner"
+        },
+        "bank" : {
+          "type" : "string",
+          "description" : "The display name of the bank\n",
+          "x-amdocs-npi" : "bankAccountInfo:bankName"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "BankAccountDebitExtension"
+          }
+        }
+      },
+      "description" : "Detailed information about the bank account"
+    },
+    "QuantityType" : {
+      "type" : "object",
+      "properties" : {
+        "amount" : {
+          "type" : "number",
+          "description" : "Total amount of Voucher\n"
+        },
+        "units" : {
+          "type" : "string",
+          "description" : "Value of Voucher in Units\n"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "QuantityTypeExtension"
+          }
+        }
+      },
+      "description" : "Detailed information of value for Voucher\n"
+    },
+    "TokenizedCard" : {
+      "type" : "object",
+      "properties" : {
+        "brand" : {
+          "type" : "string",
+          "description" : "Card brand. Might be used for display purposes\n",
+          "x-amdocs-pci" : "creditCardInfo:brand"
+        },
+        "type" : {
+          "type" : "string",
+          "description" : "Card type. Might be used for display purposes\n",
+          "x-amdocs-pci" : "creditCardInfo:type"
+        },
+        "lastFourDigits" : {
+          "type" : "string",
+          "description" : "Last four digits of the credit card. Might be used for display purposes\n",
+          "x-amdocs-pci" : "creditCardInfo:lastFourDigits"
+        },
+        "expirationDate" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "Expiration date of the tokenized card\n",
+          "x-amdocs-pci" : "creditCardInfo:expiryDate"
+        },
+        "tokenType" : {
+          "type" : "string",
+          "description" : "Token type (for example emv)\n",
+          "x-amdocs-pci" : "creditCardInfo:tokenType"
+        },
+        "token" : {
+          "type" : "string",
+          "description" : "The token itself\n",
+          "x-amdocs-pci" : "creditCardInfo:token"
+        },
+        "issuer" : {
+          "type" : "string",
+          "description" : "Whoever issued the token\n",
+          "x-amdocs-pci" : "creditCardInfo:issuedBy"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "TokenizedCardExtension"
+          }
+        }
+      },
+      "description" : "Detailed information about the tokenized card\n"
+    },
+    "CashType" : {
+      "type" : "object",
+      "properties" : {
+        "cashierInfo" : {
+          "type" : "string",
+          "description" : "Cashier who performed the payment.\n",
+          "x-amdocs-npi" : "paymentMethodInfo:description"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "CashTypeExtension"
+          }
+        }
+      },
+      "description" : "Detailed information of cash type payment method\n"
+    },
+    "PaymentMethod" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique id of a payment method."
+        },
+        "href" : {
+          "type" : "string",
+          "description" : "Hypertext reference to the payment method"
+        },
+        "createdOn" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "Date and time when the entity was created.\n"
+        },
+        "lastModifiedOn" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "Date and time when the entity was last modified.\n"
+        },
+        "@baseType" : {
+          "type" : "string",
+          "description" : "Base type of entity\n"
+        },
+        "type" : {
+          "type" : "string",
+          "description" : "Type of payment method (for example, CreditCard, BankAccount, Cash, so on).",
+          "x-amdocs-npi" : "paymentMethodInfo:type"
+        },
+        "@schemaLocation" : {
+          "type" : "string",
+          "description" : "uri where the data model can be retrieved\n"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "Name assigned to the payment method",
+          "x-amdocs-npi" : "paymentMethodInfo:name"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Describes the contents of the payment method",
+          "x-amdocs-npi" : "paymentMethodInfo:description"
+        },
+        "preferred" : {
+          "type" : "boolean",
+          "description" : "Indicates whether or not the payment method is the preferred by the owner."
+        },
+        "authorizationCode" : {
+          "type" : "string",
+          "description" : "Authorization code provided by a financial institution. Typically this would be populated for recurring payments using the payment method, as payments have an authorization code of their own.",
+          "x-amdocs-npi" : "paymentMethodInfo:authCode"
+        },
+        "status" : {
+          "type" : "string",
+          "description" : "Current status of the payment method."
+        },
+        "statusDate" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "Last time the status changed."
+        },
+        "details" : {
+          "type" : "object",
+          "description" : "Details of payment method. For example, bank account number, bank name, so on.",
+          "properties" : { }
+        },
+        "validFor" : {
+          "$ref" : "#/definitions/TimePeriod"
+        },
+        "relatedParty" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/RelatedPartyRef"
+          }
+        },
+        "controlFields" : {
+          "$ref" : "#/definitions/ControlFields"
+        },
+        "extensions" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "x-amdocs" : {
+            "refDefinition" : "PaymentMethodExtension"
+          }
+        }
+      },
+      "description" : "Represents an instantiated payment method that can be of different types."
+    },
+    "TimePeriod" : {
+      "type" : "object",
+      "properties" : {
+        "startDateTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "The time period start date and time.\n"
+        },
+        "endDateTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "The time period end date and time.\n"
+        }
+      },
+      "description" : "Time period\n"
+    },
+    "RelatedPartyRef" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique id of an existing party.\n"
+        },
+        "href" : {
+          "type" : "string",
+          "description" : "The self href for the existing related party.\n"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "The name of related party.\n",
+          "x-dox-pii" : "nameInfo:name"
+        },
+        "role" : {
+          "type" : "string",
+          "description" : "The role of related party\n"
+        },
+        "@type" : {
+          "type" : "string",
+          "description" : "Describes if it's Customer/Individual/Organazation\nPatchable - No\n"
+        },
+        "@referredType" : {
+          "type" : "string",
+          "description" : "The type of the party/party role such as Individual/Organization/Customer/User etc.\n"
+        },
+        "validFor" : {
+          "$ref" : "#/definitions/TimePeriod"
+        }
+      },
+      "description" : "Contains reference to the related party.\n"
+    },
+    "ControlFields" : {
+      "type" : "object",
+      "properties" : {
+        "createdBy" : {
+          "type" : "string",
+          "description" : "System identification of the user that created the instance.\nThis field has been deprecated and might be removed in future releases.\n"
+        },
+        "createdOn" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "The date and time of the instance was created.\nThis field has been deprecated and might be removed in future releases.\n"
+        },
+        "lastModifiedBy" : {
+          "type" : "string",
+          "description" : "System identification of the user that last modified the instance.\nThis field has been deprecated and might be removed in future releases.\n"
+        },
+        "lastModifiedOn" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "The date and time of the instance was last modified.\nThis field has been deprecated and might be removed in future releases.\n"
+        },
+        "modelVersion" : {
+          "type" : "string",
+          "description" : "Records the model version, to allow on-the-fly upgrade of persisted data.\nThis field has been deprecated and might be removed in future releases.\n"
+        }
+      },
+      "description" : "Detailed information of time period and user created or updated the instance.\nThis field has been deprecated and might be removed in future releases.\n"
+    },
+    "ErrorResponse" : {
+      "type" : "object",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "description" : "Code associated with the error which helps in finding out the root cause of the error.\n"
+        },
+        "message" : {
+          "type" : "string",
+          "description" : "Error message in user understandable format"
+        },
+        "link" : {
+          "type" : "string",
+          "format" : "url",
+          "description" : "Hypertext reference of the item\n"
+        },
+        "rel" : {
+          "type" : "string",
+          "description" : "Relation type for the item\n",
+          "default" : "help"
+        },
+        "traceId" : {
+          "type" : "string",
+          "description" : "Unique trace id used to correlate an error returned to a client with the server"
+        }
+      },
+      "description" : "Response containing descriptive error text, error code when an error is occured.\ntype: object\n"
+    },
+    "PatchElement" : {
+      "properties" : {
+        "op" : {
+          "type" : "string",
+          "description" : "The operation associated with this patched resource part. Valid values are 'add' or 'remove' or 'replace'.\n"
+        },
+        "path" : {
+          "type" : "string",
+          "description" : "The path of this resource part within the patched resource. For example, '/note' or '/name' or '/orderItem/quantity'.\n"
+        },
+        "value" : {
+          "type" : "object",
+          "description" : "The value of the patched resource part\n",
+          "properties" : { }
+        }
+      },
+      "description" : "The patched resource part\n"
+    },
+    "PaymentMethodStatus" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "paymentMethodStatus" : {
+            "type" : "string",
+            "description" : "The value of the status of payment method.\n",
+            "readOnly" : true
+          },
+          "transitionToStatus" : {
+            "type" : "array",
+            "description" : "The list of statuses eligible for transition.\n",
+            "items" : {
+              "$ref" : "#/definitions/PaymentMethodStatus_transitionToStatus"
+            },
+            "minItems" : 0
+          },
+          "statusChangeReason" : {
+            "type" : "array",
+            "description" : "The list of status change reason codes.\n",
+            "items" : {
+              "$ref" : "#/definitions/PaymentMethodStatus_statusChangeReason"
+            },
+            "minItems" : 0
+          }
+        }
+      } ],
+      "description" : "Represents the Status of payment method.\n"
+    },
+    "ReferenceData" : {
+      "type" : "object",
+      "properties" : {
+        "href" : {
+          "type" : "string",
+          "description" : "The reference to retrieve the details of the item.\n",
+          "readOnly" : true
+        },
+        "shortLabelDisplay" : {
+          "type" : "string",
+          "description" : "The displayable short text for the value of item.\n",
+          "readOnly" : true
+        },
+        "fullLabelDisplay" : {
+          "type" : "string",
+          "description" : "The full displayable text value of the item.\n",
+          "readOnly" : true
+        },
+        "selectionDisplay" : {
+          "type" : "string",
+          "description" : "The displayable text value for the item to be used for displaying the items on the UI.\n",
+          "readOnly" : true
+        },
+        "active" : {
+          "type" : "boolean",
+          "description" : "Indicator whether the item is active or not.\n",
+          "readOnly" : true
+        },
+        "default" : {
+          "type" : "boolean",
+          "description" : "Indicator whether the item is default in the list.\n"
+        },
+        "@type" : {
+          "type" : "string",
+          "description" : "Indicates the (class) type of ReferenceData.\n  \n"
+        }
+      },
+      "description" : "Represents the Interaction Type.\n"
+    },
+    "PaymentMethodType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "paymentMethodType" : {
+            "type" : "string",
+            "description" : "The value of the payment method type.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the PaymentMethod Type.\n"
+    },
+    "RelatedPartyType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "relatedPartyType" : {
+            "type" : "string",
+            "description" : "The value of the related party type.\n",
+            "readOnly" : true
+          },
+          "relatedPartyRole" : {
+            "type" : "array",
+            "description" : "The roles of the related party.\n",
+            "items" : {
+              "$ref" : "#/definitions/RelatedPartyRole"
+            },
+            "minItems" : 0
+          }
+        }
+      } ],
+      "description" : "Represents the Related Party Type.\n"
+    },
+    "RelatedPartyRole" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "relatedPartyRole" : {
+            "type" : "string",
+            "description" : "The value of the related party role.\n",
+            "readOnly" : true
+          },
+          "relatedPartyType" : {
+            "type" : "string",
+            "description" : "The value of the related party type.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the Related Party Role.\n"
+    },
+    "AccountNumberType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "accountNumberType" : {
+            "type" : "string",
+            "description" : "The value of the account number type.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the Account Number Type.\n"
+    },
+    "BankAccountDebitBank" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "bankAccountDebitBank" : {
+            "type" : "string",
+            "description" : "The value of the bank.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the bank for Account debit.\n"
+    },
+    "TokenizedCardBrand" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "tokenizedCardBrand" : {
+            "type" : "string",
+            "description" : "The value of brand.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the brand for tokenized card.\n"
+    },
+    "TokenizedCardType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "tokenizedCardType" : {
+            "type" : "string",
+            "description" : "The value of type.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the type of tokenized card.\n"
+    },
+    "TokenizedCardTokenType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "tokenizedCardTokenType" : {
+            "type" : "string",
+            "description" : "The value of token type.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the type of tokenized card token.\n"
+    },
+    "TokenizedCardIssuer" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "tokenizedCardIssuer" : {
+            "type" : "string",
+            "description" : "The value of tokenized card issuer.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the issuer of tokenized card .\n"
+    },
+    "CheckBank" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "checkBank" : {
+            "type" : "string",
+            "description" : "The value of bank.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the check issuing bank.\n"
+    },
+    "VoucherValueUnit" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "voucherValueUnit" : {
+            "type" : "string",
+            "description" : "The value of unit.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the unit for voucher value.\n"
+    },
+    "VoucherCampaign" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "voucherCampaign" : {
+            "type" : "string",
+            "description" : "The value of campaign.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the campaign related to voucher.\n"
+    },
+    "DigitalWalletService" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ReferenceData"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "digitalWalletService" : {
+            "type" : "string",
+            "description" : "The value of digital wallet service.\n",
+            "readOnly" : true
+          }
+        }
+      } ],
+      "description" : "Represents the digital wallet service.\n"
+    },
+    "PaymentMethodStatus_transitionToStatus" : {
+      "type" : "object",
+      "properties" : {
+        "transitionToStatus" : {
+          "type" : "string",
+          "description" : "The value of the status of payment method.\n",
+          "readOnly" : true
+        }
+      }
+    },
+    "PaymentMethodStatus_statusChangeReason" : {
+      "type" : "object",
+      "properties" : {
+        "statusChangeReason" : {
+          "type" : "string",
+          "description" : "The value of the status change reason.\n",
+          "readOnly" : true
+        }
+      }
+    }
+  },
+  "responses" : {
+    "400-BadRequest" : {
+      "description" : "*Bad Request* - The server cannot process the request due to malformed syntax. The response can be caused by missing mandatory query parameters, invalid value in the query parameters, validation exceptions, and so on.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorResponse"
+      }
+    },
+    "404-NotFound" : {
+      "description" : "*Not Found* - The server did not find anything matching the request URI. The response can be caused by missing path parameters, invalid web resource, and so on.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorResponse"
+      }
+    },
+    "405-MethodNotAllowed" : {
+      "description" : "*Method Not Allowed* - The server rejected the request because the HTTP method used by the resource is not supported by that resource.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorResponse"
+      }
+    },
+    "409-Conflict" : {
+      "description" : "*Conflict* - The server cannot complete the request due to a conflict with the current state of the resource.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorResponse"
+      }
+    },
+    "500-InternalServerError" : {
+      "description" : "*Internal Server Error* - The server encountered an unexpected condition that prevented it from fulfilling the request.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorResponse"
+      }
+    },
+    "502-BadGateway" : {
+      "description" : "*Bad Gateway* - The server encountered an unexpected condition when calling another service.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorResponse"
+      }
+    },
+    "503-ServiceUnavailable" : {
+      "description" : "*Service Unavailable* - The service being called is unavailable.\n",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorResponse"
+      }
+    }
+  },
+  "x-dox-DesignDocs" : [ {
+    "description" : "The Payment Method subdomain is responsible for managing the payment method information. A payment method entity can carry information about a tokenized card, a voucher, a bank account, or other payment methods that can be used to make a payment.\n"
+  } ]
+}
