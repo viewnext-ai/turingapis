@@ -879,73 +879,6 @@
                 }
             }
         },
-        "ModifyReason": {
-            "description": "Modification reason associated with the action performed on the product offering that is related to the order item\n",
-            "required": [
-                "action",
-                "name"
-            ],
-            "type": "object",
-            "properties": {
-                "name": {
-                    "description": "Name of the modification reason\n",
-                    "type": "string"
-                },
-                "reasonText": {
-                    "description": "Text of the modification reason. This property is populated if the type of the modification reason requires an input of a free text.\n",
-                    "type": "string"
-                },
-                "action": {
-                    "description": "Action performed on the instance of the product offering\n",
-                    "type": "string"
-                },
-                "actionDuration": {
-                    "$ref": "#/definitions/DurationPolicy"
-                },
-                "extensions": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "object"
-                    },
-                    "x-amdocs": {
-                        "refDefinition": "ModifyReasonExtensions"
-                    }
-                }
-            }
-        },
-        "DurationPolicy": {
-            "description": "Policy for calculting a limited duration for any entity\n",
-            "type": "object",
-            "properties": {
-                "duration": {
-                    "$ref": "#/definitions/Quantity"
-                },
-                "startDatePolicy": {
-                    "description": "Start date of the policy, from which the duration is calculated\n",
-                    "type": "string"
-                },
-                "endDatePolicy": {
-                    "description": "End date of the policy, until which the duration is calculated\n",
-                    "type": "string"
-                },
-                "effectiveFor": {
-                    "$ref": "#/definitions/TimePeriod"
-                },
-                "terminationPolicy": {
-                    "description": "Defines the termination policy upon duration end date\n",
-                    "type": "string"
-                },
-                "extensions": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "object",
-                        "x-amdocs": {
-                            "refDefinition": "DurationPolicyExtensions"
-                        }
-                    }
-                }
-            }
-        },
         "Quantity": {
             "description": "Quantity of a resource\n",
             "type": "object",
@@ -993,68 +926,6 @@
                     "x-amdocs": {
                         "refDefinition": "OrderItemRelationshipExtensions"
                     }
-                }
-            }
-        },
-        "ProductOfferingRef": {
-            "description": "Reference to the product offering entities that are orderable from the provider of the catalog. The resource includes pricing information.\n",
-            "required": [
-                "id"
-            ],
-            "type": "object",
-            "properties": {
-                "id": {
-                    "description": "Unique identifier of the product offering\n",
-                    "type": "string"
-                },
-                "href": {
-                    "description": "Hypertext reference to the product offering\n",
-                    "type": "string"
-                },
-                "name": {
-                    "description": "Name of the product offering\n",
-                    "type": "string"
-                },
-                "@referredType": {
-                    "description": "Name of the type of the referred resource entity\n",
-                    "type": "string"
-                },
-                "productOfferingType": {
-                    "description": "Type of the product offering\n",
-                    "type": "string"
-                },
-                "productOfferingTypeGroup": {
-                    "description": "The type of the product offering group\n",
-                    "type": "string"
-                },
-                "productOfferingClassification": {
-                    "description": "The classification of the product offering. Valid values: customerOffer, subscriberMainOffer, subscriberOffer\n",
-                    "type": "string"
-                },
-                "serialized": {
-                    "description": "Indicates whether the product offering is maintained per instance or can represent a bulk quantity\n",
-                    "type": "boolean"
-                },
-                "primary": {
-                    "description": "Indicates whether the product offering has a business significance for the customer&#58;\n- It is reflected as a product for the customer and it is actionable - the customer can perform ordering actions on it\n- An action performed on a primary offer can impact the actions available for its bundled or dependent offers (for example, when ownership of a primary offer is changed some internal offers cannot be added or removed)\n",
-                    "type": "boolean"
-                },
-                "version": {
-                    "description": "Version of the product offering\n",
-                    "type": "string"
-                },
-                "valueRank": {
-                    "description": "Value rank of the product offering\n",
-                    "type": "integer"
-                },
-                "attachment": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/Attachment"
-                    }
-                },
-                "durationPolicy": {
-                    "$ref": "#/definitions/DurationPolicy"
                 }
             }
         },
@@ -1231,35 +1102,6 @@
                 }
             }
         },
-        "ProductSpecificationRef": {
-            "description": "Detailed information of a tangible or intangible object that is made available externally in the form of a product offering to customers or other parties playing a party role\n",
-            "required": [
-                "id"
-            ],
-            "type": "object",
-            "properties": {
-                "id": {
-                    "description": "Unique identifier of the product specification\n",
-                    "type": "string"
-                },
-                "href": {
-                    "description": "Hypertext reference to the product specification\n",
-                    "type": "string"
-                },
-                "version": {
-                    "description": "Version of the product specification\n",
-                    "type": "string"
-                },
-                "name": {
-                    "description": "Name of the product specification\n",
-                    "type": "string"
-                },
-                "productSpecificationType": {
-                    "description": "Type of the product specification\n",
-                    "type": "string"
-                }
-            }
-        },
         "ProductCharacteristic": {
             "description": "Characteristics of the product to instantiate or to modify\n",
             "type": "object",
@@ -1371,63 +1213,6 @@
                     },
                     "x-amdocs": {
                         "refDefinition": "ProductRelationshipExtensions"
-                    }
-                }
-            }
-        },
-        "ProductOrderRef": {
-            "description": "Reference to the product order\n",
-            "type": "object",
-            "properties": {
-                "id": {
-                    "description": "Unique identifier of the product order\n",
-                    "type": "string"
-                },
-                "href": {
-                    "description": "Hypertext reference to the product order\n",
-                    "type": "string"
-                },
-                "validation": {
-                    "$ref": "#/definitions/Validation"
-                },
-                "orderItemId": {
-                    "description": "The ID of the order item\n",
-                    "type": "string"
-                }
-            }
-        },
-        "Validation": {
-            "description": "Validation result that is associated with the product order\n",
-            "type": "object",
-            "properties": {
-                "status": {
-                    "description": "Validation status\n",
-                    "type": "string",
-                    "readOnly": true
-                },
-                "validationMessage": {
-                    "description": "Validation message\n",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/ValidationMessage"
-                    },
-                    "readOnly": true
-                },
-                "configurationChange": {
-                    "description": "Configuration change\n",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/ConfigurationChange"
-                    },
-                    "readOnly": true
-                },
-                "extensions": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "object"
-                    },
-                    "x-amdocs": {
-                        "refDefinition": "ValidationExtensions"
                     }
                 }
             }
@@ -2148,63 +1933,6 @@
                 }
             }
         },
-        "PromotionAction": {
-            "description": "Action of the promotion. Customers can receive benefits associated with the action if the conditions in the promotion pattern are fulfilled.\n",
-            "required": [
-                "actionType"
-            ],
-            "properties": {
-                "id": {
-                    "description": "Unique identifier of the promotion action\n",
-                    "type": "string"
-                },
-                "name": {
-                    "description": "Name of the promotion action\n",
-                    "type": "string"
-                },
-                "description": {
-                    "description": "Description of the promotion action\n",
-                    "type": "string"
-                },
-                "actionType": {
-                    "description": "Type of the action. A valid value is *Price Alteration*, *Product Offering*.\n",
-                    "type": "string"
-                },
-                "actionValue": {
-                    "description": "Value of the action. If the *actionType* is Price Alteration, the action value is '1'.\n",
-                    "type": "integer"
-                },
-                "promotionPriceAlteration": {
-                    "$ref": "#/definitions/ProductOfferingPriceRef"
-                },
-                "productOfferingBenefit": {
-                    "description": "Reference to a product offering usaed as a free offer benefit by the promotion\n",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/ProductOfferingBenefit"
-                    }
-                },
-                "durationPolicy": {
-                    "$ref": "#/definitions/DurationPolicy"
-                },
-                "validFor": {
-                    "$ref": "#/definitions/TimePeriod"
-                },
-                "actionTerminationPolicy": {
-                    "description": "Defines the termination policy upon duration end date\n",
-                    "type": "string"
-                },
-                "extensions": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "object"
-                    },
-                    "x-amdocs": {
-                        "refDefinition": "PromotionActionExtensions"
-                    }
-                }
-            }
-        },
         "ProductOfferingPriceRef": {
             "description": "Reference to the action discount. Represents a pricing entity that defines the actual discount for the product offering.\n",
             "properties": {
@@ -2423,24 +2151,6 @@
                     "x-amdocs": {
                         "refDefinition": "OrderPriceBillingAccountRelationExtensions"
                     }
-                }
-            }
-        },
-        "ProductRef": {
-            "description": "Reference to an owned product or to a product to be provided\n",
-            "type": "object",
-            "properties": {
-                "id": {
-                    "description": "Unique identifier of the product\n",
-                    "type": "string"
-                },
-                "version": {
-                    "description": "Version of the product\n",
-                    "type": "string"
-                },
-                "status": {
-                    "description": "State of the product in the Product Inventory subdomain\n",
-                    "type": "string"
                 }
             }
         },
@@ -3817,11 +3527,18 @@
                         "$ref": "#/definitions/FinancialAccount"
                     }
                 },
-                "PaymentMethods": {
+                "paymentMethods": {
                     "description": "PaymentMethods",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/PaymentMethod"
+                    }
+                },
+                "productConfigurations": {
+                    "description": "productConfigurations",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProductConfiguration"
                     }
                 }
             }
@@ -7396,6 +7113,2001 @@
                     "description": "The value of the status change reason.\n",
                     "type": "string",
                     "readOnly": true
+                }
+            }
+        },
+        "CalculateProductConfiguration": {
+            "description": "The product offering (instance) while its price is being calculated\n",
+            "properties": {
+                "id": {
+                    "description": "The ID of the product offering (instance)\n",
+                    "type": "string",
+                    "x-dox-DesignNote": "Represents either a shopping cart item, or a product order item.\n"
+                },
+                "modifiedItem": {
+                    "description": "The members of the modified product offering configuration object\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PatchElement"
+                    }
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "CalculateProductConfigurationExtension"
+                    }
+                }
+            }
+        },
+        "ProductConfiguration": {
+            "description": "The product offering (instance) that is configured during ordering\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The ID of the product offering (instance)\n",
+                    "type": "string",
+                    "x-dox-DesignNote": "Represents either a shopping cart item, or a product order item.\n"
+                },
+                "href": {
+                    "description": "The self-reference to the product offering configuration\n",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "name": {
+                    "description": "The descriptive name of the product offering\n",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "productOfferingType": {
+                    "description": "The type of the product offering\n",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "productOfferingTypeGroup": {
+                    "description": "The type of the product offering group\n",
+                    "type": "string"
+                },
+                "bundle": {
+                    "description": "Indicates whether the product offering represents a bundle product offering (or a single product offering)\n",
+                    "type": "boolean",
+                    "readOnly": true
+                },
+                "configured": {
+                    "description": "Indicates whether the product offering was configured (selected/included) as part of the product offering configuration\n",
+                    "type": "boolean"
+                },
+                "readOnly": {
+                    "description": "Indicates whether the product offering is configurable by the user.\nWhen the property is set to true, the product offering is not configurable by the user - that is, the product offering cannot be modified, its price is not recalculated, and it is not validated.\n",
+                    "type": "boolean"
+                },
+                "state": {
+                    "description": "The lifecycle state of the product offering (instance)\n",
+                    "type": "string",
+                    "x-dox-DesignNote": "Represents the current lifecycle state of either a shopping cart item, or a product order item.\n"
+                },
+                "action": {
+                    "description": "The actions applicable to the product offering (instance)\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Action"
+                    }
+                },
+                "quantity": {
+                    "description": "The quantity of the product offering\n",
+                    "type": "integer",
+                    "x-dox-DesignNote": "Relevant only for the top-most non-serialized product offering.\n"
+                },
+                "attachment": {
+                    "description": "The complementary pieces of information that describe the product offering via a document, picture, or any kind of multimedia\ncontent\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Attachment"
+                    },
+                    "readOnly": true
+                },
+                "characteristic": {
+                    "description": "The characteristics of the product offering\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProductConfigurationCharacteristic"
+                    },
+                    "readOnly": true
+                },
+                "productSpecificationConfiguration": {
+                    "$ref": "#/definitions/ProductSpecificationConfiguration"
+                },
+                "bundledProductConfigurationGroup": {
+                    "description": "The group option by which a bundle product offering is related to its bundled product offering\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/BundledProductConfigurationGroup"
+                    },
+                    "readOnly": true
+                },
+                "bundledProductConfiguration": {
+                    "description": "The relation (cardinality) between a bundle product offering and its bundled product offerings\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/BundledProductConfiguration"
+                    }
+                },
+                "productConfigurationPrice": {
+                    "description": "The price of the product offering\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProductConfigurationPrice"
+                    }
+                },
+                "productConfigurationTotalPrice": {
+                    "description": "The total price of the product offering and its bundled product offerings (for a bundle product offering)\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProductConfigurationPrice"
+                    }
+                },
+                "productOffering": {
+                    "$ref": "#/definitions/ProductOfferingRef"
+                },
+                "shoppingCart": {
+                    "$ref": "#/definitions/ShoppingCartRef"
+                },
+                "productOrder": {
+                    "$ref": "#/definitions/ProductOrderRef"
+                },
+                "product": {
+                    "$ref": "#/definitions/ProductRef"
+                },
+                "productConfigurationTerm": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProductConfigurationTerm"
+                    }
+                },
+                "validation": {
+                    "$ref": "#/definitions/Validation"
+                },
+                "characteristicMetadata": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CharacteristicMetadata"
+                    }
+                },
+                "stock": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/StockItem"
+                    }
+                },
+                "requestedCompletionDate": {
+                    "format": "date-time",
+                    "description": "The date on which the product configuration action was requested to be completed\n",
+                    "type": "string"
+                },
+                "relatedImmediatePromotion": {
+                    "description": "The reference to the immediate promotion\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatedImmediatePromotion"
+                    },
+                    "x-dox-DesignNote": "A reference to the immediatePromotionRef entity.\n"
+                },
+                "immediatePromotion": {
+                    "description": "The reference to the immediate promotion details\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ImmediatePromotion"
+                    },
+                    "x-dox-DesignNote": "A reference to the Immediate Promotions with details\n"
+                },
+                "relatedParty": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatedPartyRef"
+                    },
+                    "x-dox-DesignNote": "A reference to the RelatedPartyRef. \n"
+                },
+                "creationDate": {
+                    "format": "date-time",
+                    "description": "The item creation date \n",
+                    "type": "string"
+                },
+                "pricingImpactEntity": {
+                    "description": "impacted items \n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PricingImpactEntityRef"
+                    }
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "ProductConfigurationExtension"
+                    }
+                }
+            }
+        },
+        "Action": {
+            "description": "The action applicable for a product offering (instance), and the modification reasons associated with it\n",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "The name of the action\n",
+                    "type": "string",
+                    "x-dox-DesignNote": "For new offering to be purchased it should be Add/Cancel. For existing offering it can be Add/Remove/Suspend/Resume/Change/Reestablish.\n"
+                },
+                "configured": {
+                    "description": "Indicates whether the action was configured (selected)\n",
+                    "type": "boolean"
+                },
+                "modifyReason": {
+                    "description": "The modification reason associated with the action\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ModifyReason"
+                    }
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "ActionExtension"
+                    }
+                }
+            }
+        },
+        "ProductConfigurationCharacteristic": {
+            "description": "The product offering characteristic\n",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "The identifying name of the product offering characteristic\n",
+                    "type": "string"
+                },
+                "valueType": {
+                    "description": "The value type of the product offering characteristic\n",
+                    "type": "string"
+                },
+                "lowerLimit": {
+                    "description": "The minimal number of values allowed for the product offering\ncharacteristic\n",
+                    "type": "integer"
+                },
+                "upperLimit": {
+                    "description": "The maximal number of values allowed for the product offering\ncharacteristic\n",
+                    "type": "integer"
+                },
+                "configurable": {
+                    "description": "Indicates whether or not the product offering characteristic is configurable\n",
+                    "type": "boolean"
+                },
+                "value": {
+                    "description": "The product offering characteristic values\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CharacteristicValue"
+                    }
+                },
+                "characteristicMetadata": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CharacteristicMetadata"
+                    }
+                },
+                "configured": {
+                    "description": "Will be set as true if the characteristic has been changed in cart\\order\\inventory\n",
+                    "type": "boolean"
+                },
+                "localizedName": {
+                    "description": "The localized name of the product offering characteristic\n",
+                    "type": "string"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "ProductConfigurationCharacteristicExtension"
+                    }
+                }
+            }
+        },
+        "CharacteristicValue": {
+            "description": "The product offering characteristic value\n",
+            "type": "object",
+            "properties": {
+                "value": {
+                    "description": "The product offering characteristic value\n",
+                    "type": "string"
+                },
+                "localizedValue": {
+                    "description": "The localized descriptive value of the product offering characteristic\n",
+                    "type": "string"
+                },
+                "valueFrom": {
+                    "description": "The minimal value allowed for the product offering characteristic\n",
+                    "type": "string"
+                },
+                "valueTo": {
+                    "description": "The maximal value allowed for the product offering characteristic\n",
+                    "type": "string"
+                },
+                "unitOfMeasure": {
+                    "description": "The unit of measurement of the product offering characteristic value\n",
+                    "type": "string"
+                },
+                "localizedUnitOfMeasure": {
+                    "description": "The localized descriptive unit of measurement of the product offering characteristic value\n",
+                    "type": "string"
+                },
+                "default": {
+                    "description": "Indicates whether the product offering characteristic value is the default value, as defined in the product offering catalog configuration\n",
+                    "type": "boolean"
+                },
+                "configured": {
+                    "description": "Indicates whether or not the product offering characteristic was configured\n(selected/included)\n",
+                    "type": "boolean"
+                },
+                "characteristicMetadata": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CharacteristicMetadata"
+                    }
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "CharacteristicValueExtension"
+                    }
+                }
+            }
+        },
+        "CharacteristicMetadata": {
+            "description": "The catalog and operational metadata\n",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "The name of the metadata characteristic\n",
+                    "type": "string"
+                },
+                "value": {
+                    "description": "The value of the metadata characteristic\n",
+                    "type": "string"
+                },
+                "metatype": {
+                    "description": "The type of the metadata characteristic\n",
+                    "type": "string"
+                },
+                "extension": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "CharacteristicMetadataExtension"
+                    }
+                }
+            }
+        },
+        "ProductSpecificationConfiguration": {
+            "description": "The product specification (instance) to be validated\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The ID of the product specification (instance) to be configured\n",
+                    "type": "string",
+                    "x-dox-DesignNote": "The ID of the of the product (inventory) being configured \n"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "referenceId": {
+                    "description": "The reference ID of the product specification instance\n",
+                    "type": "string",
+                    "x-dox-DesignNote": "The value is managed by the Shopping Cart MS / Product Order MS to uniquely identify the associated ProductRefOrValue\n"
+                },
+                "status": {
+                    "description": "The lifecycle \nstatus of the customer-owned product\n",
+                    "type": "string"
+                },
+                "activationDate": {
+                    "format": "date-time",
+                    "description": "The date on which the product was activated. \n",
+                    "type": "string"
+                },
+                "characteristic": {
+                    "description": "The characteristics of the product specification\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProductConfigurationCharacteristic"
+                    }
+                },
+                "bundledProductSpecificationConfiguration": {
+                    "description": "The product specifications (instances) that are bundled with the current product specification\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProductSpecificationConfiguration"
+                    }
+                },
+                "productSpecification": {
+                    "$ref": "#/definitions/ProductSpecificationRef"
+                },
+                "productSpecificationTypeRelationship": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProductSpecificationConfigurationRelation"
+                    }
+                },
+                "characteristicMetadata": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CharacteristicMetadata"
+                    }
+                },
+                "place": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PlaceRef"
+                    }
+                },
+                "version": {
+                    "description": "The product version\n",
+                    "type": "string"
+                },
+                "primaryProductId": {
+                    "description": "The id of the primary product\n",
+                    "type": "string"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "ProductSpecificationConfigurationExtension"
+                    }
+                }
+            }
+        },
+        "ProductSpecificationConfigurationRelation": {
+            "description": "The relation between two product specifications, for example, the relation enabledBy reflects a dependency between two products\n",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "description": "The type of relation - commertialRelation, subscription, enabledBy\n",
+                    "type": "string"
+                },
+                "subtype": {
+                    "description": "The subtype(role) of the catalog relation in case of business relation\n",
+                    "type": "string"
+                },
+                "relatedProductSpecificationConfiguration": {
+                    "$ref": "#/definitions/RelatedProductSpecificationConfiguration"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "ProductSpecificationConfigurationRelationExtension"
+                    }
+                }
+            }
+        },
+        "RelatedProductSpecificationConfiguration": {
+            "description": "The relation to another product specification. When primaryProductId or ProductOrderRef (mutually exclusive) exist,\nthe current product specification instance is not in the current cart or order.\n",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "description": "The product specification type\n",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "The unique ID of the product that is part of the order or the product inventory (ID or referenceId)\n",
+                    "type": "string"
+                },
+                "referenceId": {
+                    "description": "The Id of the reference product\n",
+                    "type": "string"
+                },
+                "primaryProductId": {
+                    "description": "The primary product related to the current product. If this property is populated,\nthe product specification is part of the customer product inventory (and not part of the order).\n",
+                    "type": "string"
+                },
+                "productOrderRef": {
+                    "$ref": "#/definitions/ProductOrderRef"
+                },
+                "shoppingCartRef": {
+                    "$ref": "#/definitions/ShoppingCartRef"
+                },
+                "productSpecification": {
+                    "$ref": "#/definitions/ProductSpecificationRef"
+                },
+                "configured": {
+                    "description": "Indicates whether the relation is configured (selected)\n",
+                    "type": "boolean"
+                }
+            }
+        },
+        "ShoppingCartRef": {
+            "description": "The reference to the shopping cart\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The unique ID of the shopping cart\n",
+                    "type": "string"
+                },
+                "href": {
+                    "format": "url",
+                    "description": "The self-reference of the shopping cart\n",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "cartItemId": {
+                    "description": "The unique ID of the shopping cart item\n",
+                    "type": "string"
+                },
+                "rootId": {
+                    "description": "The unique ID of the root  item\n",
+                    "type": "string"
+                }
+            },
+            "x-dox-DesignNote": "mutually exclusive with ProductOrderRef\n"
+        },
+        "BundledProductConfigurationGroup": {
+            "description": "The group option, by which the bundle product offering is related to its bundled product offerings\n",
+            "type": "object",
+            "properties": {
+                "groupOptionId": {
+                    "description": "The ID of the group option\n",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "The localized descriptive name of the group option\n",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "description": {
+                    "description": "The localized explanatory text describing the group option\n",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "lowerLimit": {
+                    "description": "The minimal number of bundled product offerings that is allowed by this group option\n",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "upperLimit": {
+                    "description": "The maximal number of bundled product offerings that is allowed by this group option\n",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "policyId": {
+                    "description": "The ID of the group option policy\n",
+                    "type": "string"
+                },
+                "bundleSameProductOffering": {
+                    "description": "Indicates whether this group option allows bundling of the same product offering (more than once)\n",
+                    "type": "boolean"
+                },
+                "replaceOffer": {
+                    "description": "Indicates whether the group option bundled product offerings are allowed to be replaced by each other\n",
+                    "type": "boolean"
+                },
+                "productConfiguration": {
+                    "description": "The product offerings that are bundled with this bundle product offering\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProductConfiguration"
+                    }
+                },
+                "searchProductOffering": {
+                    "$ref": "#/definitions/SearchProductOfferingRef"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "BundledProductConfigurationGroupExtension"
+                    }
+                }
+            }
+        },
+        "SearchProductOfferingRef": {
+            "description": "The reference to the search product offering resource  \n",
+            "type": "object",
+            "properties": {
+                "href": {
+                    "format": "url",
+                    "description": "The self-reference to the search product offering resource\n",
+                    "type": "string",
+                    "readOnly": true
+                }
+            }
+        },
+        "BundledProductConfiguration": {
+            "description": "The relation (cardinality) between a bundle product offering and its bundled product offerings    \n",
+            "type": "object",
+            "properties": {
+                "productOfferingId": {
+                    "description": "The unique ID of the bundle product order\n",
+                    "type": "string"
+                },
+                "lowerLimit": {
+                    "description": "The minimal number of bundled product offerings, with which the bundle product offering is related\n",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "upperLimit": {
+                    "description": "The maximal number of bundled product offerings, with which the bundle product offering is related\n",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "defaultNumber": {
+                    "description": "The default number of bundled product offerings, with which the bundle product offering is related\n",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "productConfiguration": {
+                    "description": "The product offerings that are bundled with this bundle product offering\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProductConfiguration"
+                    }
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "BundledProductConfigurationExtension"
+                    }
+                }
+            }
+        },
+        "ProductConfigurationPrice": {
+            "description": "The price associated with the product offering (instance)\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The identifier of the catalog price\n",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "The short and descriptive name of the price\n",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "The description of the price\n",
+                    "type": "string"
+                },
+                "priceType": {
+                    "description": "The category that describes the price\n",
+                    "type": "string",
+                    "x-dox-DesignNote": "e.g. recurring, one time, discount, allowance, penalty, etc.\n"
+                },
+                "unitOfMeasure": {
+                    "description": "The unit of measurement associated with the type of the allowance price\n",
+                    "type": "string",
+                    "x-dox-DesignNote": "e.g. \"GB\", \"Minutes\", etc.\n"
+                },
+                "recurringChargePeriod": {
+                    "description": "The recurring period associated with the recurring price type\n",
+                    "type": "string",
+                    "x-dox-DesignNote": "e.g. \"Daily\", \"Weekly\", \"Monthly\", etc.\n"
+                },
+                "recurringChargePeriodLength": {
+                    "description": "The period length of the recurring charge\n",
+                    "type": "integer"
+                },
+                "price": {
+                    "$ref": "#/definitions/Price"
+                },
+                "configured": {
+                    "description": "Indicates whether the offer has been selected and configured (true), or whether the offer is only a configuration option (false)\n",
+                    "type": "boolean"
+                },
+                "priceAlteration": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PriceAlteration"
+                    }
+                },
+                "finalPrice": {
+                    "$ref": "#/definitions/Price"
+                },
+                "standalonePrice": {
+                    "$ref": "#/definitions/Price"
+                },
+                "taxIncluded": {
+                    "description": "Indicates if the price is defined in the catalog one as tax included or as tax excluded. Valid Values - Excluded, Included",
+                    "type": "string"
+                },
+                "role": {
+                    "description": "The role of the price, for example, price, bundle price alteration, and so on\n",
+                    "type": "string"
+                },
+                "immediatePayOption": {
+                    "$ref": "#/definitions/ImmediatePayOption"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "ProductConfigurationPriceExtension"
+                    }
+                }
+            }
+        },
+        "ProductConfigurationTerm": {
+            "description": "The term in the product configuration (for example, commitment term)\n",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "The name of the term\n",
+                    "type": "string"
+                },
+                "displayName": {
+                    "description": "The display name of the term\n",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "The description of the term\n",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "The type of the term\n",
+                    "type": "string"
+                },
+                "configured": {
+                    "description": "Indicates whether the term is configured\n",
+                    "type": "boolean"
+                },
+                "default": {
+                    "description": "Indicates whether the product offering term is the default term presented to users\n",
+                    "type": "boolean"
+                },
+                "duration": {
+                    "$ref": "#/definitions/Quantity"
+                },
+                "validFor": {
+                    "$ref": "#/definitions/TimePeriod"
+                },
+                "freezeDate": {
+                    "format": "date-time",
+                    "description": "The date on which the commitment was frozen, due to an action performed on the product offering\n",
+                    "type": "string"
+                },
+                "impactType": {
+                    "description": "The type of the impact on the term of the product offering due to some action done on the product offering\n",
+                    "type": "string"
+                },
+                "policyId": {
+                    "description": "The ID of the product offering term policy\n",
+                    "type": "string"
+                },
+                "attachment": {
+                    "description": "The complementary pieces of information that describe the term via a document, picture, or any kind of multimedia content\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Attachment"
+                    },
+                    "readOnly": true
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "ProductConfigurationTermExtension"
+                    }
+                }
+            }
+        },
+        "PromotionCriteriaGroup": {
+            "properties": {
+                "id": {
+                    "description": "The ID of the criteria group\n",
+                    "type": "string"
+                },
+                "groupName": {
+                    "description": "The name of the criteria group\n",
+                    "type": "string"
+                },
+                "criteriaType": {
+                    "description": "The type of the criteria. Usually, represents a context entity such as Customer, Product Offering, Product, and so on.\n",
+                    "type": "string"
+                },
+                "criteriaTypeMethod": {
+                    "description": "The criteria type method used to describe the criteria group type. The supported criteria group types are - Scope, Criteria, List, Aggregation, and so on.\n",
+                    "type": "string"
+                },
+                "relationTypeInGroup": {
+                    "description": "The logical relation type amongst the various criteria inside the promotion criteria group. The AND and the OR logical relations are supported.\n",
+                    "type": "string"
+                },
+                "equalVariable": {
+                    "description": "Relevant for criteria groups with criteriaTypeMethod = Scope. Represents a common parameter that must be qualified on all criteria groups defined uder the scope.\n",
+                    "type": "string"
+                }
+            }
+        },
+        "PromotionCriteriaGroupRef": {
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object",
+                        "x-amdocs": {
+                            "refDefinition": "PromotionCriteriaGroupRefExtensions"
+                        }
+                    }
+                }
+            }
+        },
+        "ManualPromotionModifyReason": {
+            "description": "The modification reason associated with the optional promotion modification\n",
+            "required": [
+                "name"
+            ],
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "The name of the modification reason\n",
+                    "type": "string"
+                },
+                "reasonText": {
+                    "description": "The free text for the modification reason, for cases where the modify reason type requires the input of free text\n",
+                    "type": "string"
+                },
+                "action": {
+                    "description": "The action to be performed\n",
+                    "type": "string"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "ManualPromotionModifyReasonExtension"
+                    }
+                }
+            }
+        },
+        "PricingImpactEntityRef": {
+            "description": "The items impacted by the quoted product offering\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The ID of the pricing impct entity\n",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "The href of the pricing impct entity\n",
+                    "type": "string"
+                },
+                "@referredType": {
+                    "description": "Indicate the class (type) of entity. Valid Values - catalogItem, cartItem, orderItem, product\n",
+                    "type": "string"
+                },
+                "pathToRoot": {
+                    "description": "The path from the current item to the root, populated for products which are nested products\n",
+                    "type": "string"
+                },
+                "priceImpactType": {
+                    "description": "The impact type.  Valid Values - impactOn, impactedBy\n",
+                    "type": "string"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "PricingImpactEntityRefExtensions"
+                    }
+                }
+            }
+        },
+        "ValidateProductConfiguration": {
+            "description": "The product offering (instance) while it is being validated\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The ID of the product offering (instance)\n",
+                    "type": "string",
+                    "x-dox-DesignNote": "Represents either a shopping cart item, or a product order item.\n"
+                },
+                "modifiedItem": {
+                    "description": "The members of the modified product offering configuration object\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PatchElement"
+                    }
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "ValidateProductConfigurationExtension"
+                    }
+                }
+            }
+        },
+        "ModifyProductConfiguration": {
+            "description": "The product offering (instance) that is being modified\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The ID of the product offering (instance)\n",
+                    "type": "string",
+                    "x-dox-DesignNote": "Represents either a shopping cart item, or a product order item.\n"
+                },
+                "modifiedItem": {
+                    "description": "The members of the modified product offering configuration object\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PatchElement"
+                    }
+                },
+                "shoppingCart": {
+                    "$ref": "#/definitions/ShoppingCartRef"
+                },
+                "productOrder": {
+                    "$ref": "#/definitions/ProductOrderRef"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "ModifyProductConfigurationExtension"
+                    }
+                }
+            }
+        },
+        "AddProductConfiguration": {
+            "description": "Changes to the customer-owned product offering configuration while it is being added as a shopping cart item or as a product order item\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The ID of the product offering (instance)\n",
+                    "type": "string",
+                    "x-dox-DesignNote": "Represents the identifier of the owned product.\n"
+                },
+                "modifiedItem": {
+                    "description": "The members of the modified product offering configuration object\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PatchElement"
+                    }
+                },
+                "shoppingCart": {
+                    "$ref": "#/definitions/ShoppingCartRef"
+                },
+                "productOrder": {
+                    "$ref": "#/definitions/ProductOrderRef"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "AddProductConfigurationExtension"
+                    }
+                }
+            }
+        },
+        "PriceProductConfiguration": {
+            "description": "The product offering (instance) while it is being configured at ordering time\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The identifier of the product offering (instance)\n",
+                    "type": "string",
+                    "x-dox-DesignNote": "Either a shopping cart item, or a product order item\n"
+                },
+                "state": {
+                    "description": "The lifecycle state of the product offering (instance)\n",
+                    "type": "string",
+                    "readOnly": true,
+                    "x-dox-DesignNote": "The current lifecycle state of either a shopping cart item, a product order item, or a product\n"
+                },
+                "action": {
+                    "description": "The action to be performed on the product offering\n",
+                    "type": "string",
+                    "x-dox-DesignNote": "For new offering to be purchased it should be Add/Cancel. For existing offering it can be Add/Remove/Suspend/Resume/Change. If there is no change it should be NoChange.\n"
+                },
+                "quantity": {
+                    "description": "The quantity of the product offering\n",
+                    "type": "integer",
+                    "x-dox-DesignNote": "Relevant only for the top-most non-serialized product offering.\n"
+                },
+                "product": {
+                    "$ref": "#/definitions/PriceProduct"
+                },
+                "productOffering": {
+                    "$ref": "#/definitions/ProductOfferingRef"
+                },
+                "priceProductConfiguration": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PriceProductConfiguration"
+                    },
+                    "x-dox-DesignNote": "The bundledproduct offerings (instances).\n"
+                },
+                "productConfigurationTotalPrice": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProductConfigurationPrice"
+                    },
+                    "x-dox-DesignNote": "The total price of the order product offering (instance), includes the totals of the bundled product offerings (instances)\n"
+                },
+                "productConfigurationPrice": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProductConfigurationPrice"
+                    },
+                    "x-dox-DesignNote": "The product offering (instance) price. The contribution of the product offering on its total price, based on its product characteristics.\nSet (as part of request) only in case of price alteration.\n"
+                },
+                "characteristic": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProductCharacteristic"
+                    }
+                },
+                "priceProductConfigurationTerm": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PriceProductConfigurationTerm"
+                    }
+                },
+                "modifyReason": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ModifyReason"
+                    }
+                },
+                "actionDate": {
+                    "format": "date-time",
+                    "description": "The date for which the product offer is effective from\n",
+                    "type": "string",
+                    "x-dox-DesignNote": "This date is used for promotion qualification calculation and is sent to promotion qualification engine\n"
+                },
+                "characteristicMetadata": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CharacteristicMetadata"
+                    }
+                },
+                "productConfigurationRelationship": {
+                    "description": "The relationship between product configurations\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProductConfigurationRelationship"
+                    }
+                },
+                "shoppingCart": {
+                    "$ref": "#/definitions/ShoppingCartRef"
+                },
+                "productOrder": {
+                    "$ref": "#/definitions/ProductOrderRef"
+                },
+                "relatedImmediatePromotion": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatedImmediatePromotion"
+                    },
+                    "x-dox-DesignNote": "A reference to the immediatePromotionRef entity.\n"
+                },
+                "immediatePromotion": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ImmediatePromotion"
+                    },
+                    "x-dox-DesignNote": "A reference to the Immediate Promotions with details\n"
+                },
+                "relatedParty": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatedPartyRef"
+                    },
+                    "x-dox-DesignNote": "A reference to the RelatedPartyRef.\n"
+                },
+                "creationDate": {
+                    "format": "date-time",
+                    "description": "The item creation date \n",
+                    "type": "string"
+                },
+                "requestedCompletionDate": {
+                    "format": "date-time",
+                    "description": "The date on which the product configuration action was requested to be completed\n",
+                    "type": "string"
+                },
+                "pricingImpactEntity": {
+                    "description": "impacted items \n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PricingImpactEntityRef"
+                    }
+                },
+                "immediatePayOption": {
+                    "$ref": "#/definitions/ImmediatePayOption"
+                },
+                "message": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PriceMessage"
+                    }
+                },
+                "configured": {
+                    "description": "Indicates whether the price has been selected and configured (true) and setting action of price change accordingly.\n",
+                    "type": "boolean"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "PriceProductConfigurationExtension"
+                    }
+                }
+            }
+        },
+        "PriceProduct": {
+            "description": "product spec instance\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The identifier of the product \n",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "The status of the product\n",
+                    "type": "string"
+                },
+                "version": {
+                    "description": "The version of the product \n",
+                    "type": "string"
+                },
+                "activationDate": {
+                    "format": "date-time",
+                    "description": "The date on which the product was activated. \n",
+                    "type": "string"
+                },
+                "referenceId": {
+                    "description": "The reference ID of the product specification instance\n",
+                    "type": "string",
+                    "x-dox-DesignNote": "The value is managed by the Shopping Cart MS / Product Order MS to uniquely identify the associated ProductRefOrValue\n"
+                },
+                "productSpecificationRef": {
+                    "$ref": "#/definitions/ProductSpecificationRef"
+                },
+                "characteristic": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProductCharacteristic"
+                    }
+                },
+                "priceProductRelationship": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PriceProductRelationship"
+                    }
+                },
+                "primaryProductId": {
+                    "description": "Unique identifier of the primary product. This property is populated only when the referenced product is a product in the inventory. \n",
+                    "type": "string"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "PriceProductExtension"
+                    }
+                }
+            }
+        },
+        "PriceProductRelationship": {
+            "description": "Relationship to another product\n",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "description": "Type of the relationship\n",
+                    "type": "string"
+                },
+                "subtype": {
+                    "description": "Specific relation entity subtype. Relevant for several relation types \n",
+                    "type": "string"
+                },
+                "priceProduct": {
+                    "$ref": "#/definitions/PriceProduct"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object",
+                        "x-amdocs": {
+                            "refDefinition": "PriceProductRelationshipExtension"
+                        }
+                    }
+                }
+            }
+        },
+        "PriceProductConfigurationTerm": {
+            "description": "The term of the product configuration (for example, commitment term)\n",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "duration": {
+                    "$ref": "#/definitions/Quantity"
+                },
+                "validFor": {
+                    "$ref": "#/definitions/TimePeriod"
+                },
+                "freezeDate": {
+                    "format": "date-time",
+                    "description": "The date on which the commitment was frozen as a result of an action performed on the product offering\n",
+                    "type": "string"
+                },
+                "impactType": {
+                    "description": "The type of impact on the term of the product offering as a result of an action performed on the product offering\n",
+                    "type": "string"
+                },
+                "policyId": {
+                    "description": "The ID of the product offering term policy\n",
+                    "type": "string"
+                },
+                "remainingDuration": {
+                    "$ref": "#/definitions/Quantity"
+                },
+                "elapsedDuration": {
+                    "$ref": "#/definitions/Quantity"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "PriceProductConfigurationTermExtension"
+                    }
+                }
+            }
+        },
+        "ProductConfigurationRelationship": {
+            "description": "The relationship between product configurations\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The ID of the referenced order item\n",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "The type of relationship to the related order item\n",
+                    "type": "string"
+                },
+                "externalId": {
+                    "description": "The external ID of the referenced order item, used if the referenced order item is not yet persisted (no ID was assigned to it). The <i>id</i> attribute, if set, takes precedence over it.\n",
+                    "type": "string"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "ProductConfigurationRelationshipExtension"
+                    }
+                }
+            }
+        },
+        "PriceMessage": {
+            "description": "Message related to the product order price\n",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "description": "Implementation discriminator\n",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "text": {
+                    "description": "Localized descriptive validation message\n",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "path": {
+                    "description": "Path to the nested product order price\n",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "severity": {
+                    "description": "Message severity\n",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "parameter": {
+                    "description": "Message parameter\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PriceMessageParameter"
+                    },
+                    "readOnly": true
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "PriceMessageExtensions"
+                    }
+                }
+            }
+        },
+        "PriceMessageParameter": {
+            "description": "Name/value pair of the message parameter\n",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Name of the parameter\n",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "value": {
+                    "description": "Value(s) of the parameter\n",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "readOnly": true
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "PriceMessageParameterExtensions"
+                    }
+                }
+            }
+        },
+        "TermProductConfiguration": {
+            "description": "The configuration term of a product order\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The ID of the product offering instance. The value can include the order item ID or the cart item ID.\n",
+                    "type": "string"
+                },
+                "actionDate": {
+                    "format": "date-time",
+                    "description": "The date on which the action was applied\n",
+                    "type": "string"
+                },
+                "termProductConfiguration": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/TermProductConfiguration"
+                    }
+                },
+                "termConfiguration": {
+                    "$ref": "#/definitions/TermConfiguration"
+                },
+                "modifyReason": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ModifyReason"
+                    }
+                },
+                "fromTermConfiguration": {
+                    "$ref": "#/definitions/TermConfiguration"
+                },
+                "validation": {
+                    "$ref": "#/definitions/Validation"
+                },
+                "remainingDuration": {
+                    "$ref": "#/definitions/Quantity"
+                },
+                "elapsedDuration": {
+                    "$ref": "#/definitions/Quantity"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "TermProductConfigurationExtension"
+                    }
+                }
+            }
+        },
+        "TermConfiguration": {
+            "description": "The terms of a configuration item\n",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "The name of the configuration term\n",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "The type of the configuration term\n",
+                    "type": "string"
+                },
+                "duration": {
+                    "$ref": "#/definitions/Quantity"
+                },
+                "validFor": {
+                    "$ref": "#/definitions/TimePeriod"
+                },
+                "freezeDate": {
+                    "format": "date-time",
+                    "description": "The date on which the commitment was frozen due to an action applied to the product offering\n",
+                    "type": "string"
+                },
+                "impactType": {
+                    "description": "The impact on the commitment term of the product offering due to an action applied to the product offering\n",
+                    "type": "string"
+                },
+                "policyId": {
+                    "description": "The ID of the product offering commitment term policy\n",
+                    "type": "string"
+                },
+                "remainingDuration": {
+                    "$ref": "#/definitions/Quantity"
+                },
+                "elapsedDuration": {
+                    "$ref": "#/definitions/Quantity"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "TermConfigurationExtension"
+                    }
+                }
+            }
+        },
+        "ProductConfigurationValidation": {
+            "description": "The product offering to be validated\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The ID of the product offering (instance)\n",
+                    "type": "string",
+                    "x-dox-DesignNote": "Represents a shopping cart item, a product order item, or an inventory product.\n"
+                },
+                "groupOptionId": {
+                    "description": "The ID of the group option with which the product offering is associated\n",
+                    "type": "string"
+                },
+                "productOfferingType": {
+                    "description": "The type of the product offering\n",
+                    "type": "string"
+                },
+                "action": {
+                    "description": "The actions applicable for the product offering (instance)\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Action"
+                    }
+                },
+                "state": {
+                    "description": "The lifecycle state of the product offering (instance)\n",
+                    "type": "string",
+                    "x-dox-DesignNote": "Represents the current lifecycle state of either a shopping cart item, a product order item, or product.\n"
+                },
+                "quantity": {
+                    "description": "The quantity of the product offering\n",
+                    "type": "integer",
+                    "x-dox-DesignNote": "Relevant only for the top-most non-serialized product offering.\n"
+                },
+                "status": {
+                    "description": "The Inventory ststus of the related offer\n",
+                    "type": "string",
+                    "x-dox-DesignNote": "Represents the Inventory ststus of the related offer.\n"
+                },
+                "bundledProductConfiguration": {
+                    "description": "The bundled product offerings\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProductConfigurationValidation"
+                    }
+                },
+                "productConfigurationValidationRelationship": {
+                    "description": "The relationship to other product offerings to be validated\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProductConfigurationValidationRelationship"
+                    }
+                },
+                "characteristic": {
+                    "description": "The characteristics of the product offering\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProductConfigurationCharacteristic"
+                    }
+                },
+                "productSpecificationConfiguration": {
+                    "$ref": "#/definitions/ProductSpecificationConfiguration"
+                },
+                "productOffering": {
+                    "$ref": "#/definitions/ProductOfferingRef"
+                },
+                "productConfigurationValidationTerm": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProductConfigurationValidationTerm"
+                    }
+                },
+                "requestedCompletionDate": {
+                    "format": "date-time",
+                    "description": "The date on which the product configuration action was requested to be completed\n",
+                    "type": "string"
+                },
+                "relatedParty": {
+                    "$ref": "#/definitions/RelatedPartyRef"
+                },
+                "characteristicMetadata": {
+                    "description": "The characteristic of the product\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CharacteristicMetadata"
+                    }
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "ProductConfigurationValidationExtension"
+                    }
+                }
+            }
+        },
+        "ProductConfigurationValidationRelationship": {
+            "description": "The relationship between product offerings to be validated\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The unique ID of the referenced product offering to be validated\n",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "The type of the relationship with the related product offering to be validated\n",
+                    "type": "string"
+                }
+            }
+        },
+        "ProductConfigurationValidationTerm": {
+            "description": "The term in the product configuration, for example, the commitment term\n",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "duration": {
+                    "$ref": "#/definitions/Quantity"
+                },
+                "validFor": {
+                    "$ref": "#/definitions/TimePeriod"
+                },
+                "freezeDate": {
+                    "format": "date-time",
+                    "description": "The date on which the commitment was frozen due to an action applied to the product offering \n",
+                    "type": "string"
+                },
+                "impactType": {
+                    "description": "The type of the impact on the term of the product offering due to an action applied to the product offering\n",
+                    "type": "string"
+                },
+                "policyId": {
+                    "description": "The ID of the product offering term policy\n",
+                    "type": "string"
+                },
+                "characteristicMetadata": {
+                    "description": "The characteristic of the product\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CharacteristicMetadata"
+                    }
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "ProductConfigurationValidationTermExtension"
+                    }
+                }
+            }
+        },
+        "DurationPolicy": {
+            "description": "Policy for calculting a limited duration for any entity\n",
+            "type": "object",
+            "properties": {
+                "duration": {
+                    "$ref": "#/definitions/Quantity"
+                },
+                "startDatePolicy": {
+                    "description": "Start date of the policy, from which the duration is calculated\n",
+                    "type": "string"
+                },
+                "endDatePolicy": {
+                    "description": "End date of the policy, until which the duration is calculated\n",
+                    "type": "string"
+                },
+                "effectiveFor": {
+                    "$ref": "#/definitions/TimePeriod"
+                },
+                "terminationPolicy": {
+                    "description": "Defines the termination policy upon duration end date\n",
+                    "type": "string"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object",
+                        "x-amdocs": {
+                            "refDefinition": "DurationPolicyExtensions"
+                        }
+                    }
+                },
+                "startAfter": {
+                    "$ref": "#/definitions/Quantity"
+                }
+            }
+        },
+        "ModifyReason": {
+            "description": "Modification reason associated with the action performed on the product offering that is related to the order item\n",
+            "required": [
+                "action",
+                "name"
+            ],
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Name of the modification reason\n",
+                    "type": "string"
+                },
+                "reasonText": {
+                    "description": "Text of the modification reason. This property is populated if the type of the modification reason requires an input of a free text.\n",
+                    "type": "string"
+                },
+                "action": {
+                    "description": "Action performed on the instance of the product offering\n",
+                    "type": "string"
+                },
+                "actionDuration": {
+                    "$ref": "#/definitions/DurationPolicy"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "ModifyReasonExtensions"
+                    }
+                },
+                "description": {
+                    "description": "The (localized) description of the modification reason\n",
+                    "type": "string"
+                },
+                "default": {
+                    "description": "Indicates the default modify reason\n",
+                    "type": "boolean"
+                },
+                "configured": {
+                    "description": "Indicates whether the modification reason was configured (selected included) as part of the product offering configuration\n",
+                    "type": "boolean"
+                }
+            }
+        },
+        "ProductOfferingRef": {
+            "description": "Reference to the product offering entities that are orderable from the provider of the catalog. The resource includes pricing information.\n",
+            "required": [
+                "id"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the product offering\n",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "Hypertext reference to the product offering\n",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of the product offering\n",
+                    "type": "string"
+                },
+                "@referredType": {
+                    "description": "Name of the type of the referred resource entity\n",
+                    "type": "string"
+                },
+                "productOfferingType": {
+                    "description": "Type of the product offering\n",
+                    "type": "string"
+                },
+                "productOfferingTypeGroup": {
+                    "description": "The type of the product offering group\n",
+                    "type": "string"
+                },
+                "productOfferingClassification": {
+                    "description": "The classification of the product offering. Valid values: customerOffer, subscriberMainOffer, subscriberOffer\n",
+                    "type": "string"
+                },
+                "serialized": {
+                    "description": "Indicates whether the product offering is maintained per instance or can represent a bulk quantity\n",
+                    "type": "boolean"
+                },
+                "primary": {
+                    "description": "Indicates whether the product offering has a business significance for the customer&#58;\n- It is reflected as a product for the customer and it is actionable - the customer can perform ordering actions on it\n- An action performed on a primary offer can impact the actions available for its bundled or dependent offers (for example, when ownership of a primary offer is changed some internal offers cannot be added or removed)\n",
+                    "type": "boolean"
+                },
+                "version": {
+                    "description": "Version of the product offering\n",
+                    "type": "string"
+                },
+                "valueRank": {
+                    "description": "Value rank of the product offering\n",
+                    "type": "integer"
+                },
+                "attachment": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Attachment"
+                    }
+                },
+                "durationPolicy": {
+                    "$ref": "#/definitions/DurationPolicy"
+                },
+                "type": {
+                    "description": "The type of the product offering\n",
+                    "type": "string"
+                }
+            }
+        },
+        "ProductOrderRef": {
+            "description": "Reference to the product order\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the product order\n",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "Hypertext reference to the product order\n",
+                    "type": "string"
+                },
+                "validation": {
+                    "$ref": "#/definitions/Validation"
+                },
+                "orderItemId": {
+                    "description": "The ID of the order item\n",
+                    "type": "string"
+                },
+                "rootId": {
+                    "description": "The unique ID of the root order item\n",
+                    "type": "string"
+                }
+            },
+            "x-dox-DesignNote": "mutually exclusive with ShoppingCartRef\n"
+        },
+        "ProductRef": {
+            "description": "Reference to an owned product or to a product to be provided\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the product\n",
+                    "type": "string"
+                },
+                "version": {
+                    "description": "Version of the product\n",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "State of the product in the Product Inventory subdomain\n",
+                    "type": "string"
+                },
+                "href": {
+                    "format": "url",
+                    "description": "The self-reference to the inventory product\n",
+                    "type": "string"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object",
+                        "x-amdocs": {
+                            "refDefinition": "ProductRefExtension"
+                        }
+                    }
+                }
+            }
+        },
+        "ProductSpecificationRef": {
+            "description": "Detailed information of a tangible or intangible object that is made available externally in the form of a product offering to customers or other parties playing a party role\n",
+            "required": [
+                "id"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the product specification\n",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "Hypertext reference to the product specification\n",
+                    "type": "string"
+                },
+                "version": {
+                    "description": "Version of the product specification\n",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of the product specification\n",
+                    "type": "string"
+                },
+                "productSpecificationType": {
+                    "description": "Type of the product specification\n",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "The identifier of the product spec type\n",
+                    "type": "string"
+                }
+            }
+        },
+        "PromotionAction": {
+            "description": "Action of the promotion. Customers can receive benefits associated with the action if the conditions in the promotion pattern are fulfilled.\n",
+            "required": [
+                "actionType"
+            ],
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the promotion action\n",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of the promotion action\n",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "Description of the promotion action\n",
+                    "type": "string"
+                },
+                "actionType": {
+                    "description": "Type of the action. A valid value is *Price Alteration*, *Product Offering*.\n",
+                    "type": "string"
+                },
+                "actionValue": {
+                    "description": "Value of the action. If the *actionType* is Price Alteration, the action value is '1'.\n",
+                    "type": "integer"
+                },
+                "promotionPriceAlteration": {
+                    "$ref": "#/definitions/ProductOfferingPriceRef"
+                },
+                "productOfferingBenefit": {
+                    "description": "Reference to a product offering usaed as a free offer benefit by the promotion\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProductOfferingBenefit"
+                    }
+                },
+                "durationPolicy": {
+                    "$ref": "#/definitions/DurationPolicy"
+                },
+                "validFor": {
+                    "$ref": "#/definitions/TimePeriod"
+                },
+                "actionTerminationPolicy": {
+                    "description": "Defines the termination policy upon duration end date\n",
+                    "type": "string"
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "PromotionActionExtensions"
+                    }
+                },
+                "type": {
+                    "description": "The identifier of the product spec type\n",
+                    "type": "string"
+                },
+                "href": {
+                    "format": "url",
+                    "description": "The identifier of the product spec href\n",
+                    "type": "string"
+                }
+            }
+        },
+        "Validation": {
+            "description": "Validation result that is associated with the product order\n",
+            "type": "object",
+            "properties": {
+                "status": {
+                    "description": "Validation status\n",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "validationMessage": {
+                    "description": "Validation message\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ValidationMessage"
+                    },
+                    "readOnly": true
+                },
+                "configurationChange": {
+                    "description": "Configuration change\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ConfigurationChange"
+                    },
+                    "readOnly": true
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "ValidationExtensions"
+                    }
+                },
+                "id": {
+                    "description": "The ID of the product offering (instance)\n",
+                    "type": "string",
+                    "readOnly": true,
+                    "x-dox-DesignNote": "Represents a shopping cart item, a product order item, or an inventory product.\n"
                 }
             }
         }
