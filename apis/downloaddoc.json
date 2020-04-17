@@ -1,0 +1,72 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "downloaddoc",
+        "version": "1.0.0",
+        "description": "Generic document download"
+    },
+    "paths": {
+        "/document": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "download"
+                ],
+                "parameters": [
+                    {
+                        "name": "date",
+                        "description": "Creation date of document",
+                        "in": "query",
+                        "required": true,
+                        "type": "string",
+                        "format": "date"
+                    },
+                    {
+                        "name": "fileidentifier",
+                        "description": "identifier provided",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/FileResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "File not found"
+                    }
+                },
+                "operationId": "downloaddocument",
+                "summary": "Generic document download",
+                "description": "Download a document based on input query parameters"
+            }
+        }
+    },
+    "definitions": {
+        "FileResponse": {
+            "description": "",
+            "type": "object"
+        }
+    },
+    "tags": [
+        {
+            "name": "download",
+            "description": "Download a document"
+        }
+    ]
+}
