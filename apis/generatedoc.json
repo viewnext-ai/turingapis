@@ -12,48 +12,6 @@
         "http"
     ],
     "paths": {
-        "/request/{requestId}": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "document"
-                ],
-                "parameters": [
-                    {
-                        "name": "requestId",
-                        "description": "Internal request identifier provided in request creation",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/request"
-                        }
-                    },
-                    "400": {
-                        "description": "Value not found"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    },
-                    "405": {
-                        "description": "Validation error"
-                    }
-                },
-                "operationId": "RequestByOrderId",
-                "summary": "Request order information and a list of documents related with one order",
-                "description": "Returns request information and a list of documents related with it."
-            }
-        },
         "/request/summary": {
             "get": {
                 "consumes": [
@@ -267,6 +225,48 @@
                 "summary": "Returns user roles from token",
                 "description": "Returns user roles from token"
             }
+        },
+        "/request/{requestId}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "document"
+                ],
+                "parameters": [
+                    {
+                        "name": "requestId",
+                        "description": "Internal request identifier provided in request creation",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/request"
+                        }
+                    },
+                    "400": {
+                        "description": "Value not found"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "405": {
+                        "description": "Validation error"
+                    }
+                },
+                "operationId": "RequestById",
+                "summary": "Request information and a list of documents related with one order",
+                "description": "Returns request information and a list of documents related with it."
+            }
         }
     },
     "definitions": {
@@ -290,7 +290,10 @@
         },
         "document": {
             "required": [
-                "status"
+                "status",
+                "currentStatus",
+                "statusDate",
+                "createdDate"
             ],
             "type": "object",
             "properties": {
@@ -338,6 +341,20 @@
                 },
                 "publishType": {
                     "description": "Storage required for this document.",
+                    "type": "string"
+                },
+                "currentStatus": {
+                    "$ref": "#/definitions/status_type",
+                    "description": "actual Document Status"
+                },
+                "statusDate": {
+                    "format": "date-time",
+                    "description": "Date of current status",
+                    "type": "string"
+                },
+                "createdDate": {
+                    "format": "date-time",
+                    "description": "Document creation Data time",
                     "type": "string"
                 }
             },
@@ -429,7 +446,10 @@
             "description": "Request information",
             "required": [
                 "language",
-                "info"
+                "info",
+                "currentStatus",
+                "createdDate",
+                "statusDate"
             ],
             "type": "object",
             "properties": {
@@ -457,6 +477,20 @@
                     "items": {
                         "$ref": "#/definitions/document"
                     }
+                },
+                "createdDate": {
+                    "format": "date-time",
+                    "description": "Request creation Data time",
+                    "type": "string"
+                },
+                "statusDate": {
+                    "format": "date-time",
+                    "description": "Date of current status",
+                    "type": "string"
+                },
+                "currentStatus": {
+                    "$ref": "#/definitions/status_type",
+                    "description": "actual Request Status"
                 }
             }
         },
