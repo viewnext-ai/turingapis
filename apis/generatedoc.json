@@ -12,11 +12,77 @@
         "http"
     ],
     "paths": {
-        "/request/summary": {
+        "/roles": {
             "get": {
-                "consumes": [
+                "produces": [
                     "application/json"
                 ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Value not found"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "405": {
+                        "description": "Validation error"
+                    }
+                },
+                "operationId": "userroles",
+                "summary": "Returns user roles from token",
+                "description": "Returns user roles from token"
+            }
+        },
+        "/request/{requestId}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "document"
+                ],
+                "parameters": [
+                    {
+                        "name": "requestId",
+                        "description": "Internal request identifier provided in request creation",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/request"
+                        }
+                    },
+                    "400": {
+                        "description": "Value not found"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "405": {
+                        "description": "Validation error"
+                    }
+                },
+                "operationId": "RequestById",
+                "summary": "Request information and a list of documents related with one order",
+                "description": "Returns request information and a list of documents related with it."
+            }
+        },
+        "/request/summary": {
+            "get": {
                 "produces": [
                     "application/json"
                 ],
@@ -26,19 +92,19 @@
                 "parameters": [
                     {
                         "name": "filter",
-                        "description": "Query parameter to specify the search filters. Attribute filters are specified in the following way:\n_?filters=([attributeName][operator][value],...,[value])[&|;]...[&|;]([attributeName][operator][value],...,[value])_\n\nSupported attributeNames are:\n* brand\n* channel\n* stack\n* step\n\nSupported operators are:\n* Equality: == (equals), != (not equals)\n\n\n\nComma separated values for an attribute are evaluated with OR operator. & is the separator for multiple queries to be evaluated with AND operator while the ; is the separator for multiple queries to be evaluated with OR operator.",
+                        "description": "Query parameter to specify the search filters. Attribute filters are specified in the following way:\n_?filter=[attributeName][operator][value],...,[value][&|;]...[&|;][attributeName][operator][value],...,[value]_\n\nSupported attributeNames are:\n* brand\n* channel\n* stack\n* step\n\nSupported operators are:\n* Equality: == (equals), != (not equals)\n\n\n\nComma separated values for an attribute are evaluated with OR operator. & is the separator for multiple queries to be evaluated with AND operator while the ; is the separator for multiple queries to be evaluated with OR operator.",
                         "in": "query",
                         "type": "string"
                     },
                     {
                         "name": "sort",
-                        "description": "Sort parameter to specify the search filters. Sort attributes are specified in the following way:\n_?sort=([attributeName][order])[&]...[&]([attributeName][order])_\n\nSupported attributeNames are:\n* brand\n* channel\n* stack\n* step\n* createdDate\n* statusDate\n\nSupported orders are:\n* Ascending: asc\n* Descending: desc\n\n\n\n& is the separator for multiple sort parameters",
+                        "description": "Sort parameter to specify the search filters. Sort attributes are specified in the following way:\n_?sort=[attributeName][order][&]...[&][attributeName][order]_\n\nSupported attributeNames are:\n* brand\n* channel\n* stack\n* step\n* createdDate\n* statusDate\n\nSupported orders are:\n* Ascending: asc\n* Descending: desc\n\n\n\n& is the separator for multiple sort parameters",
                         "in": "query",
                         "type": "string"
                     },
                     {
                         "name": "page",
-                        "description": "Page parameter. \n_?page=([pagenumber] size [pagesize])_\n\nDefault pagesize is 20",
+                        "description": "Page parameter. \n_?page=[pagenumber],[pagesize]_\n\nDefault pagesize is 20",
                         "in": "query",
                         "type": "string"
                     },
@@ -46,15 +112,13 @@
                         "name": "startdate",
                         "description": "Start date from which the requests will be returned by filtering by the request creation date. \nFormat will be YYYY-MM-DD. \nBy default, startdate will be equal than enddate. \nDates between start and end date won't be more than 7.",
                         "in": "query",
-                        "type": "string",
-                        "format": "date"
+                        "type": "string"
                     },
                     {
                         "name": "enddate",
                         "description": "End date until which the requests will be returned by filtering by the request creation date. \nFormat will be YYYY-MM-DD. \nBy default, enddate will be equal than today. \nDates between start and end date won't be more than 7.",
                         "in": "query",
-                        "type": "string",
-                        "format": "date"
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -84,9 +148,6 @@
         },
         "/request": {
             "get": {
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -96,7 +157,7 @@
                 "parameters": [
                     {
                         "name": "filter",
-                        "description": "Query parameter to specify the search filters. Attribute filters are specified in the following way:\n_?filters=([attributeName][operator][value],...,[value])[&|;]...[&|;]([attributeName][operator][value],...,[value])_\n\nSupported attributeNames are:\n* brand\n* channel\n* stack\n* step\n* status\n\nSupported operators are:\n* Equality: == (equals), != (not equals)\n\n\n\nComma separated values for an attribute are evaluated with OR operator. & is the separator for multiple queries to be evaluated with AND operator while the ; is the separator for multiple queries to be evaluated with OR operator.",
+                        "description": "Query parameter to specify the search filters. Attribute filters are specified in the following way:\n_?filters=([attributeName][operator][value],...,[value])[&|;]...[&|;]([attributeName][operator][value],...,[value])_\n\nSupported attributeNames are:\n* brand\n* channel\n* stack\n* step\n* status\n\nSupported operators are:\n* Equality: == (equals), != (not equals)\n\n\n\nComma separated values for an attribute are evaluated with OR operator. & is the separator for multiple queries to be evaluated with AND operator while the ; is the separator for multiple queries to be evaluated with OR operator (OR operator is not implemented).",
                         "in": "query",
                         "type": "string"
                     },
@@ -117,14 +178,14 @@
                         "description": "Start date from which the requests will be returned by filtering by the request creation date. \nFormat will be YYYY-MM-DD. \nBy default, startdate will be equal than enddate. \nDates between start and end date won't be more than 7.",
                         "in": "query",
                         "type": "string",
-                        "format": "date"
+                        "pattern": "^((2000|2400|2800|(19|2[0-9](0[48]|[2468][048]|[13579][26])))-02-29)$|^(((19|2[0-9])[0-9]{2})-02-(0[1-9]|1[0-9]|2[0-8]))$|^(((19|2[0-9])[0-9]{2})-(0[13578]|10|12)-(0[1-9]|[12][0-9]|3[01]))$|^(((19|2[0-9])[0-9]{2})-(0[469]|11)-(0[1-9]|[12][0-9]|30))$"
                     },
                     {
                         "name": "enddate",
                         "description": "End date until which the requests will be returned by filtering by the request creation date. \nFormat will be YYYY-MM-DD. \nBy default, enddate will be equal than today. \nDates between start and end date won't be more than 7.",
                         "in": "query",
                         "type": "string",
-                        "format": "date"
+                        "pattern": "^((2000|2400|2800|(19|2[0-9](0[48]|[2468][048]|[13579][26])))-02-29)$|^(((19|2[0-9])[0-9]{2})-02-(0[1-9]|1[0-9]|2[0-8]))$|^(((19|2[0-9])[0-9]{2})-(0[13578]|10|12)-(0[1-9]|[12][0-9]|3[01]))$|^(((19|2[0-9])[0-9]{2})-(0[469]|11)-(0[1-9]|[12][0-9]|30))$"
                     }
                 ],
                 "responses": {
@@ -192,81 +253,6 @@
                 "summary": "Create documents related with one order and step",
                 "description": "Create documents related with one order and step. \n\nReturns internal identifier for this request"
             }
-        },
-        "/roles": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Value not found"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    },
-                    "405": {
-                        "description": "Validation error"
-                    }
-                },
-                "operationId": "userroles",
-                "summary": "Returns user roles from token",
-                "description": "Returns user roles from token"
-            }
-        },
-        "/request/{requestId}": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "document"
-                ],
-                "parameters": [
-                    {
-                        "name": "requestId",
-                        "description": "Internal request identifier provided in request creation",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/request"
-                        }
-                    },
-                    "400": {
-                        "description": "Value not found"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    },
-                    "405": {
-                        "description": "Validation error"
-                    }
-                },
-                "operationId": "RequestById",
-                "summary": "Request information and a list of documents related with one order",
-                "description": "Returns request information and a list of documents related with it."
-            }
         }
     },
     "definitions": {
@@ -292,7 +278,6 @@
             "required": [
                 "status",
                 "currentStatus",
-                "statusDate",
                 "createdDate"
             ],
             "type": "object",
@@ -346,11 +331,6 @@
                 "currentStatus": {
                     "$ref": "#/definitions/status_type",
                     "description": "actual Document Status"
-                },
-                "statusDate": {
-                    "format": "date-time",
-                    "description": "Date of current status",
-                    "type": "string"
                 },
                 "createdDate": {
                     "format": "date-time",
@@ -448,8 +428,7 @@
                 "language",
                 "info",
                 "currentStatus",
-                "createdDate",
-                "statusDate"
+                "createdDate"
             ],
             "type": "object",
             "properties": {
@@ -481,11 +460,6 @@
                 "createdDate": {
                     "format": "date-time",
                     "description": "Request creation Data time",
-                    "type": "string"
-                },
-                "statusDate": {
-                    "format": "date-time",
-                    "description": "Date of current status",
                     "type": "string"
                 },
                 "currentStatus": {
