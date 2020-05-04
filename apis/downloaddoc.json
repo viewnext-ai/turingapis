@@ -20,7 +20,7 @@
                 "parameters": [
                     {
                         "name": "date",
-                        "description": "Creation date of document",
+                        "description": "Creation date of document format YYYYMMDD",
                         "in": "query",
                         "required": true,
                         "type": "string"
