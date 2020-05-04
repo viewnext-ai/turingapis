@@ -23,8 +23,7 @@
                         "description": "Creation date of document",
                         "in": "query",
                         "required": true,
-                        "type": "string",
-                        "format": "date"
+                        "type": "string"
                     },
                     {
                         "name": "fileidentifier",
