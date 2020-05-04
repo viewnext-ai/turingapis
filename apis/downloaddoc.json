@@ -8,9 +8,6 @@
     "paths": {
         "/document": {
             "get": {
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -58,8 +55,16 @@
     },
     "definitions": {
         "FileResponse": {
-            "description": "",
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "Fichero": {
+                    "format": "byte",
+                    "type": "string"
+                },
+                "nombreFichero": {
+                    "type": "string"
+                }
+            }
         }
     },
     "tags": [
