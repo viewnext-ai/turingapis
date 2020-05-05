@@ -1,0 +1,116 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "storagedoc",
+        "version": "1.0.0",
+        "description": "Microservice that will load a document in GED and retrieve download URL"
+    },
+    "paths": {
+        "/documents": {
+            "post": {
+                "tags": [
+                    "GED"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/documentInformation"
+                        },
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responseDocUpload"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "operationId": "uploaddocument",
+                "summary": "Upload one document in GED"
+            }
+        }
+    },
+    "definitions": {
+        "index": {
+            "description": "Object to store index key - values",
+            "type": "object",
+            "properties": {
+                "indextype": {
+                    "description": "",
+                    "type": "string"
+                },
+                "indexvalue": {
+                    "description": "",
+                    "type": "string"
+                }
+            }
+        },
+        "documentInformation": {
+            "description": "Information to upload document to GED",
+            "type": "object",
+            "properties": {
+                "orderid": {
+                    "description": "Order identifier",
+                    "type": "string"
+                },
+                "requestid": {
+                    "description": "Internal request identifier",
+                    "type": "string"
+                },
+                "documentid": {
+                    "description": "Document identifier",
+                    "type": "string"
+                },
+                "claseDoc": {
+                    "type": "string"
+                },
+                "documentUrl": {
+                    "type": "string"
+                },
+                "index": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/index"
+                    }
+                },
+                "bucket": {
+                    "type": "string"
+                }
+            }
+        },
+        "responseDocUpload": {
+            "type": "object",
+            "properties": {
+                "result": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "errorDesc": {
+                    "type": "string"
+                },
+                "downloadurl": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
