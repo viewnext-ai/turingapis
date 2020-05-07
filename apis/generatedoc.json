@@ -192,10 +192,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/request"
-                            }
+                            "$ref": "#/definitions/RequestPage"
                         }
                     },
                     "400": {
@@ -540,6 +537,31 @@
                 },
                 "second_surmane": {
                     "type": "string"
+                }
+            }
+        },
+        "RequestPage": {
+            "description": "Page of request list",
+            "required": [
+                "totalPages",
+                "totalRequest"
+            ],
+            "type": "object",
+            "properties": {
+                "RequestList": {
+                    "description": "Request List",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/request"
+                    }
+                },
+                "totalPages": {
+                    "description": "Total Pages",
+                    "type": "number"
+                },
+                "totalRequest": {
+                    "description": "Total Request Number",
+                    "type": "number"
                 }
             }
         }
