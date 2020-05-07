@@ -1,0 +1,80 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "kafkalinkage",
+        "version": "1.0.0",
+        "description": "Microservice that will publish in Kafka"
+    },
+    "paths": {
+        "/publish": {
+            "post": {
+                "tags": [
+                    "KAFKA"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/publishInformation"
+                        },
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "operationId": "publish",
+                "summary": "Upload one document in GED"
+            }
+        }
+    },
+    "definitions": {
+        "metadata": {
+            "description": "Object to store metadata in key - values",
+            "type": "object",
+            "properties": {
+                "key": {
+                    "description": "",
+                    "type": "string"
+                },
+                "value": {
+                    "description": "",
+                    "type": "string"
+                }
+            }
+        },
+        "publishInformation": {
+            "description": "Information to upload document to GED",
+            "type": "object",
+            "properties": {
+                "orderid": {
+                    "description": "Order identifier",
+                    "type": "string"
+                },
+                "requestid": {
+                    "description": "Internal request identifier",
+                    "type": "string"
+                },
+                "params": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/metadata"
+                    }
+                },
+                "action": {
+                    "description": "Action that launch kafka publication, in example:\n- Process Completed\n- Send Attachments to user\n- Send Certified SMS",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
