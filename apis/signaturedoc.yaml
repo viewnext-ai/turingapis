@@ -1,0 +1,147 @@
+---
+swagger: "2.0"
+info:
+  title: signaturedoc
+  version: 1.0.0
+  description: Provide information about signature types and manage certificate SMS
+    method and voice recording method.
+paths:
+  /signatureMethods:
+    get:
+      parameters:
+      - name: orderid
+        description: Order identifier in original stack
+        in: query
+        required: true
+        type: string
+      - name: orderItemsId
+        description: List of orderitemid involved in this request. If it's null, request
+          is related with all orderitemid included in the order.
+        in: query
+        type: array
+        items:
+          type: string
+      - name: stack
+        description: Stack
+        in: query
+        type: string
+        default: ALANI
+        enum:
+        - ALANI
+        - BAU OSP
+        - BAU JZZ
+      - name: brand
+        description: Commertial brand related with order
+        in: query
+        type: string
+        default: ORANGE
+        enum:
+        - ORANGE
+        - JAZZTEL
+        - AMENA
+      - name: channel
+        description: Sales channel
+        in: query
+        required: true
+        type: string
+      - name: sfid
+        description: SFID
+        in: query
+        required: true
+        type: string
+      - name: step
+        description: Step in contract flow.
+        in: query
+        required: true
+        type: string
+        enum:
+        - PURCHASE
+        - DELIVERY
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: array
+            items:
+              type: string
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "405":
+          description: Method not Allowed
+      operationId: signatureMethods
+      summary: Identify signature Methods related with one order
+      description: "Identify signeture methods available with one selling process.\
+        \ \n\nRespond with a list of available methods. Values could be: \n- DIGITAL\
+        \ SIGNATURE\n- CERTIFIED SMS\n- INFORMATIVE SMS/EMAIL\n- CERTIFIED VOICE RECORDING\n\
+        - VOICE RECORDING\n- NOT REQUIRED"
+  /verificacionProcess:
+    post:
+      parameters:
+      - name: body
+        schema:
+          $ref: '#/definitions/requestinfo'
+        in: body
+        required: true
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "405":
+          description: Method not Allowed
+      operationId: initiateVerificationProcess
+      summary: Start a verification process managed in Turing
+definitions:
+  requestinfo:
+    required:
+    - orderid
+    - brand
+    - channel
+    - sfid
+    - step
+    type: object
+    properties:
+      orderid:
+        description: Order identifier in original stack
+        type: string
+      orderItemsId:
+        description: List of orderitemid involved in this request. If it's null, request
+          is related with all orderitemid included in the order.
+        type: array
+        items:
+          type: string
+      stack:
+        description: Stack
+        enum:
+        - ALANI
+        - BAU OSP
+        - BAU JZZ
+        type: string
+      brand:
+        description: Commertial brand related with order
+        default: ORANGE
+        enum:
+        - ORANGE
+        - JAZZTEL
+        - AMENA
+        type: string
+      channel:
+        description: Sales channel
+        type: string
+      sfid:
+        description: SFID
+        type: string
+      step:
+        description: Step in contract flow
+        enum:
+        - PURCHASE
+        - DELIVERY
+        type: string
+    xml:
+      name: requestinfo
