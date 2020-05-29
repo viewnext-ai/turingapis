@@ -250,6 +250,59 @@
                 "summary": "Create documents related with one order and step",
                 "description": "Create documents related with one order and step. \n\nReturns internal identifier for this request"
             }
+        },
+        "/request/byOrderId/{orderid}": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "step",
+                        "description": "",
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "name": "page",
+                        "description": "Page parameter. \n_?page=[pagenumber],[pagesize]_\n\nDefault pagesize is 20",
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "name": "orderid",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/RequestPage"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "405": {
+                        "description": "Method Not Allowed"
+                    }
+                },
+                "operationId": "reqestListByOrderId",
+                "summary": "Return a list of request for one order",
+                "description": "This operation provides a request list related with one orderid identifier and an optional filter by step.\n\n\n\n**Suported page**\nSupported. Default page 1 pagesize 20.\n\n&nbsp;  "
+            },
+            "parameters": [
+                {
+                    "name": "orderid",
+                    "description": "Order Identifier in stack",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
         }
     },
     "definitions": {
