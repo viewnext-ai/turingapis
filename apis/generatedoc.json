@@ -392,86 +392,6 @@
                 "name": "document"
             }
         },
-        "requestinfo": {
-            "required": [
-                "orderid",
-                "brand",
-                "channel",
-                "sfid",
-                "roles",
-                "step"
-            ],
-            "type": "object",
-            "properties": {
-                "orderid": {
-                    "description": "Order identifier in original stack",
-                    "type": "string"
-                },
-                "orderItemsId": {
-                    "description": "List of orderitemid involved in this request. If it's null, request is related with all orderitemid included in the order.",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "stack": {
-                    "description": "Stack",
-                    "enum": [
-                        "ALANI",
-                        "BAU OSP",
-                        "BAU JZZ"
-                    ],
-                    "type": "string"
-                },
-                "brand": {
-                    "description": "Commertial brand related with order",
-                    "default": "ORANGE",
-                    "enum": [
-                        "ORANGE",
-                        "JAZZTEL",
-                        "AMENA"
-                    ],
-                    "type": "string"
-                },
-                "channel": {
-                    "description": "Sales channel",
-                    "type": "string"
-                },
-                "sfid": {
-                    "description": "SFID",
-                    "type": "string"
-                },
-                "step": {
-                    "description": "Step in contract flow",
-                    "enum": [
-                        "PURCHASE",
-                        "DELIVERY"
-                    ],
-                    "type": "string"
-                },
-                "roles": {
-                    "description": "List of roles present in sale",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/role_type"
-                    }
-                },
-                "callback": {
-                    "description": "Callback url to call when documents generation is completed",
-                    "type": "string"
-                },
-                "metadata": {
-                    "description": "Optional parameters for future use",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/params"
-                    }
-                }
-            },
-            "xml": {
-                "name": "requestinfo"
-            }
-        },
         "request": {
             "description": "Request information",
             "required": [
@@ -616,6 +536,90 @@
                     "description": "Total Request Number",
                     "type": "number"
                 }
+            }
+        },
+        "requestinfo": {
+            "required": [
+                "orderid",
+                "brand",
+                "channel",
+                "sfid",
+                "step",
+                "signaturetype"
+            ],
+            "type": "object",
+            "properties": {
+                "orderid": {
+                    "description": "Order identifier in original stack",
+                    "type": "string"
+                },
+                "orderItemsId": {
+                    "description": "List of orderitemid involved in this request. If it's null, request is related with all orderitemid included in the order.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "stack": {
+                    "description": "Stack",
+                    "enum": [
+                        "ALANI",
+                        "BAU OSP",
+                        "BAU JZZ"
+                    ],
+                    "type": "string"
+                },
+                "brand": {
+                    "description": "Commertial brand related with order",
+                    "default": "ORANGE",
+                    "enum": [
+                        "ORANGE",
+                        "JAZZTEL",
+                        "AMENA"
+                    ],
+                    "type": "string"
+                },
+                "channel": {
+                    "description": "Sales channel",
+                    "type": "string"
+                },
+                "sfid": {
+                    "description": "SFID",
+                    "type": "string"
+                },
+                "step": {
+                    "description": "Step in contract flow",
+                    "enum": [
+                        "PURCHASE",
+                        "DELIVERY"
+                    ],
+                    "type": "string"
+                },
+                "callback": {
+                    "description": "Callback url to call when documents generation is completed",
+                    "type": "string"
+                },
+                "metadata": {
+                    "description": "Optional parameters for future use",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/params"
+                    }
+                },
+                "signaturetype": {
+                    "description": "Signature type requested by SOE",
+                    "enum": [
+                        "DIGITAL SIGNATURE",
+                        "CERTIFIED SMS",
+                        "INFORMATIVE SMS/EMAIL",
+                        "VOICE RECORDING",
+                        "NOT REQUIRED"
+                    ],
+                    "type": "string"
+                }
+            },
+            "xml": {
+                "name": "requestinfo"
             }
         }
     },
