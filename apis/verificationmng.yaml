@@ -76,7 +76,113 @@ paths:
         \ \n\nRespond with a list of available methods. Values could be: \n- DIGITAL\
         \ SIGNATURE\n- CERTIFIED SMS\n- INFORMATIVE SMS/EMAIL\n- CERTIFIED VOICE RECORDING\n\
         - VOICE RECORDING\n- NOT REQUIRED"
+  /verificationProcess/{verificationid}:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/verification'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "405":
+          description: Method not allowed
+      operationId: verificationById
+      summary: Get information about verification request
+      description: Return verification request information about status, communications,
+        etc.
+    parameters:
+    - name: verificationid
+      description: Internal identifier for verification process
+      in: path
+      required: true
+      type: string
   /verificacionProcess:
+    get:
+      parameters:
+      - name: filter
+        description: |-
+          Query parameter to specify the search filters. Attribute filters are specified in the following way:
+          _?filters=([attributeName][operator][value],...,[value])[&|;]...[&|;]([attributeName][operator][value],...,[value])_
+
+          Supported attributeNames are:
+          * sfid
+          * brand
+          * channel
+          * stack
+          * step
+          * status
+
+          Supported operators are:
+          * Equality: == (equals), != (not equals)
+
+
+
+          Comma separated values for an attribute are evaluated with OR operator. & is the separator for multiple queries to be evaluated with AND operator while the ; is the separator for multiple queries to be evaluated with OR operator (OR operator is not implemented).
+        in: query
+        type: string
+      - name: sort
+        description: |-
+          Sort parameter to specify the search filters. Sort attributes are specified in the following way:
+          _?sort=([attributeName][order])[&]...[&]([attributeName][order])_
+
+          Supported attributeNames are:
+          * sfid
+          * brand
+          * channel
+          * stack
+          * step
+          * createddate
+          * statusdate
+
+          Supported orders are:
+          * Ascending: asc
+          * Descending: desc
+
+
+
+          & is the separator for multiple sort parameters
+        in: query
+        type: string
+      - name: page
+        description: "Page parameter. \n_?page=([pagenumber] size [pagesize])_\n\n\
+          Default pagenumber is 1.\nDefault pagesize is 20"
+        in: query
+        type: string
+      - name: startdate
+        description: "Start date from which the requests will be returned by filtering\
+          \ by the request creation date. \nFormat will be YYYY-MM-DD. \nBy default,\
+          \ startdate will be equal than enddate. \nDates between start and end date\
+          \ won't be more than 7."
+        in: query
+        type: string
+        pattern: ^((2000|2400|2800|(19|2[0-9](0[48]|[2468][048]|[13579][26])))-02-29)$|^(((19|2[0-9])[0-9]{2})-02-(0[1-9]|1[0-9]|2[0-8]))$|^(((19|2[0-9])[0-9]{2})-(0[13578]|10|12)-(0[1-9]|[12][0-9]|3[01]))$|^(((19|2[0-9])[0-9]{2})-(0[469]|11)-(0[1-9]|[12][0-9]|30))$
+      - name: enddate
+        description: "End date until which the requests will be returned by filtering\
+          \ by the request creation date. \nFormat will be YYYY-MM-DD. \nBy default,\
+          \ enddate will be equal than today. \nDates between start and end date won't\
+          \ be more than 7."
+        in: query
+        type: string
+        pattern: '^((2000|2400|2800|(19|2[0-9](0[48]|[2468][048]|[13579][26])))-02-29)$|^(((19|2[0-9])[0-9]{2})-02-(0[1-9]|1[0-9]|2[0-8]))$|^(((19|2[0-9])[0-9]{2})-(0[13578]|10|12)-(0[1-9]|[12][0-9]|3[01]))$|^(((19|2[0-9])[0-9]{2})-(0[469]|11)-(0[1-9]|[12][0-9]|30))$    '
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "405":
+          description: Method not allowed
+      operationId: verificationList
+      summary: Get a list of verification request based on filters
+      description: "This operation provides a verifications request list based on\
+        \ filter parameters \n\n**Mandatory**\nNone\n\n**Supported filters**\n* sfid\n\
+        * brand\n* channel\n* stack\n* step\n* status\n\n**Supported sort**\n* sfid\n\
+        * brand\n* channel\n* stack\n* step\n* status\n* createddate\n* statusdate\n\
+        \n**Suported page**\nSupported. Default page 1 pagesize 20.\n\n&nbsp;  "
     post:
       parameters:
       - name: body
@@ -97,8 +203,44 @@ paths:
           description: Method not Allowed
       operationId: initiateVerificationProcess
       summary: Start a verification process managed in Turing
+  /verificationProcess/byOrderId/{orderid}:
+    get:
+      parameters:
+      - name: step
+        description: Step in contract flow
+        in: query
+        required: false
+        type: string
+      - name: page
+        description: "Page parameter. \n_?page=[pagenumber],[pagesize]_\n\nDefault\
+          \ pagesize is 20"
+        in: query
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/verificationPage'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "405":
+          description: Method not allowed
+      operationId: verificationListByOrderId
+      summary: Return a list of validation request related with one order id
+      description: "This operation provides a verification request list related with\
+        \ one orderid identifier and an optional filter by step.\n\n\n\n**Suported\
+        \ page**\nSupported. Default page 1 pagesize 20.\n\n&nbsp;  "
+    parameters:
+    - name: orderid
+      description: 'Order identifier in stack. '
+      in: path
+      required: true
+      type: string
 definitions:
   requestinfo:
+    description: Verification request information for process generation
     required:
     - orderid
     - brand
@@ -145,3 +287,28 @@ definitions:
         type: string
     xml:
       name: requestinfo
+  verification:
+    description: Object with information about verification request process
+    type: object
+    properties:
+      info:
+        $ref: '#/definitions/requestinfo'
+        description: ""
+  verificationPage:
+    description: Page of verification request list
+    required:
+    - totalPages
+    - totalVerifications
+    type: object
+    properties:
+      totalPages:
+        description: Total Pages
+        type: number
+      VerificationList:
+        description: Verification Request List
+        type: array
+        items:
+          $ref: '#/definitions/verification'
+      totalVerifications:
+        description: Total Verification Request Number
+        type: number
