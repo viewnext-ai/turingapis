@@ -238,6 +238,9 @@ paths:
       in: path
       required: true
       type: string
+  /verificationProcess/summary:
+    get:
+      summary: Verification request information summary group in cathegories
 definitions:
   requestinfo:
     description: Verification request information for process generation
