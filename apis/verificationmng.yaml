@@ -6,76 +6,6 @@ info:
   description: Provide information about signature types and manage certificate SMS
     method and voice recording method.
 paths:
-  /signatureMethods:
-    get:
-      parameters:
-      - name: orderid
-        description: Order identifier in original stack
-        in: query
-        required: true
-        type: string
-      - name: orderItemsId
-        description: List of orderitemid involved in this request. If it's null, request
-          is related with all orderitemid included in the order.
-        in: query
-        type: array
-        items:
-          type: string
-      - name: stack
-        description: Stack
-        in: query
-        type: string
-        default: ALANI
-        enum:
-        - ALANI
-        - BAU OSP
-        - BAU JZZ
-      - name: brand
-        description: Commertial brand related with order
-        in: query
-        type: string
-        default: ORANGE
-        enum:
-        - ORANGE
-        - JAZZTEL
-        - AMENA
-      - name: channel
-        description: Sales channel
-        in: query
-        required: true
-        type: string
-      - name: sfid
-        description: SFID
-        in: query
-        required: true
-        type: string
-      - name: step
-        description: Step in contract flow.
-        in: query
-        required: true
-        type: string
-        enum:
-        - PURCHASE
-        - DELIVERY
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: array
-            items:
-              type: string
-        "400":
-          description: Bad Request
-        "404":
-          description: Not Found
-        "405":
-          description: Method not Allowed
-      operationId: signatureMethods
-      summary: Identify signature Methods related with one order
-      description: "Identify signeture methods available with one selling process.\
-        \ \n\nRespond with a list of available methods. Values could be: \n- DIGITAL\
-        \ SIGNATURE\n- CERTIFIED SMS\n- INFORMATIVE SMS/EMAIL\n- CERTIFIED VOICE RECORDING\n\
-        - VOICE RECORDING\n- NOT REQUIRED"
   /verificationProcess/{verificationid}:
     get:
       responses:
@@ -111,7 +41,7 @@ paths:
           * sfid
           * brand
           * channel
-          * stack
+          * signatureType
           * step
           * status
 
@@ -170,6 +100,8 @@ paths:
       responses:
         "200":
           description: OK
+          schema:
+            $ref: '#/definitions/verificationPage'
         "400":
           description: Bad Request
         "404":
@@ -180,9 +112,10 @@ paths:
       summary: Get a list of verification request based on filters
       description: "This operation provides a verifications request list based on\
         \ filter parameters \n\n**Mandatory**\nNone\n\n**Supported filters**\n* sfid\n\
-        * brand\n* channel\n* stack\n* step\n* status\n\n**Supported sort**\n* sfid\n\
-        * brand\n* channel\n* stack\n* step\n* status\n* createddate\n* statusdate\n\
-        \n**Suported page**\nSupported. Default page 1 pagesize 20.\n\n&nbsp;  "
+        * brand\n* channel\n* signatureType\n* step\n* status\n\n**Supported sort**\n\
+        * sfid\n* brand\n* channel\n* signatureType\n* step\n* status\n* createddate\n\
+        * statusdate\n\n**Suported page**\nSupported. Default page 1 pagesize 20.\n\
+        \n&nbsp;  "
     post:
       parameters:
       - name: body
@@ -194,7 +127,7 @@ paths:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/verificationResponse'
         "400":
           description: Bad Request
         "404":
@@ -240,7 +173,171 @@ paths:
       type: string
   /verificationProcess/summary:
     get:
-      summary: Verification request information summary group in cathegories
+      produces:
+      - application/json
+      tags:
+      - DashBoard
+      parameters:
+      - name: filter
+        description: |-
+          Query parameter to specify the search filters. Attribute filters are specified in the following way:
+          _?filter=[attributeName][operator][value],...,[value][&|;]...[&|;][attributeName][operator][value],...,[value]_
+
+          Supported attributeNames are:
+          * brand
+          * channel
+          * SignatureType
+          * step
+
+          Supported operators are:
+          * Equality: == (equals), != (not equals)
+
+
+
+          Comma separated values for an attribute are evaluated with OR operator. & is the separator for multiple queries to be evaluated with AND operator while the ; is the separator for multiple queries to be evaluated with OR operator.
+        in: query
+        type: string
+      - name: sort
+        description: |-
+          Sort parameter to specify the search filters. Sort attributes are specified in the following way:
+          _?sort=[attributeName][order][&]...[&][attributeName][order]_
+
+          Supported attributeNames are:
+          * brand
+          * channel
+          * SignatureType
+          * step
+          * createdDate
+          * statusDate
+
+          Supported orders are:
+          * Ascending: asc
+          * Descending: desc
+
+
+
+          & is the separator for multiple sort parameters
+        in: query
+        type: string
+      - name: page
+        description: "Page parameter. \n_?page=[pagenumber],[pagesize]_\n\nDefault\
+          \ pagesize is 20"
+        in: query
+        type: string
+      - name: startdate
+        description: "Start date from which the requests will be returned by filtering\
+          \ by the request creation date. \nFormat will be YYYY-MM-DD. \nBy default,\
+          \ startdate will be equal than enddate. \nDates between start and end date\
+          \ won't be more than 7."
+        in: query
+        type: string
+      - name: enddate
+        description: "End date until which the requests will be returned by filtering\
+          \ by the request creation date. \nFormat will be YYYY-MM-DD. \nBy default,\
+          \ enddate will be equal than today. \nDates between start and end date won't\
+          \ be more than 7."
+        in: query
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/summary_request_item'
+        "400":
+          description: Value not found
+        "404":
+          description: Not Found
+        "405":
+          description: Validation error
+      operationId: requestsummary
+      summary: Request information summary group in cathegories
+      description: "This operation provides request cathegories and sumatory of requests\
+        \ in each cathegory.\n\n**Mandatory**\nNone\n\n**Supported filters**\nNot\
+        \ supported\n\n**Supported sort**\nNot supported\n\n**Suported page**\nNot\
+        \ supported\n\n&nbsp;  "
+  /signatureMethods:
+    get:
+      parameters:
+      - name: orderid
+        description: Order identifier in original stack
+        in: query
+        required: true
+        type: string
+      - name: orderItemsId
+        description: List of orderitemid involved in this request. If it's null, request
+          is related with all orderitemid included in the order.
+        in: query
+        type: array
+        items:
+          type: string
+      - name: stack
+        description: Stack
+        in: query
+        type: string
+        default: ALANI
+        enum:
+        - ALANI
+        - BAU OSP
+        - BAU JZZ
+      - name: brand
+        description: Commertial brand related with order
+        in: query
+        type: string
+        default: ORANGE
+        enum:
+        - ORANGE
+        - JAZZTEL
+        - AMENA
+      - name: channel
+        description: Sales channel
+        in: query
+        required: true
+        type: string
+      - name: sfid
+        description: SFID
+        in: query
+        required: true
+        type: string
+      - name: step
+        description: Step in contract flow.
+        in: query
+        required: true
+        type: string
+        enum:
+        - PURCHASE
+        - DELIVERY
+      - name: prevSignatureType
+        description: Previous returned and failed signature type
+        in: query
+        type: string
+        enum:
+        - DIGITAL SIGNATURE
+        - CERTIFIED SMS
+        - INFORMATIVE SMS/EMAIL
+        - VOICE RECORDING
+        - NOT REQUIRED
+        - MANUAL SIGNATURE
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: array
+            items:
+              type: string
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "405":
+          description: Method not Allowed
+      operationId: signatureMethods
+      summary: Identify signature Methods related with one order
+      description: "Identify signeture methods available with one selling process.\
+        \ \n\nRespond with a list of available methods. Values could be: \n- DIGITAL\
+        \ SIGNATURE\n- CERTIFIED SMS\n- INFORMATIVE SMS/EMAIL\n- CERTIFIED VOICE RECORDING\n\
+        - VOICE RECORDING\n- NOT REQUIRED"
 definitions:
   requestinfo:
     description: Verification request information for process generation
@@ -250,6 +347,7 @@ definitions:
     - channel
     - sfid
     - step
+    - signatureType
     type: object
     properties:
       orderid:
@@ -288,6 +386,20 @@ definitions:
         - PURCHASE
         - DELIVERY
         type: string
+      signatureType:
+        description: Signature type requested by SOE
+        enum:
+        - DIGITAL_SIGNATURE
+        - CERTIFIED_SMS
+        - INFORMATIVE_SMS/EMAIL
+        - VOICE_RECORDING
+        - NOT_REQUIRED
+        type: string
+      metadata:
+        description: Optional parameters for future use
+        type: array
+        items:
+          $ref: '#/definitions/params'
     xml:
       name: requestinfo
   verification:
@@ -315,3 +427,57 @@ definitions:
       totalVerifications:
         description: Total Verification Request Number
         type: number
+  summary_request_item:
+    type: object
+    properties:
+      SignatureType:
+        description: SignatureType/SignatureType
+        type: string
+      brand:
+        description: Marca sobre la que se realiza la orden/Commertial brand related
+          with order
+        type: string
+      channel:
+        description: Canal de venta sobre el que se genero la orden/Sales channel
+        type: string
+      step:
+        description: Paso en el flujo de contratación/Step in contract flow
+        type: string
+      status:
+        type: string
+      summary:
+        format: base64
+        description: Number of requests in this cathegory
+        type: integer
+  params:
+    description: ""
+    required:
+    - name
+    - value
+    type: object
+    properties:
+      name:
+        description: Name of the param
+        type: string
+      value:
+        description: Value of the param
+        type: string
+  verificationResponse:
+    description: ""
+    required:
+    - requestId
+    - verificationStatus
+    type: object
+    properties:
+      requestId:
+        description: Generated ID of the verification request
+        type: string
+      verificationStatus:
+        description: ""
+        enum:
+        - DONE
+        - ERROR
+        - PENDING_CLIENT_ACTION
+        - PENDING_OPERATOR_ACTION
+        - CANCELLED
+        type: string
