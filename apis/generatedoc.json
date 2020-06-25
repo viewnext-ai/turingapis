@@ -303,6 +303,54 @@
                     "type": "string"
                 }
             ]
+        },
+        "/request/complete/byOrderId/{orderid}/{step}": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "page",
+                        "description": "Page parameter. \n_?page=[pagenumber],[pagesize]_\n\nDefault pagesize is 20",
+                        "in": "query",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/RequestPage"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "405": {
+                        "description": "Method Not Allowed"
+                    }
+                },
+                "operationId": "completeRequestListByOrderId",
+                "summary": "Return complete request info of one order and step",
+                "description": "Return complete request info of one order and step. Status list and actions are not included."
+            },
+            "parameters": [
+                {
+                    "name": "orderid",
+                    "description": "ID order of the request",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "step",
+                    "description": "Step of the request",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
         }
     },
     "definitions": {
@@ -386,6 +434,26 @@
                     "format": "date-time",
                     "description": "Document creation Data time",
                     "type": "string"
+                },
+                "clientDocumentId": {
+                    "description": "Client doc ID number",
+                    "type": "string"
+                },
+                "clientAmdocsRef": {
+                    "description": "Ref to Amdocs client",
+                    "type": "string"
+                },
+                "clientAmdocsTypeRef": {
+                    "description": "Type of client amdocs ref",
+                    "type": "string"
+                },
+                "s3path": {
+                    "description": "Path of the document in S3",
+                    "type": "string"
+                },
+                "msisdnList": {
+                    "description": "List of telephone number separated by comas",
+                    "type": "string"
                 }
             },
             "xml": {
@@ -435,6 +503,10 @@
                 "currentStatus": {
                     "$ref": "#/definitions/status_type",
                     "description": "actual Request Status"
+                },
+                "titularDocumentId": {
+                    "description": "Titular doc ID",
+                    "type": "string"
                 }
             }
         },
@@ -544,8 +616,7 @@
                 "brand",
                 "channel",
                 "sfid",
-                "step",
-                "signaturetype"
+                "step"
             ],
             "type": "object",
             "properties": {
@@ -613,7 +684,8 @@
                         "CERTIFIED SMS",
                         "INFORMATIVE SMS/EMAIL",
                         "VOICE RECORDING",
-                        "NOT REQUIRED"
+                        "NOT REQUIRED",
+                        "MANUAL SIGNATURE"
                     ],
                     "type": "string"
                 }
