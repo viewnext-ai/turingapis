@@ -5,8 +5,7 @@
         "version": "1.0.0",
         "description": "Microservice for create documents and check request status"
     },
-    "host": "petstore.swagger.io",
-    "basePath": "/api/v1",
+    "basePath": "/",
     "schemes": [
         "https",
         "http"
@@ -16,6 +15,9 @@
             "get": {
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "dashboard"
                 ],
                 "responses": {
                     "200": {
@@ -253,6 +255,9 @@
         },
         "/request/byOrderId/{orderid}": {
             "get": {
+                "tags": [
+                    "RequestList"
+                ],
                 "parameters": [
                     {
                         "name": "step",
