@@ -8,6 +8,8 @@ info:
 paths:
   /verificationProcess/{verificationid}:
     get:
+      tags:
+      - verificationProcessManagement
       responses:
         "200":
           description: OK
@@ -15,10 +17,16 @@ paths:
             $ref: '#/definitions/verification'
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
         "404":
           description: Not Found
+          schema:
+            $ref: '#/definitions/Error'
         "405":
           description: Method not allowed
+          schema:
+            $ref: '#/definitions/Error'
       operationId: verificationById
       summary: Get information about verification request
       description: Return verification request information about status, communications,
@@ -29,115 +37,10 @@ paths:
       in: path
       required: true
       type: string
-  /verificacionProcess:
-    get:
-      parameters:
-      - name: filter
-        description: |-
-          Query parameter to specify the search filters. Attribute filters are specified in the following way:
-          _?filters=([attributeName][operator][value],...,[value])[&|;]...[&|;]([attributeName][operator][value],...,[value])_
-
-          Supported attributeNames are:
-          * sfid
-          * brand
-          * channel
-          * signatureType
-          * step
-          * status
-
-          Supported operators are:
-          * Equality: == (equals), != (not equals)
-
-
-
-          Comma separated values for an attribute are evaluated with OR operator. & is the separator for multiple queries to be evaluated with AND operator while the ; is the separator for multiple queries to be evaluated with OR operator (OR operator is not implemented).
-        in: query
-        type: string
-      - name: sort
-        description: |-
-          Sort parameter to specify the search filters. Sort attributes are specified in the following way:
-          _?sort=([attributeName][order])[&]...[&]([attributeName][order])_
-
-          Supported attributeNames are:
-          * sfid
-          * brand
-          * channel
-          * stack
-          * step
-          * createddate
-          * statusdate
-
-          Supported orders are:
-          * Ascending: asc
-          * Descending: desc
-
-
-
-          & is the separator for multiple sort parameters
-        in: query
-        type: string
-      - name: page
-        description: "Page parameter. \n_?page=([pagenumber] size [pagesize])_\n\n\
-          Default pagenumber is 1.\nDefault pagesize is 20"
-        in: query
-        type: string
-      - name: startdate
-        description: "Start date from which the requests will be returned by filtering\
-          \ by the request creation date. \nFormat will be YYYY-MM-DD. \nBy default,\
-          \ startdate will be equal than enddate. \nDates between start and end date\
-          \ won't be more than 7."
-        in: query
-        type: string
-        pattern: ^((2000|2400|2800|(19|2[0-9](0[48]|[2468][048]|[13579][26])))-02-29)$|^(((19|2[0-9])[0-9]{2})-02-(0[1-9]|1[0-9]|2[0-8]))$|^(((19|2[0-9])[0-9]{2})-(0[13578]|10|12)-(0[1-9]|[12][0-9]|3[01]))$|^(((19|2[0-9])[0-9]{2})-(0[469]|11)-(0[1-9]|[12][0-9]|30))$
-      - name: enddate
-        description: "End date until which the requests will be returned by filtering\
-          \ by the request creation date. \nFormat will be YYYY-MM-DD. \nBy default,\
-          \ enddate will be equal than today. \nDates between start and end date won't\
-          \ be more than 7."
-        in: query
-        type: string
-        pattern: '^((2000|2400|2800|(19|2[0-9](0[48]|[2468][048]|[13579][26])))-02-29)$|^(((19|2[0-9])[0-9]{2})-02-(0[1-9]|1[0-9]|2[0-8]))$|^(((19|2[0-9])[0-9]{2})-(0[13578]|10|12)-(0[1-9]|[12][0-9]|3[01]))$|^(((19|2[0-9])[0-9]{2})-(0[469]|11)-(0[1-9]|[12][0-9]|30))$    '
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/verificationPage'
-        "400":
-          description: Bad Request
-        "404":
-          description: Not Found
-        "405":
-          description: Method not allowed
-      operationId: verificationList
-      summary: Get a list of verification request based on filters
-      description: "This operation provides a verifications request list based on\
-        \ filter parameters \n\n**Mandatory**\nNone\n\n**Supported filters**\n* sfid\n\
-        * brand\n* channel\n* signatureType\n* step\n* status\n\n**Supported sort**\n\
-        * sfid\n* brand\n* channel\n* signatureType\n* step\n* status\n* createddate\n\
-        * statusdate\n\n**Suported page**\nSupported. Default page 1 pagesize 20.\n\
-        \n&nbsp;  "
-    post:
-      parameters:
-      - name: body
-        schema:
-          $ref: '#/definitions/requestinfo'
-        in: body
-        required: true
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/verificationResponse'
-        "400":
-          description: Bad Request
-        "404":
-          description: Not Found
-        "405":
-          description: Method not Allowed
-      operationId: initiateVerificationProcess
-      summary: Start a verification process managed in Turing
   /verificationProcess/byOrderId/{orderid}:
     get:
+      tags:
+      - verificationProcessManagement
       parameters:
       - name: step
         description: Step in contract flow
@@ -156,10 +59,16 @@ paths:
             $ref: '#/definitions/verificationPage'
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
         "404":
           description: Not Found
+          schema:
+            $ref: '#/definitions/Error'
         "405":
           description: Method not allowed
+          schema:
+            $ref: '#/definitions/Error'
       operationId: verificationListByOrderId
       summary: Return a list of validation request related with one order id
       description: "This operation provides a verification request list related with\
@@ -247,18 +156,109 @@ paths:
               $ref: '#/definitions/summary_request_item'
         "400":
           description: Value not found
+          schema:
+            $ref: '#/definitions/Error'
         "404":
           description: Not Found
+          schema:
+            $ref: '#/definitions/Error'
         "405":
           description: Validation error
+          schema:
+            $ref: '#/definitions/Error'
       operationId: requestsummary
       summary: Request information summary group in cathegories
       description: "This operation provides request cathegories and sumatory of requests\
         \ in each cathegory.\n\n**Mandatory**\nNone\n\n**Supported filters**\nNot\
         \ supported\n\n**Supported sort**\nNot supported\n\n**Suported page**\nNot\
         \ supported\n\n&nbsp;  "
+  /verificationProcess/{verificacionid}/manageCommunication/{communicationid}:
+    post:
+      tags:
+      - verificationProcessManagement
+      responses:
+        "200":
+          description: OK
+      operationId: manageCommunication
+      summary: Generic endpoint to manageCommunication
+      description: "Generic endpoint to manageCommunications related with one request.\
+        \ Operations available are: \n- Send communication again\n- Start VPT process\
+        \ for one communication (request or customer response)\n- End VPT process\
+        \ for one communication(request or customer response)"
+    parameters:
+    - name: verificacionid
+      description: Internal verificacion ID for validation request
+      in: path
+      required: true
+      type: string
+    - name: communicationid
+      description: Iternal identifier for communication
+      in: path
+      required: true
+      type: string
+  /verificationProcess/customerCommunication:
+    post:
+      tags:
+      - Communication
+      parameters:
+      - name: body
+        schema:
+          $ref: '#/definitions/customerCommunication'
+        in: body
+        required: true
+      responses:
+        "200":
+          description: OK
+      operationId: customerCommunication
+      summary: Manage communication to user and response
+      description: "Manage communication to user and response. Available actions are:\
+        \ \n- MessageSent\n- MessageReceived\n\n"
+  /customerAccess/Doc:
+    get:
+      tags:
+      - PublicAccess
+      parameters:
+      - name: token
+        description: Token to get document
+        in: query
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/FileResponse'
+      operationId: getDoc
+      summary: Get document from public SPA
+      description: "Get a document from public SPA. \n\nEndpoint will get a token\
+        \ wich will be validated and return a document content. "
+  /customerAccess/DocList:
+    get:
+      tags:
+      - PublicAccess
+      parameters:
+      - name: token
+        description: Token information
+        in: query
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DocInformation'
+      operationId: getDocList
+      summary: Get Document List from public SPA
+      description: "Get Document List from public SPA. \n\nEndpoint will validate\
+        \ token and retrieve a list of documents for download them by public SPA."
   /signatureMethods:
     get:
+      tags:
+      - SignatureMethods
       parameters:
       - name: orderid
         description: Order identifier in original stack
@@ -284,8 +284,8 @@ paths:
       - name: brand
         description: Commertial brand related with order
         in: query
+        required: true
         type: string
-        default: ORANGE
         enum:
         - ORANGE
         - JAZZTEL
@@ -328,16 +328,139 @@ paths:
               type: string
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
         "404":
           description: Not Found
+          schema:
+            $ref: '#/definitions/Error'
         "405":
           description: Method not Allowed
+          schema:
+            $ref: '#/definitions/Error'
       operationId: signatureMethods
       summary: Identify signature Methods related with one order
       description: "Identify signeture methods available with one selling process.\
         \ \n\nRespond with a list of available methods. Values could be: \n- DIGITAL\
         \ SIGNATURE\n- CERTIFIED SMS\n- INFORMATIVE SMS/EMAIL\n- CERTIFIED VOICE RECORDING\n\
         - VOICE RECORDING\n- NOT REQUIRED"
+  /verificationProcess:
+    get:
+      tags:
+      - verificationProcessManagement
+      parameters:
+      - name: filter
+        description: |-
+          Query parameter to specify the search filters. Attribute filters are specified in the following way:
+          _?filters=([attributeName][operator][value],...,[value])[&|;]...[&|;]([attributeName][operator][value],...,[value])_
+
+          Supported attributeNames are:
+          * sfid
+          * brand
+          * channel
+          * signatureType
+          * step
+          * status
+
+          Supported operators are:
+          * Equality: == (equals), != (not equals)
+
+
+
+          Comma separated values for an attribute are evaluated with OR operator. & is the separator for multiple queries to be evaluated with AND operator while the ; is the separator for multiple queries to be evaluated with OR operator (OR operator is not implemented).
+        in: query
+        type: string
+      - name: sort
+        description: |-
+          Sort parameter to specify the search filters. Sort attributes are specified in the following way:
+          _?sort=([attributeName][order])[&]...[&]([attributeName][order])_
+
+          Supported attributeNames are:
+          * sfid
+          * brand
+          * channel
+          * stack
+          * step
+          * createddate
+          * statusdate
+
+          Supported orders are:
+          * Ascending: asc
+          * Descending: desc
+
+
+
+          & is the separator for multiple sort parameters
+        in: query
+        type: string
+      - name: page
+        description: "Page parameter. \n_?page=([pagenumber] size [pagesize])_\n\n\
+          Default pagenumber is 1.\nDefault pagesize is 20"
+        in: query
+        type: string
+      - name: startdate
+        description: "Start date from which the requests will be returned by filtering\
+          \ by the request creation date. \nFormat will be YYYY-MM-DD. \nBy default,\
+          \ startdate will be equal than enddate. \nDates between start and end date\
+          \ won't be more than 7."
+        in: query
+        type: string
+        pattern: ^((2000|2400|2800|(19|2[0-9](0[48]|[2468][048]|[13579][26])))-02-29)$|^(((19|2[0-9])[0-9]{2})-02-(0[1-9]|1[0-9]|2[0-8]))$|^(((19|2[0-9])[0-9]{2})-(0[13578]|10|12)-(0[1-9]|[12][0-9]|3[01]))$|^(((19|2[0-9])[0-9]{2})-(0[469]|11)-(0[1-9]|[12][0-9]|30))$
+      - name: enddate
+        description: "End date until which the requests will be returned by filtering\
+          \ by the request creation date. \nFormat will be YYYY-MM-DD. \nBy default,\
+          \ enddate will be equal than today. \nDates between start and end date won't\
+          \ be more than 7."
+        in: query
+        type: string
+        pattern: '^((2000|2400|2800|(19|2[0-9](0[48]|[2468][048]|[13579][26])))-02-29)$|^(((19|2[0-9])[0-9]{2})-02-(0[1-9]|1[0-9]|2[0-8]))$|^(((19|2[0-9])[0-9]{2})-(0[13578]|10|12)-(0[1-9]|[12][0-9]|3[01]))$|^(((19|2[0-9])[0-9]{2})-(0[469]|11)-(0[1-9]|[12][0-9]|30))$    '
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/verificationPage'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Error'
+        "405":
+          description: Method not allowed
+          schema:
+            $ref: '#/definitions/Error'
+      operationId: verificationList
+      summary: Get a list of verification request based on filters
+      description: "This operation provides a verifications request list based on\
+        \ filter parameters \n\n**Mandatory**\nNone\n\n**Supported filters**\n* sfid\n\
+        * brand\n* channel\n* signatureType\n* step\n* status\n\n**Supported sort**\n\
+        * sfid\n* brand\n* channel\n* signatureType\n* step\n* status\n* createddate\n\
+        * statusdate\n\n**Suported page**\nSupported. Default page 1 pagesize 20.\n\
+        \n&nbsp;  "
+    post:
+      tags:
+      - verificationProcessManagement
+      parameters:
+      - name: body
+        schema:
+          $ref: '#/definitions/requestinfo'
+        in: body
+        required: true
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/verificationResponse'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "405":
+          description: Method not Allowed
+      operationId: initiateVerificationProcess
+      summary: Start a verification process managed in Turing
 definitions:
   requestinfo:
     description: Verification request information for process generation
@@ -481,3 +604,79 @@ definitions:
         - PENDING_OPERATOR_ACTION
         - CANCELLED
         type: string
+  customerCommunication:
+    description: User communication information
+    required:
+    - action
+    - ospMSISDN
+    - customerMSISDN
+    - communicationDate
+    - communicationContent
+    type: object
+    properties:
+      action:
+        description: ""
+        enum:
+        - messageSent
+        - messageReceived
+        type: string
+      ospMSISDN:
+        description: Orange SMS MSISDN included in communication
+        type: string
+      customerMSISDN:
+        description: Customer MSISDN
+        type: string
+      communicationDate:
+        description: Communication date and time
+        type: string
+      communicationContent:
+        description: Communication content sent or received
+        type: string
+  FileResponse:
+    type: object
+    properties:
+      Fichero:
+        format: byte
+        type: string
+      nombreFichero:
+        type: string
+  DocInformation:
+    description: ""
+    required:
+    - docIdentifier
+    - downloadURL
+    type: object
+    properties:
+      docIdentifier:
+        description: Natural text to identify a document. It could be "Comprobante
+          de venta", "SEPA", "Anexo de portabilidad", etc.
+        type: string
+      downloadURL:
+        description: Access URL to download the document
+        type: string
+  Error:
+    description: Error Data Detail
+    required:
+    - code
+    - message
+    properties:
+      code:
+        description: An integer coding the error type. This is given to caller so
+          he can translate them if required.
+        type: integer
+      message:
+        description: A short localized string that describes the error.
+        type: string
+      description:
+        description: (optional) A long localized error description if needed. It can
+          contain precise information about which parameter is missing, or what are
+          the identifier acceptable values.
+        type: string
+      infoURL:
+        description: (optional) A URL to online documentation that provides more information
+          about the error.
+        type: string
+    example:
+      code: 105
+      message: File not found
+      description: File not found
