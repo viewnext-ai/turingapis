@@ -255,95 +255,6 @@ paths:
       summary: Get Document List from public SPA
       description: "Get Document List from public SPA. \n\nEndpoint will validate\
         \ token and retrieve a list of documents for download them by public SPA."
-  /signatureMethods:
-    get:
-      tags:
-      - SignatureMethods
-      parameters:
-      - name: orderid
-        description: Order identifier in original stack
-        in: query
-        required: true
-        type: string
-      - name: orderItemsId
-        description: List of orderitemid involved in this request. If it's null, request
-          is related with all orderitemid included in the order.
-        in: query
-        type: array
-        items:
-          type: string
-      - name: stack
-        description: Stack
-        in: query
-        type: string
-        default: ALANI
-        enum:
-        - ALANI
-        - BAU OSP
-        - BAU JZZ
-      - name: brand
-        description: Commertial brand related with order
-        in: query
-        required: true
-        type: string
-        enum:
-        - ORANGE
-        - JAZZTEL
-        - AMENA
-      - name: channel
-        description: Sales channel
-        in: query
-        required: true
-        type: string
-      - name: sfid
-        description: SFID
-        in: query
-        required: true
-        type: string
-      - name: step
-        description: Step in contract flow.
-        in: query
-        required: true
-        type: string
-        enum:
-        - PURCHASE
-        - DELIVERY
-      - name: prevSignatureType
-        description: Previous returned and failed signature type
-        in: query
-        type: string
-        enum:
-        - DIGITAL SIGNATURE
-        - CERTIFIED SMS
-        - INFORMATIVE SMS/EMAIL
-        - VOICE RECORDING
-        - NOT REQUIRED
-        - MANUAL SIGNATURE
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: array
-            items:
-              type: string
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/Error'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/Error'
-        "405":
-          description: Method not Allowed
-          schema:
-            $ref: '#/definitions/Error'
-      operationId: signatureMethods
-      summary: Identify signature Methods related with one order
-      description: "Identify signeture methods available with one selling process.\
-        \ \n\nRespond with a list of available methods. Values could be: \n- DIGITAL\
-        \ SIGNATURE\n- CERTIFIED SMS\n- INFORMATIVE SMS/EMAIL\n- CERTIFIED VOICE RECORDING\n\
-        - VOICE RECORDING\n- NOT REQUIRED"
   /verificationProcess:
     get:
       tags:
@@ -461,6 +372,95 @@ paths:
           description: Method not Allowed
       operationId: initiateVerificationProcess
       summary: Start a verification process managed in Turing
+  /signatureMethods:
+    get:
+      tags:
+      - SignatureMethods
+      parameters:
+      - name: orderid
+        description: Order identifier in original stack
+        in: query
+        required: true
+        type: string
+      - name: orderItemsId
+        description: List of orderitemid involved in this request. If it's null, request
+          is related with all orderitemid included in the order.
+        in: query
+        type: array
+        items:
+          type: string
+      - name: stack
+        description: Stack
+        in: query
+        type: string
+        default: ALANI
+        enum:
+        - ALANI
+        - BAU_OSP
+        - BAU_JZZ
+      - name: brand
+        description: Commertial brand related with order
+        in: query
+        required: true
+        type: string
+        enum:
+        - ORANGE
+        - JAZZTEL
+        - AMENA
+      - name: channel
+        description: Sales channel ("Callcenter | SelfService | Retail")
+        in: query
+        required: true
+        type: string
+      - name: sfid
+        description: SFID
+        in: query
+        required: true
+        type: string
+      - name: step
+        description: Step in contract flow.
+        in: query
+        required: true
+        type: string
+        enum:
+        - PURCHASE
+        - DELIVERY
+      - name: prevSignatureType
+        description: Previous returned and failed signature type
+        in: query
+        type: string
+        enum:
+        - DIGITAL_SIGNATURE
+        - CERTIFIED_SMS
+        - INFORMATIVE_SMS_EMAIL
+        - VOICE_RECORDING
+        - NOT_REQUIRED
+        - MANUAL_SIGNATURE
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: array
+            items:
+              type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Error'
+        "405":
+          description: Method not Allowed
+          schema:
+            $ref: '#/definitions/Error'
+      operationId: signatureMethods
+      summary: Identify signature Methods related with one order
+      description: "Identify signeture methods available with one selling process.\
+        \ \n\nRespond with a list of available methods. Values could be: \n- DIGITAL_SIGNATURE\n\
+        - CERTIFIED_SMS\n- INFORMATIVE_SMS_EMAIL\n- VOICE_RECORDING\n- NOT_REQUIRED\n\
+        - MANUAL_SIGNATURE"
 definitions:
   requestinfo:
     description: Verification request information for process generation
@@ -486,8 +486,8 @@ definitions:
         description: Stack
         enum:
         - ALANI
-        - BAU OSP
-        - BAU JZZ
+        - BAU_OSP
+        - BAU_JZZ
         type: string
       brand:
         description: Commertial brand related with order
@@ -498,7 +498,7 @@ definitions:
         - AMENA
         type: string
       channel:
-        description: Sales channel
+        description: Sales channel ("Callcenter | SelfService | Retail")
         type: string
       sfid:
         description: SFID
@@ -514,9 +514,10 @@ definitions:
         enum:
         - DIGITAL_SIGNATURE
         - CERTIFIED_SMS
-        - INFORMATIVE_SMS/EMAIL
+        - INFORMATIVE_SMS_EMAIL
         - VOICE_RECORDING
         - NOT_REQUIRED
+        - MANUAL_SIGNATURE
         type: string
       metadata:
         description: Optional parameters for future use
@@ -562,6 +563,7 @@ definitions:
         type: string
       channel:
         description: Canal de venta sobre el que se genero la orden/Sales channel
+          ("Callcenter | SelfService | Retail")
         type: string
       step:
         description: Paso en el flujo de contratación/Step in contract flow
