@@ -1,0 +1,314 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "validateDocumentation",
+        "version": "1.0.0",
+        "description": "Microservice that retrieve information related with documents to get from customer in purchase and delivery processes\n"
+    },
+    "paths": {
+        "/purchaseDocumentation": {
+            "post": {
+                "parameters": [
+                    {
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/purchaseInformationRequest"
+                        },
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/validationResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                },
+                "operationId": "purchaseDocumentation"
+            }
+        },
+        "/deliveryDocumentation": {
+            "post": {
+                "parameters": [
+                    {
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/deliveryInformationRequest"
+                        },
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/validationResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                },
+                "operationId": "deliveryDocumentation"
+            }
+        }
+    },
+    "definitions": {
+        "Error": {
+            "required": [
+                "code",
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "description": "An integer coding the error type. This is given to caller so he can translate them if required.",
+                    "type": "integer"
+                },
+                "message": {
+                    "description": "A short localized string that describes the error.",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "(optional) A long localized error description if needed. It can contain precise information about which parameter is missing, or what are the identifier acceptable values.",
+                    "type": "string"
+                },
+                "infoURL": {
+                    "description": "(optional) A URL to online documentation that provides more information about the error.",
+                    "type": "string"
+                }
+            },
+            "example": {
+                "code": 105,
+                "message": "File not found",
+                "description": "File not found"
+            }
+        },
+        "validationResponse": {
+            "description": "Data Type to retrieve information about validation method and if it's mandatory",
+            "required": [
+                "method",
+                "mandatory",
+                "lock",
+                "doubtAction"
+            ],
+            "type": "object",
+            "properties": {
+                "mandatory": {
+                    "description": "Check to know if it's mandatory request documentation. Values could be\n- YES\n- NO\n- NOT_APPLIED",
+                    "enum": [
+                        "YES",
+                        "NO",
+                        "NOT_APPLIED"
+                    ],
+                    "type": "string"
+                },
+                "method": {
+                    "description": "",
+                    "type": "string"
+                },
+                "lock": {
+                    "description": "",
+                    "enum": [
+                        "YES",
+                        "NO",
+                        "NOT_APPLIED"
+                    ],
+                    "type": "string"
+                },
+                "doubtAction": {
+                    "description": "Information about what to do if DOI is on doubt",
+                    "type": "string"
+                }
+            }
+        },
+        "orderInformation": {
+            "description": "",
+            "required": [
+                "contractType",
+                "orderType",
+                "VAP",
+                "TV"
+            ],
+            "type": "object",
+            "properties": {
+                "contractType": {
+                    "description": "",
+                    "enum": [
+                        "POSTPAID",
+                        "PREPAID"
+                    ],
+                    "type": "string"
+                },
+                "orderType": {
+                    "description": "",
+                    "enum": [
+                        "AMPLIACION",
+                        "CAMBIO_SIM",
+                        "CAPTACION",
+                        "CAPTACION_PORTABILIDAD",
+                        "CAPTACION_PORTABILIDAD_4G",
+                        "CAPTACION_PORTABILIDAD_MI_FIJO",
+                        "MI_FIJO",
+                        "PORTABILIDAD",
+                        "RECARGA",
+                        "RENOVE"
+                    ],
+                    "type": "string"
+                },
+                "VAP": {
+                    "description": "",
+                    "enum": [
+                        "YES",
+                        "NO"
+                    ],
+                    "type": "string"
+                },
+                "TV": {
+                    "description": "The order has TV ",
+                    "enum": [
+                        "YES",
+                        "NO"
+                    ],
+                    "type": "string"
+                },
+                "terminalValue": {
+                    "description": "Value of the most expensive terminal in the order",
+                    "type": "number"
+                }
+            }
+        },
+        "purchaseInformationRequest": {
+            "description": "",
+            "required": [
+                "brand",
+                "channel",
+                "newCustomer",
+                "orders"
+            ],
+            "type": "object",
+            "properties": {
+                "brand": {
+                    "description": "",
+                    "enum": [
+                        "ORANGE",
+                        "JAZZTEL",
+                        "AMENA"
+                    ],
+                    "type": "string"
+                },
+                "newCustomer": {
+                    "description": "",
+                    "enum": [
+                        "YES",
+                        "NO"
+                    ],
+                    "type": "string"
+                },
+                "channel": {
+                    "description": "",
+                    "enum": [
+                        "CALLCENTER",
+                        "SELFSERVICE",
+                        "RETAIL",
+                        "DIGO"
+                    ],
+                    "type": "string"
+                },
+                "validDOI": {
+                    "description": "Identify if existing customer has a validated DOI previusly. It can't be expired.",
+                    "enum": [
+                        "YES",
+                        "NO"
+                    ],
+                    "type": "string"
+                },
+                "secureCM": {
+                    "description": "Identify if existing customer has a secure contact medium informed",
+                    "enum": [
+                        "YES",
+                        "NO"
+                    ],
+                    "type": "string"
+                },
+                "orders": {
+                    "description": "",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/orderInformation"
+                    }
+                }
+            }
+        },
+        "deliveryInformationRequest": {
+            "description": "",
+            "required": [
+                "purchaseInformationRequest",
+                "validatedOnPurchase",
+                "deliveryChannel"
+            ],
+            "type": "object",
+            "properties": {
+                "validatedOnPurchase": {
+                    "description": "Identify if DOI was validated in purchase step",
+                    "enum": [
+                        "YES",
+                        "NO",
+                        "NOT_APPLIED"
+                    ],
+                    "type": "string"
+                },
+                "deliveryChannel": {
+                    "description": "",
+                    "enum": [
+                        "PDV",
+                        "CORREOS",
+                        "KIOSKOS",
+                        "MENSAJERIA",
+                        "PDV_DIGO"
+                    ],
+                    "type": "string"
+                },
+                "purchaseInformationRequest": {
+                    "$ref": "#/definitions/purchaseInformationRequest",
+                    "description": ""
+                }
+            }
+        }
+    }
+}
