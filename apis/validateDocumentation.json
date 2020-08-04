@@ -5,6 +5,11 @@
         "version": "1.0.0",
         "description": "Microservice that retrieve information related with documents to get from customer in purchase and delivery processes\n"
     },
+    "basePath": "/",
+    "schemes": [
+        "https",
+        "http"
+    ],
     "paths": {
         "/purchaseDocumentation": {
             "post": {
@@ -219,17 +224,13 @@
                 "brand",
                 "channel",
                 "newCustomer",
-                "orders"
+                "orders",
+                "segment"
             ],
             "type": "object",
             "properties": {
                 "brand": {
-                    "description": "",
-                    "enum": [
-                        "ORANGE",
-                        "JAZZTEL",
-                        "AMENA"
-                    ],
+                    "description": "Available values: \n- ORANGE\n- JAZZTEL\n- AMENA",
                     "type": "string"
                 },
                 "newCustomer": {
@@ -241,13 +242,7 @@
                     "type": "string"
                 },
                 "channel": {
-                    "description": "",
-                    "enum": [
-                        "CALLCENTER",
-                        "SELFSERVICE",
-                        "RETAIL",
-                        "DIGO"
-                    ],
+                    "description": "Available values: \n- CALLCENTER\n- SELFSERVICE\n- RETAIL\n- DIGO",
                     "type": "string"
                 },
                 "validDOI": {
@@ -272,6 +267,10 @@
                     "items": {
                         "$ref": "#/definitions/orderInformation"
                     }
+                },
+                "segment": {
+                    "description": "Available values: \n- INDIVIDUAL\n- COMPANY",
+                    "type": "string"
                 }
             }
         },
@@ -294,14 +293,7 @@
                     "type": "string"
                 },
                 "deliveryChannel": {
-                    "description": "",
-                    "enum": [
-                        "PDV",
-                        "CORREOS",
-                        "KIOSKOS",
-                        "MENSAJERIA",
-                        "PDV_DIGO"
-                    ],
+                    "description": "Available values: \n- PDV\n- CORREOS\n- KIOSKOS\n- MENSAJERIA\n- PDV_DIGO",
                     "type": "string"
                 },
                 "purchaseInformationRequest": {
