@@ -27,7 +27,10 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/validationResponse"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/validationResponse"
+                            }
                         }
                     },
                     "400": {
@@ -68,7 +71,10 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/validationResponse"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/validationResponse"
+                            }
                         }
                     },
                     "400": {
@@ -129,8 +135,8 @@
             "required": [
                 "method",
                 "mandatory",
-                "lock",
-                "doubtAction"
+                "action",
+                "priority"
             ],
             "type": "object",
             "properties": {
@@ -144,76 +150,18 @@
                     "type": "string"
                 },
                 "method": {
+                    "description": "Available values: \n- DOI_1\n- DOI_2\n- DOI_3\n- DOI_4\n- TOKEN\n- NOT_APPLIED",
+                    "type": "string"
+                },
+                "action": {
                     "description": "",
-                    "type": "string"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/action"
+                    }
                 },
-                "lock": {
+                "priority": {
                     "description": "",
-                    "enum": [
-                        "YES",
-                        "NO",
-                        "NOT_APPLIED"
-                    ],
-                    "type": "string"
-                },
-                "doubtAction": {
-                    "description": "Information about what to do if DOI is on doubt",
-                    "type": "string"
-                }
-            }
-        },
-        "orderInformation": {
-            "description": "",
-            "required": [
-                "contractType",
-                "orderType",
-                "VAP",
-                "TV"
-            ],
-            "type": "object",
-            "properties": {
-                "contractType": {
-                    "description": "",
-                    "enum": [
-                        "POSTPAID",
-                        "PREPAID"
-                    ],
-                    "type": "string"
-                },
-                "orderType": {
-                    "description": "",
-                    "enum": [
-                        "AMPLIACION",
-                        "CAMBIO_SIM",
-                        "CAPTACION",
-                        "CAPTACION_PORTABILIDAD",
-                        "CAPTACION_PORTABILIDAD_4G",
-                        "CAPTACION_PORTABILIDAD_MI_FIJO",
-                        "MI_FIJO",
-                        "PORTABILIDAD",
-                        "RECARGA",
-                        "RENOVE"
-                    ],
-                    "type": "string"
-                },
-                "VAP": {
-                    "description": "",
-                    "enum": [
-                        "YES",
-                        "NO"
-                    ],
-                    "type": "string"
-                },
-                "TV": {
-                    "description": "The order has TV ",
-                    "enum": [
-                        "YES",
-                        "NO"
-                    ],
-                    "type": "string"
-                },
-                "terminalValue": {
-                    "description": "Value of the most expensive terminal in the order",
                     "type": "number"
                 }
             }
@@ -224,7 +172,7 @@
                 "brand",
                 "channel",
                 "newCustomer",
-                "orders",
+                "commercialActs",
                 "segment"
             ],
             "type": "object",
@@ -261,16 +209,16 @@
                     ],
                     "type": "string"
                 },
-                "orders": {
-                    "description": "",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/orderInformation"
-                    }
-                },
                 "segment": {
                     "description": "Available values: \n- INDIVIDUAL\n- COMPANY",
                     "type": "string"
+                },
+                "commercialActs": {
+                    "description": "",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/commercialActInformation"
+                    }
                 }
             }
         },
@@ -278,20 +226,10 @@
             "description": "",
             "required": [
                 "purchaseInformationRequest",
-                "validatedOnPurchase",
                 "deliveryChannel"
             ],
             "type": "object",
             "properties": {
-                "validatedOnPurchase": {
-                    "description": "Identify if DOI was validated in purchase step",
-                    "enum": [
-                        "YES",
-                        "NO",
-                        "NOT_APPLIED"
-                    ],
-                    "type": "string"
-                },
                 "deliveryChannel": {
                     "description": "Available values: \n- PDV\n- CORREOS\n- KIOSKOS\n- MENSAJERIA\n- PDV_DIGO",
                     "type": "string"
@@ -299,6 +237,63 @@
                 "purchaseInformationRequest": {
                     "$ref": "#/definitions/purchaseInformationRequest",
                     "description": ""
+                }
+            }
+        },
+        "action": {
+            "description": "",
+            "required": [
+                "actionType"
+            ],
+            "type": "object",
+            "properties": {
+                "actionType": {
+                    "description": "Available values:\n- CONTINUE\n- WARNING_1\n- WARNING_2",
+                    "type": "string"
+                },
+                "codeList": {
+                    "description": "List of codes that application must check. Separator will be \"-\".\n\nAn empty list means that all values are ok.\n\nExample: \"00-10-25\"",
+                    "type": "string"
+                }
+            }
+        },
+        "commercialActInformation": {
+            "description": "",
+            "required": [
+                "contractType",
+                "commercialAct",
+                "VAP",
+                "TV"
+            ],
+            "type": "object",
+            "properties": {
+                "contractType": {
+                    "description": "Available values: \n- POSTPAID\n- PREPAID",
+                    "type": "string"
+                },
+                "VAP": {
+                    "description": "",
+                    "enum": [
+                        "YES",
+                        "NO"
+                    ],
+                    "type": "string"
+                },
+                "TV": {
+                    "description": "The order has TV ",
+                    "enum": [
+                        "YES",
+                        "NO"
+                    ],
+                    "type": "string"
+                },
+                "terminalValue": {
+                    "description": "Value of the most expensive terminal in the order",
+                    "type": "number"
+                },
+                "commercialAct": {
+                    "description": "Available values: \n- AMPLIACION\n- CAMBIO_SIM\n- CAPTACION\n- CAPTACION_PORTABILIDAD\n- CAPTACION_PORTABILIDAD_4G\n- CAPTACION_PORTABILIDAD_MI_FIJO\n- MI_FIJO\n- PORTABILIDAD\n- RECARGA\n- RENOVE",
+                    "type": "string"
                 }
             }
         }
