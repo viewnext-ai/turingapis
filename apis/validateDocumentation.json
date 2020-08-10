@@ -166,79 +166,26 @@
                 }
             }
         },
-        "purchaseInformationRequest": {
-            "description": "",
-            "required": [
-                "brand",
-                "channel",
-                "newCustomer",
-                "commercialActs",
-                "segment"
-            ],
-            "type": "object",
-            "properties": {
-                "brand": {
-                    "description": "Available values: \n- ORANGE\n- JAZZTEL\n- AMENA",
-                    "type": "string"
-                },
-                "newCustomer": {
-                    "description": "",
-                    "enum": [
-                        "YES",
-                        "NO"
-                    ],
-                    "type": "string"
-                },
-                "channel": {
-                    "description": "Available values: \n- CALLCENTER\n- SELFSERVICE\n- RETAIL\n- DIGO",
-                    "type": "string"
-                },
-                "validDOI": {
-                    "description": "Identify if existing customer has a validated DOI previusly. It can't be expired.",
-                    "enum": [
-                        "YES",
-                        "NO"
-                    ],
-                    "type": "string"
-                },
-                "secureCM": {
-                    "description": "Identify if existing customer has a secure contact medium informed",
-                    "enum": [
-                        "YES",
-                        "NO"
-                    ],
-                    "type": "string"
-                },
-                "segment": {
-                    "description": "Available values: \n- INDIVIDUAL\n- COMPANY",
-                    "type": "string"
-                },
-                "commercialActs": {
-                    "description": "",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/commercialActInformation"
-                    }
-                }
-            }
-        },
         "deliveryInformationRequest": {
             "description": "",
-            "required": [
-                "purchaseInformationRequest",
-                "deliveryChannel"
-            ],
             "type": "object",
-            "properties": {
-                "deliveryChannel": {
-                    "description": "Available values: \n- PDV\n- CORREOS\n- KIOSKOS\n- MENSAJERIA\n- PDV_DIGO",
-                    "type": "string"
+            "allOf": [
+                {
+                    "required": [
+                        "deliveryChannel"
+                    ],
+                    "type": "object",
+                    "properties": {
+                        "deliveryChannel": {
+                            "description": "Available values: \n- PDV\n- CORREOS\n- KIOSKOS\n- MENSAJERIA\n- PDV_DIGO",
+                            "type": "string"
+                        }
+                    }
                 },
-                "purchaseInformationRequest": {
-                    "$ref": "#/definitions/purchaseInformationRequest",
-                    "description": ""
+                {
+                    "$ref": "#/definitions/purchaseInformationRequest"
                 }
-            }
+            ]
         },
         "action": {
             "description": "",
@@ -294,6 +241,76 @@
                 "commercialAct": {
                     "description": "Available values: \n- AMPLIACION\n- CAMBIO_SIM\n- CAPTACION\n- CAPTACION_PORTABILIDAD\n- CAPTACION_PORTABILIDAD_4G\n- CAPTACION_PORTABILIDAD_MI_FIJO\n- MI_FIJO\n- PORTABILIDAD\n- RECARGA\n- RENOVE",
                     "type": "string"
+                }
+            }
+        },
+        "customer": {
+            "description": "",
+            "required": [
+                "newCustomer"
+            ],
+            "type": "object",
+            "properties": {
+                "newCustomer": {
+                    "description": "",
+                    "enum": [
+                        "YES",
+                        "NO"
+                    ],
+                    "type": "string"
+                },
+                "validDOI": {
+                    "description": "Identify if existing customer has a validated DOI previusly. It can't be expired.",
+                    "enum": [
+                        "YES",
+                        "NO"
+                    ],
+                    "type": "string"
+                },
+                "secureCM": {
+                    "description": "Identify if existing customer has a secure contact medium informed",
+                    "enum": [
+                        "YES",
+                        "NO"
+                    ],
+                    "type": "string"
+                },
+                "segment": {
+                    "description": "Available values: \n- INDIVIDUAL\n- COMPANY",
+                    "type": "string"
+                }
+            }
+        },
+        "purchaseInformationRequest": {
+            "description": "",
+            "required": [
+                "brand",
+                "channel",
+                "customer",
+                "commercialActs",
+                "segment",
+                "customer"
+            ],
+            "type": "object",
+            "properties": {
+                "brand": {
+                    "description": "Available values: \n- ORANGE\n- JAZZTEL\n- AMENA",
+                    "type": "string"
+                },
+                "channel": {
+                    "description": "Available values: \n- CALLCENTER\n- SELFSERVICE\n- RETAIL\n- DIGO",
+                    "type": "string"
+                },
+                "commercialActs": {
+                    "description": "",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/commercialActInformation"
+                    }
+                },
+                "customer": {
+                    "$ref": "#/definitions/customer",
+                    "description": ""
                 }
             }
         }
