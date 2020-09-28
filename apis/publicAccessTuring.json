@@ -1,0 +1,262 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Turing Public Access",
+        "version": "1.0.0",
+        "description": "Public Access Service for download client documents"
+    },
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/access/{accessToken}": {
+            "get": {
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response - returns a single access response.",
+                        "schema": {
+                            "$ref": "#/definitions/AccessResult"
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized response",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "code": 34,
+                                "message": "some text",
+                                "description": "some text",
+                                "infoURL": "some text"
+                            }
+                        }
+                    }
+                },
+                "operationId": "getDocumentList",
+                "summary": "Get a Document List to download",
+                "description": "Gets the list of document ref."
+            },
+            "parameters": [
+                {
+                    "name": "accessToken",
+                    "description": "A cifrate token for access document list ref",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/access/{accessToken}/document/{documentToken}": {
+            "get": {
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "documentToken",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Document Content ",
+                        "schema": {
+                            "$ref": "#/definitions/ContentType"
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized response",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "code": 34,
+                                "message": "some text",
+                                "description": "some text",
+                                "infoURL": "some text"
+                            }
+                        }
+                    }
+                },
+                "description": "Get Document content"
+            },
+            "parameters": [
+                {
+                    "name": "accessToken",
+                    "description": "A cifrate token for access documents",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "documentToken",
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        }
+    },
+    "definitions": {
+        "AccessResult": {
+            "title": "Root Type for Widget",
+            "description": "A very simple, generic data type.",
+            "type": "object",
+            "properties": {
+                "orderDate": {
+                    "description": "Date of purchase order using IETC-RFC-3339 format.",
+                    "type": "string"
+                },
+                "_links": {
+                    "$ref": "#/definitions/Link",
+                    "description": "ref of documents"
+                }
+            },
+            "example": {
+                "orderDate": "2002-10-02T15:00:00.05Z",
+                "_links": {
+                    "self": {
+                        "href": "some text"
+                    },
+                    "document": [
+                        {
+                            "href": "https://publicaccess.turing.orange.es/document/1234234nkahfasdf3452395lkajsfdljas",
+                            "method": "GET"
+                        },
+                        {
+                            "href": "https://publicaccess.turing.orange.es/document/1234234nkahfaADSFASDFsdf3452395lkajsfdlasdfas",
+                            "method": "GET"
+                        }
+                    ]
+                }
+            }
+        },
+        "Link": {
+            "title": "Root Type for Link",
+            "description": "",
+            "type": "object",
+            "properties": {
+                "self": {
+                    "type": "string",
+                    "properties": {
+                        "href": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "document": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "href": {
+                                "type": "string"
+                            },
+                            "method": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "example": {
+                "self": {
+                    "href": "www///.....processFlowManagemet/v4/processFlow/45kl-98io"
+                },
+                "document": [
+                    {
+                        "href": "www///.....taskFlowManagemet/v4/processFlow/45kl-98io/taskFlow/fg66-55aa",
+                        "method": "GET"
+                    },
+                    {
+                        "href": "www///.....taskFlowManagemet/v4/processFlow/45kl-98io/taskFlow/fg66-55aa",
+                        "method": "GET"
+                    }
+                ]
+            }
+        },
+        "Error": {
+            "required": [
+                "code",
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "description": "An integer coding the error type. This is given to caller so he can translate them if required.",
+                    "type": "integer"
+                },
+                "message": {
+                    "description": "A short localized string that describes the error.",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "(optional) A long localized error description if needed. It can contain precise information about which parameter is missing, or what are the identifier acceptable values.",
+                    "type": "string"
+                },
+                "infoURL": {
+                    "description": "(optional) A URL to online documentation that provides more information about the error.",
+                    "type": "string"
+                }
+            },
+            "example": {
+                "code": 105,
+                "message": "File not found",
+                "description": "File not found"
+            }
+        },
+        "ContentType": {
+            "description": "Base64 content structure.",
+            "required": [
+                "contentEncoding"
+            ],
+            "type": "object",
+            "properties": {
+                "type": {
+                    "description": "Content type.",
+                    "type": "string"
+                },
+                "contentEncoding": {
+                    "format": "byte",
+                    "description": "Base64 encoded content.",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "Content description.",
+                    "type": "string"
+                }
+            },
+            "example": {
+                "type": "application/json",
+                "contentEncoding": "R28gUGF0cyE=",
+                "description": "Contract"
+            }
+        }
+    }
+}
