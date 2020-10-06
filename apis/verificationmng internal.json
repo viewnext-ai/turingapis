@@ -1,0 +1,113 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "verificationmng internal",
+        "version": "1.0.0",
+        "description": "This API describes only the iternal methods of verificationmng microservice"
+    },
+    "paths": {
+        "/internal/{internalkey}/completeverification/{idverification}/{idperson}/{idcomunication}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return al verification information.",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                },
+                "operationId": "fullVerificationInfo",
+                "summary": "Endpoint to get full verification info based on the provided data",
+                "description": "This method return all verification information available based on the provided data."
+            },
+            "parameters": [
+                {
+                    "name": "internalkey",
+                    "description": "Internal key to identify only authorized system requests",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "idverification",
+                    "description": "Verification process ID",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "idperson",
+                    "description": "ID of the person who signs the operation",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "idcomunication",
+                    "description": "Communication ID",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/internal/{internalkey}/completeverification/{idverification}/{idperson}/{idcomunication}/{iddocumento}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return al verification information.",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                },
+                "operationId": "fullVerificationInfoDocId",
+                "summary": "Endpoint to get full verification info based on the provided data",
+                "description": "This method return all verification information available based on the provided data."
+            },
+            "parameters": [
+                {
+                    "name": "internalkey",
+                    "description": "Internal key to identify only authorized system requests",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "idverification",
+                    "description": "Verification process ID",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "idperson",
+                    "description": "ID of the person who signs the operation",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "idcomunication",
+                    "description": "Communication ID",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "iddocumento",
+                    "description": "Document ID to access",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}
