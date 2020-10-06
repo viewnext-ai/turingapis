@@ -14,9 +14,6 @@
     "paths": {
         "/access/{accessToken}": {
             "get": {
-                "consumes": [
-                    "multipart/form-data"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -64,9 +61,6 @@
         },
         "/access/{accessToken}/document/{documentToken}": {
             "get": {
-                "consumes": [
-                    "multipart/form-data"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -106,20 +100,23 @@
                         }
                     }
                 },
+                "operationId": "getDocument",
                 "description": "Get Document content"
             },
             "parameters": [
                 {
                     "name": "accessToken",
-                    "description": "A cifrate token for access documents",
+                    "description": "A cifrate token for access document list",
                     "in": "path",
                     "required": true,
                     "type": "string"
                 },
                 {
                     "name": "documentToken",
+                    "description": "A cifrate token for access document",
                     "in": "path",
-                    "required": true
+                    "required": true,
+                    "type": "string"
                 }
             ]
         }
