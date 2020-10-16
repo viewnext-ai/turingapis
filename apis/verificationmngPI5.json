@@ -1,0 +1,686 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "PI5verificationmng",
+        "version": "1.0.0",
+        "description": "Provide information about signature types and manage certificate SMS method and voice recording method."
+    },
+    "paths": {
+        "/verificationProcess/{verificationid}": {
+            "get": {
+                "tags": [
+                    "verificationProcessManagement"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/verification"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                },
+                "operationId": "verificationById",
+                "summary": "Get information about verification request",
+                "description": "Return verification request information about status, communications, etc."
+            },
+            "parameters": [
+                {
+                    "name": "verificationid",
+                    "description": "Internal identifier for verification process",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/verificationProcess/byOrderId/{orderid}": {
+            "get": {
+                "tags": [
+                    "verificationProcessManagement"
+                ],
+                "parameters": [
+                    {
+                        "name": "step",
+                        "description": "Step in contract flow",
+                        "in": "query",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "page",
+                        "description": "Page parameter. \n_?page=[pagenumber],[pagesize]_\n\nDefault pagesize is 20",
+                        "in": "query",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/verificationPage"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                },
+                "operationId": "verificationListByOrderId",
+                "summary": "Return a list of validation request related with one order id",
+                "description": "This operation provides a verification request list related with one orderid identifier and an optional filter by step.\n\n\n\n**Suported page**\nSupported. Default page 1 pagesize 20.\n\n&nbsp;  "
+            },
+            "parameters": [
+                {
+                    "name": "orderid",
+                    "description": "Order identifier in stack. ",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/verificationProcess/summary": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "DashBoard"
+                ],
+                "parameters": [
+                    {
+                        "name": "filter",
+                        "description": "Query parameter to specify the search filters. Attribute filters are specified in the following way:\n_?filter=[attributeName][operator][value],...,[value][&|;]...[&|;][attributeName][operator][value],...,[value]_\n\nSupported attributeNames are:\n* brand\n* channel\n* SignatureType\n* step\n\nSupported operators are:\n* Equality: == (equals), != (not equals)\n\n\n\nComma separated values for an attribute are evaluated with OR operator. & is the separator for multiple queries to be evaluated with AND operator while the ; is the separator for multiple queries to be evaluated with OR operator.",
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "name": "sort",
+                        "description": "Sort parameter to specify the search filters. Sort attributes are specified in the following way:\n_?sort=[attributeName][order][&]...[&][attributeName][order]_\n\nSupported attributeNames are:\n* brand\n* channel\n* SignatureType\n* step\n* createdDate\n* statusDate\n\nSupported orders are:\n* Ascending: asc\n* Descending: desc\n\n\n\n& is the separator for multiple sort parameters",
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "name": "page",
+                        "description": "Page parameter. \n_?page=[pagenumber],[pagesize]_\n\nDefault pagesize is 20",
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "name": "startdate",
+                        "description": "Start date from which the requests will be returned by filtering by the request creation date. \nFormat will be YYYY-MM-DD. \nBy default, startdate will be equal than enddate. \nDates between start and end date won't be more than 7.",
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "name": "enddate",
+                        "description": "End date until which the requests will be returned by filtering by the request creation date. \nFormat will be YYYY-MM-DD. \nBy default, enddate will be equal than today. \nDates between start and end date won't be more than 7.",
+                        "in": "query",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/summary_request_item"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Value not found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                },
+                "operationId": "requestsummary",
+                "summary": "Request information summary group in cathegories",
+                "description": "This operation provides request cathegories and sumatory of requests in each cathegory.\n\n**Mandatory**\nNone\n\n**Supported filters**\nNot supported\n\n**Supported sort**\nNot supported\n\n**Suported page**\nNot supported\n\n&nbsp;  "
+            }
+        },
+        "/verificationProcess/customerCommunication": {
+            "post": {
+                "tags": [
+                    "Communication"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/customerCommunication"
+                        },
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "operationId": "customerCommunication",
+                "summary": "Manage communication to user and response",
+                "description": "Manage communication to user and response. Available actions are: \n- MessageSent\n- MessageReceived\n\n"
+            }
+        },
+        "/verificationProcess": {
+            "get": {
+                "tags": [
+                    "verificationProcessManagement"
+                ],
+                "parameters": [
+                    {
+                        "name": "filter",
+                        "description": "Query parameter to specify the search filters. Attribute filters are specified in the following way:\n_?filters=([attributeName][operator][value],...,[value])[&|;]...[&|;]([attributeName][operator][value],...,[value])_\n\nSupported attributeNames are:\n* sfid\n* brand\n* channel\n* signatureType\n* step\n* status\n\nSupported operators are:\n* Equality: == (equals), != (not equals)\n\n\n\nComma separated values for an attribute are evaluated with OR operator. & is the separator for multiple queries to be evaluated with AND operator while the ; is the separator for multiple queries to be evaluated with OR operator (OR operator is not implemented).",
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "name": "sort",
+                        "description": "Sort parameter to specify the search filters. Sort attributes are specified in the following way:\n_?sort=([attributeName][order])[&]...[&]([attributeName][order])_\n\nSupported attributeNames are:\n* sfid\n* brand\n* channel\n* stack\n* step\n* createddate\n* statusdate\n\nSupported orders are:\n* Ascending: asc\n* Descending: desc\n\n\n\n& is the separator for multiple sort parameters",
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "name": "page",
+                        "description": "Page parameter. \n_?page=([pagenumber] size [pagesize])_\n\nDefault pagenumber is 1.\nDefault pagesize is 20",
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "name": "startdate",
+                        "description": "Start date from which the requests will be returned by filtering by the request creation date. \nFormat will be YYYY-MM-DD. \nBy default, startdate will be equal than enddate. \nDates between start and end date won't be more than 7.",
+                        "in": "query",
+                        "type": "string",
+                        "pattern": "^((2000|2400|2800|(19|2[0-9](0[48]|[2468][048]|[13579][26])))-02-29)$|^(((19|2[0-9])[0-9]{2})-02-(0[1-9]|1[0-9]|2[0-8]))$|^(((19|2[0-9])[0-9]{2})-(0[13578]|10|12)-(0[1-9]|[12][0-9]|3[01]))$|^(((19|2[0-9])[0-9]{2})-(0[469]|11)-(0[1-9]|[12][0-9]|30))$"
+                    },
+                    {
+                        "name": "enddate",
+                        "description": "End date until which the requests will be returned by filtering by the request creation date. \nFormat will be YYYY-MM-DD. \nBy default, enddate will be equal than today. \nDates between start and end date won't be more than 7.",
+                        "in": "query",
+                        "type": "string",
+                        "pattern": "^((2000|2400|2800|(19|2[0-9](0[48]|[2468][048]|[13579][26])))-02-29)$|^(((19|2[0-9])[0-9]{2})-02-(0[1-9]|1[0-9]|2[0-8]))$|^(((19|2[0-9])[0-9]{2})-(0[13578]|10|12)-(0[1-9]|[12][0-9]|3[01]))$|^(((19|2[0-9])[0-9]{2})-(0[469]|11)-(0[1-9]|[12][0-9]|30))$    "
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/verificationPage"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                },
+                "operationId": "verificationList",
+                "summary": "Get a list of verification request based on filters",
+                "description": "This operation provides a verifications request list based on filter parameters \n\n**Mandatory**\nNone\n\n**Supported filters**\n* sfid\n* brand\n* channel\n* signatureType\n* step\n* status\n\n**Supported sort**\n* sfid\n* brand\n* channel\n* signatureType\n* step\n* status\n* createddate\n* statusdate\n\n**Suported page**\nSupported. Default page 1 pagesize 20.\n\n&nbsp;  "
+            },
+            "post": {
+                "tags": [
+                    "verificationProcessManagement"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/requestinfo"
+                        },
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/verificationResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "405": {
+                        "description": "Method not Allowed"
+                    },
+                    "409": {
+                        "description": "Existe otro proceso activo para los mismos datos de entrada\n\n{\n    \"code\": 101,\n    \"message\": \"Otro proceso activo\",\n    \"description\": \"Existe otro proceso activo para los mismos datos de entrada\",\n    \"infoURL\": \"\"\n}",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+
+                        }
+                    }
+                },
+                "operationId": "initiateVerificationProcess",
+                "summary": "Start a verification process managed in Turing"
+            }
+        },
+        "/signatureMethods": {
+            "get": {
+                "tags": [
+                    "SignatureMethods"
+                ],
+                "parameters": [
+                    {
+                        "name": "orderItemsId",
+                        "description": "List of orderitemid involved in this request. If it's null, request is related with all orderitemid included in the order.",
+                        "in": "query",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "stack",
+                        "description": "Stack",
+                        "in": "query",
+                        "type": "string",
+                        "default": "ALANI",
+                        "enum": [
+                            "ALANI",
+                            "BAU_OSP",
+                            "BAU_JZZ"
+                        ]
+                    },
+                    {
+                        "name": "brand",
+                        "description": "Commertial brand related with order",
+                        "in": "query",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "ORANGE",
+                            "JAZZTEL",
+                            "AMENA"
+                        ]
+                    },
+                    {
+                        "name": "channel",
+                        "description": "Sales channel (\"Callcenter | SelfService | Retail\")",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "sfid",
+                        "description": "SFID",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "step",
+                        "description": "Step in contract flow.",
+                        "in": "query",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "prevSignatureType",
+                        "description": "Previous returned and failed signature type",
+                        "in": "query",
+                        "type": "string",
+                        "enum": [
+                            "DIGITAL_SIGNATURE",
+                            "CERTIFIED_SMS",
+                            "INFORMATIVE_SMS_EMAIL",
+                            "VOICE_RECORDING",
+                            "NOT_REQUIRED",
+                            "MANUAL_SIGNATURE"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not Allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                },
+                "operationId": "signatureMethods",
+                "summary": "Identify signature Methods related with one order",
+                "description": "Identify signeture methods available with one selling process. \n\nRespond with a list of available methods. Values could be: \n- DIGITAL_SIGNATURE\n- CERTIFIED_SMS\n- INFORMATIVE_SMS_EMAIL\n- VOICE_RECORDING\n- NOT_REQUIRED\n- MANUAL_SIGNATURE"
+            }
+        }
+    },
+    "definitions": {
+        "verification": {
+            "description": "Object with information about verification request process",
+            "type": "object",
+            "properties": {
+                "info": {
+                    "$ref": "#/definitions/requestinfo",
+                    "description": ""
+                }
+            }
+        },
+        "verificationPage": {
+            "description": "Page of verification request list",
+            "required": [
+                "totalPages",
+                "totalVerifications"
+            ],
+            "type": "object",
+            "properties": {
+                "totalPages": {
+                    "description": "Total Pages",
+                    "type": "number"
+                },
+                "totalVerifications": {
+                    "description": "Total Verification Request Number",
+                    "type": "number"
+                },
+                "verificationList": {
+                    "description": "Verification Request List",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/verification"
+                    }
+                }
+            }
+        },
+        "summary_request_item": {
+            "type": "object",
+            "properties": {
+                "SignatureType": {
+                    "description": "SignatureType/SignatureType",
+                    "type": "string"
+                },
+                "brand": {
+                    "description": "Marca sobre la que se realiza la orden/Commertial brand related with order",
+                    "type": "string"
+                },
+                "channel": {
+                    "description": "Canal de venta sobre el que se genero la orden/Sales channel (\"Callcenter | SelfService | Retail\")",
+                    "type": "string"
+                },
+                "step": {
+                    "description": "Paso en el flujo de contratación/Step in contract flow",
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "summary": {
+                    "format": "base64",
+                    "description": "Number of requests in this cathegory",
+                    "type": "integer"
+                }
+            }
+        },
+        "verificationResponse": {
+            "description": "",
+            "required": [
+                "requestId",
+                "verificationStatus"
+            ],
+            "type": "object",
+            "properties": {
+                "requestId": {
+                    "description": "Generated ID of the verification request",
+                    "type": "string"
+                },
+                "verificationStatus": {
+                    "description": "",
+                    "enum": [
+                        "DONE",
+                        "ERROR",
+                        "PENDING_CLIENT_ACTION",
+                        "PENDING_OPERATOR_ACTION",
+                        "CANCELLED"
+                    ],
+                    "type": "string"
+                }
+            }
+        },
+        "customerCommunication": {
+            "description": "User communication information",
+            "required": [
+                "action",
+                "ospMSISDN",
+                "customerMSISDN",
+                "communicationDate",
+                "communicationContent"
+            ],
+            "type": "object",
+            "properties": {
+                "action": {
+                    "description": "",
+                    "enum": [
+                        "messageSent",
+                        "messageReceived"
+                    ],
+                    "type": "string"
+                },
+                "ospMSISDN": {
+                    "description": "Orange SMS MSISDN included in communication",
+                    "type": "string"
+                },
+                "customerMSISDN": {
+                    "description": "Customer MSISDN",
+                    "type": "string"
+                },
+                "communicationDate": {
+                    "description": "Communication date and time",
+                    "type": "string"
+                },
+                "communicationContent": {
+                    "description": "Communication content sent or received",
+                    "type": "string"
+                },
+                "communicationStatus": {
+                    "$ref": "#/definitions/status",
+                    "description": "Optional communication status for communicaton sent information"
+                }
+            }
+        },
+        "Error": {
+            "description": "Error Data Detail",
+            "required": [
+                "code",
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "description": "An integer coding the error type. This is given to caller so he can translate them if required.",
+                    "type": "integer"
+                },
+                "message": {
+                    "description": "A short localized string that describes the error.",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "(optional) A long localized error description if needed. It can contain precise information about which parameter is missing, or what are the identifier acceptable values.",
+                    "type": "string"
+                },
+                "infoURL": {
+                    "description": "(optional) A URL to online documentation that provides more information about the error.",
+                    "type": "string"
+                }
+            },
+            "example": {
+                "code": 105,
+                "message": "File not found",
+                "description": "File not found"
+            }
+        },
+        "status": {
+            "description": "",
+            "required": [
+                "status"
+            ],
+            "type": "object",
+            "properties": {
+                "status": {
+                    "description": "",
+                    "enum": [
+                        "OK",
+                        "ERROR"
+                    ],
+                    "type": "string"
+                },
+                "errorCode": {
+                    "description": "",
+                    "type": "string"
+                },
+                "errorMessage": {
+                    "description": "",
+                    "type": "string"
+                }
+            }
+        },
+        "requestinfo": {
+            "description": "Verification request information for process generation",
+            "required": [
+                "orderid",
+                "signatureType",
+                "step"
+            ],
+            "type": "object",
+            "properties": {
+                "orderid": {
+                    "description": "Order identifier in original stack",
+                    "type": "string"
+                },
+                "orderItemsId": {
+                    "description": "List of orderitemid involved in this request. If it's null, request is related with all orderitemid included in the order.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "stack": {
+                    "description": "Stack",
+                    "default": "ALANI",
+                    "enum": [
+                        "ALANI",
+                        "BAU_OSP",
+                        "BAU_JZZ"
+                    ],
+                    "type": "string"
+                },
+                "channel": {
+                    "description": "Sales channel (\"Callcenter | SelfService | Retail\")",
+                    "type": "string"
+                },
+                "sfid": {
+                    "description": "SFID",
+                    "type": "string"
+                },
+                "step": {
+                    "description": "Step in contract flow",
+                    "enum": [
+                        "PURCHASE",
+                        "DELIVERY"
+                    ],
+                    "type": "string"
+                },
+                "signatureType": {
+                    "description": "Signature type requested by SOE",
+                    "enum": [
+                        "DIGITAL_SIGNATURE",
+                        "CERTIFIED_SMS",
+                        "INFORMATIVE_SMS_EMAIL",
+                        "VOICE_RECORDING",
+                        "NOT_REQUIRED",
+                        "MANUAL_SIGNATURE"
+                    ],
+                    "type": "string"
+                }
+            },
+            "xml": {
+                "name": "requestinfo"
+            }
+        }
+    }
+}
