@@ -1,0 +1,269 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "thirdpartiesmng",
+        "version": "1.0.0",
+        "description": "This API describes only the iternal methods of thirdpartiesmng microservice"
+    },
+    "paths": {
+        "/certificate/sendSMS": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/SendSmsRequest"
+                        },
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success, el proceso ha sido completado con éxito",
+                        "schema": {
+                            "$ref": "#/definitions/SendSmsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status valueNot Valid, la petición no es válida"
+                    },
+                    "404": {
+                        "description": "Not Found, el recurso solicitado no ha sido encontrado"
+                    },
+                    "405": {
+                        "description": "Method not Allowed, el recurso solicitado no está autorizado"
+                    },
+                    "500": {
+                        "description": "Exception, el proceso ha lanzado una excepción"
+                    }
+                },
+                "summary": "Certificación de un SMS que ha sido enviado a un destinatario",
+                "description": "Permite la certificación de un SMS que ha sido enviado a un destinatario en concreto y sus ficheros adjuntos en caso de tenerlos"
+            }
+        },
+        "/certificate/responseSMS": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseSmsRequest"
+                        },
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success, el proceso ha sido completado con éxito",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseSmsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status valueNot Valid, la petición no es válida"
+                    },
+                    "404": {
+                        "description": "Not Found, el recurso solicitado no ha sido encontrado"
+                    },
+                    "405": {
+                        "description": "Method not Allowed, el recurso solicitado no está autorizado"
+                    },
+                    "500": {
+                        "description": "Exception, el proceso ha lanzado una excepción"
+                    }
+                },
+                "summary": "Certificación de un SMS de respuesta enviado por un destinatario",
+                "description": "Permite la certificación de un SMS de respuesta enviado por un destinatario en concreto y asociado a un SMS enviado previamente"
+            }
+        }
+    },
+    "definitions": {
+        "ResponseSmsResponse": {
+            "description": "",
+            "type": "object",
+            "properties": {
+                "status": {
+                    "description": "“OK”/”KO”. Representa el resultado de la operación",
+                    "type": "string"
+                },
+                "idCertResp": {
+                    "description": "Identificador del proceso de certificación",
+                    "type": "string"
+                }
+            }
+        },
+        "ResponseSmsRequest": {
+            "description": "",
+            "type": "object",
+            "properties": {
+                "apiKey": {
+                    "description": "APIkey de acceso al servicio",
+                    "type": "string"
+                },
+                "urlCallback": {
+                    "description": "URL Call-back petición a informar a APIGEE",
+                    "type": "string"
+                },
+                "sms": {
+                    "$ref": "#/definitions/Sms"
+                },
+                "idCertSend": {
+                    "description": "Identificador del proceso de certificación SMS Envío",
+                    "type": "string"
+                }
+            }
+        },
+        "SendSmsResponse": {
+            "description": "",
+            "type": "object",
+            "properties": {
+                "status": {
+                    "description": "“OK”/”KO”. Representa el resultado de la operación",
+                    "type": "string"
+                },
+                "idCertSend": {
+                    "description": "Identificador del proceso de certificación",
+                    "type": "string"
+                }
+            }
+        },
+        "SendSmsRequest": {
+            "description": "",
+            "type": "object",
+            "properties": {
+                "apiKey": {
+                    "description": "APIkey de acceso al servicio",
+                    "type": "string"
+                },
+                "urlCallback": {
+                    "description": "URL Call-back petición a informar a APIGEE",
+                    "type": "string"
+                },
+                "sms": {
+                    "$ref": "#/definitions/Sms"
+                },
+                "client": {
+                    "$ref": "#/definitions/Client"
+                },
+                "fileList": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/File"
+                    },
+                    "xml": {
+                        "name": "file",
+                        "wrapped": true
+                    }
+                }
+            }
+        },
+        "Client": {
+            "description": "",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Nombre cliente (en caso segmento ‘Residencial’). Nombre apoderado (en caso segmento ‘Empresa’)",
+                    "type": "string"
+                },
+                "firstSurname": {
+                    "description": "Apellido 1 cliente (caso segmento ‘Residencial’). Apellido 1 apoderado (en caso segmento ‘Empresa’)",
+                    "type": "string"
+                },
+                "secondSurname": {
+                    "description": "Apellido 2 cliente (en caso segmento ‘Residencial’). Apellido 2 apoderado (en caso segmento ‘Empresa’)",
+                    "type": "string"
+                },
+                "idDocument": {
+                    "description": "DNI/NIF/NIE/Pasaporte cliente (en caso segmento ‘Residencial’). DNI/NIF/NIE/Pasaporte apoderado (en caso segmento ‘Empresa’)",
+                    "type": "string"
+                },
+                "segment": {
+                    "description": "Segmento cliente",
+                    "type": "string"
+                },
+                "brand": {
+                    "description": "Marca",
+                    "type": "string"
+                },
+                "nameCompany": {
+                    "description": "Nombre empresa (solo en caso segmento ‘Empresa’)",
+                    "type": "string"
+                },
+                "cifCompany": {
+                    "description": "CIF empresa (solo en caso segmento ‘Empresa’)",
+                    "type": "string"
+                }
+            }
+        },
+        "Sms": {
+            "description": "",
+            "type": "object",
+            "properties": {
+                "origin": {
+                    "description": "N.º remitente de SMS",
+                    "type": "string"
+                },
+                "destination": {
+                    "description": "N.º destinatario de SMS",
+                    "type": "string"
+                },
+                "message": {
+                    "description": "Texto de SMS enviado",
+                    "type": "string"
+                },
+                "messageHash": {
+                    "description": "Hash del texto de SMS enviado",
+                    "type": "string"
+                },
+                "date": {
+                    "description": "Fecha envío SMS (dd/mm/yyyy)",
+                    "type": "string"
+                },
+                "time": {
+                    "description": "Timestamp envío SMS (hh24:mm:ss)",
+                    "type": "string"
+                },
+                "timeZone": {
+                    "description": "Zona horaria timestamp envío SMS (GMT)",
+                    "type": "string"
+                }
+            }
+        },
+        "File": {
+            "description": "",
+            "type": "object",
+            "properties": {
+                "file": {
+                    "description": "Nombre archivo",
+                    "type": "string"
+                },
+                "data": {
+                    "description": "URL archivo",
+                    "type": "string"
+                },
+                "dataHash": {
+                    "description": "Hash archivo",
+                    "type": "string"
+                },
+                "dataformat": {
+                    "description": "Formato (extensión)",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
