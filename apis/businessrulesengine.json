@@ -3,7 +3,7 @@
     "info": {
         "title": " businessrulesengine Turing",
         "version": "2.0.0",
-        "description": "IDD para PI5\n\nProcessFlow API provides ProcessFlow management capabilities. This API allows to:\n• Create a Process Flow (an instance of a processFlow type). \n• Get information about processFlow execution in progress.\n\nProcessFlow API performs the following operations on a ProcessFlow:\n- Retrieval of a ProcessFlow or a collection of ProcessFlow depending on filter criteria\n- Creation of a ProcessFlow (from a processFlow type)\n- Deletion of a ProcessFlow (for administration purposes)\n\n\n"
+        "description": "IDD para PI5\n\nbusinessrulesengine\n\nMotor de reglas empresariales de Turing\n\n\n"
     },
     "host": "serverRoot",
     "schemes": [
