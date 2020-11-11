@@ -25,6 +25,28 @@
                     "type": "string"
                 }
             ]
+        },
+        "/amdocs/short/{orderId}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Obtener el ResultData con la informacion del productOrder rellena",
+                        "schema": {
+                            "$ref": "#/definitions/ResultData"
+                        }
+                    }
+                },
+                "description": "Obtener ProductOrder"
+            },
+            "parameters": [
+                {
+                    "name": "orderId",
+                    "description": "ID de la orden",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
         }
     },
     "definitions": {
@@ -3347,185 +3369,6 @@
                 }
             }
         },
-        "Individual": {
-            "description": "Individual resource\n",
-            "type": "object",
-            "properties": {
-                "id": {
-                    "description": "Unique identifier of Individual\n",
-                    "type": "string"
-                },
-                "href": {
-                    "description": "Hypertext reference to the individual.\n",
-                    "type": "string"
-                },
-                "givenName": {
-                    "description": "First name of the individual\n",
-                    "type": "string",
-                    "x-dox-pii": "nameInfo:name"
-                },
-                "middleName": {
-                    "description": "Middle name of the individual\n",
-                    "type": "string",
-                    "x-dox-pii": "nameInfo:name"
-                },
-                "familyName": {
-                    "description": "Family name of the individual\n",
-                    "type": "string",
-                    "x-dox-pii": "nameInfo:name"
-                },
-                "formattedName": {
-                    "description": "A formatted name useful for specific contexts for example Chinese,Japanese,Korean\n",
-                    "type": "string",
-                    "x-dox-pii": "nameInfo:name"
-                },
-                "fullName": {
-                    "description": "Full Name flatten (first,middle and last name flatten)\n",
-                    "type": "string",
-                    "x-dox-pii": "nameInfo:name"
-                },
-                "preferredGivenName": {
-                    "description": "name preferred by individual\n",
-                    "type": "string",
-                    "x-dox-pii": "nameInfo:name"
-                },
-                "birthDate": {
-                    "format": "date-time",
-                    "description": "Date of birth of individual\n",
-                    "type": "string",
-                    "x-dox-pii": "vitalInfo:date"
-                },
-                "countryOfBirth": {
-                    "description": "Country of birth of individual\n",
-                    "type": "string",
-                    "x-dox-pii": "vitalInfo:placeOfBirth"
-                },
-                "deathDate": {
-                    "format": "date-time",
-                    "description": "Date of death of individual\n",
-                    "type": "string",
-                    "x-dox-pii": "vitalInfo:date"
-                },
-                "gender": {
-                    "description": "Gender of the individual         \n",
-                    "type": "string",
-                    "x-dox-pii": "vitalInfo:gender"
-                },
-                "location": {
-                    "description": "Temporary current location of the individual (may be used if the individual has approved its sharing)\n",
-                    "type": "string"
-                },
-                "maritalStatus": {
-                    "description": "Marital status of the individual ( Married,divorced etc.) \n",
-                    "type": "string",
-                    "x-dox-pii": "vitalInfo:maritalStatus"
-                },
-                "nationality": {
-                    "description": "Nationality of the individual.\n",
-                    "type": "string",
-                    "x-dox-pii": "nationalityInfo:nationality"
-                },
-                "placeOfBirth": {
-                    "description": "Place of the birth of the individual\n",
-                    "type": "string",
-                    "x-dox-pii": "vitalInfo:placeOfBirth"
-                },
-                "status": {
-                    "description": "Status of the individual (for example active/inactive/obsolete and so on)\n",
-                    "type": "string"
-                },
-                "residencyType": {
-                    "description": "Type of residency such as rent,own\n",
-                    "type": "string",
-                    "x-dox-pii": "contactInfo:residencyType"
-                },
-                "title": {
-                    "description": "Used for title like Pr,Dr,Sir etc.\n",
-                    "type": "string",
-                    "x-dox-pii": "contactInfo:title"
-                },
-                "language": {
-                    "description": "Primary language of the individual\n",
-                    "type": "string",
-                    "x-dox-pii": "contactInfo:language"
-                },
-                "personRank": {
-                    "description": "Degree of importance of the person to the service provider.\n",
-                    "type": "integer"
-                },
-                "profileImageURL": {
-                    "description": "Published url for profile picture of Individual\n",
-                    "type": "string"
-                },
-                "contactMedium": {
-                    "description": "Associated Contact Mediums to individual\n",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/ContactMedium"
-                    }
-                },
-                "relatedParty": {
-                    "description": "Party/PartyRole associated with individual\n",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/RelatedPartyRef"
-                    }
-                },
-                "identification": {
-                    "description": "Represents our registration of information used as proof of identity by an individual (Passport/national identity card/SSN etc.)\n",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/IndividualIdentification"
-                    }
-                },
-                "characteristic": {
-                    "description": "Describes the characteristics of individual such as individual hobbies,center of interest etc. Apart from storage and retrieval no operations such as filtering,sorting etc. will be supported.\nNo sensitive infomration should be stored in this attribute.\n",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/Characteristics"
-                    }
-                },
-                "otherName": {
-                    "description": "To keep track of other names for e.g old name of a woman before marriage , an artist name and so on\n",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/OtherName"
-                    }
-                },
-                "externalReference": {
-                    "description": "To manage touch points external OTT identifiers for person (facebook,google+ etc.)\n",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/ExternalReference"
-                    }
-                },
-                "profilePicture": {
-                    "$ref": "#/definitions/AttachmentRef"
-                },
-                "InfluenceScore": {
-                    "description": "Social influence score of an individual\n",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/InfluenceScore"
-                    }
-                },
-                "additionalAttributes": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/additionalAttribute"
-                    }
-                },
-                "extensions": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "object"
-                    },
-                    "x-amdocs": {
-                        "refDefinition": "IndividualExtension"
-                    }
-                }
-            }
-        },
         "ExternalReference": {
             "description": "To manage touch points external OTT identifiers for person (facebook,google+ etc.)\n",
             "type": "object",
@@ -3823,50 +3666,12 @@
                     "items": {
                         "$ref": "#/definitions/PaymentMethod"
                     }
+                },
+                "eTag": {
+                    "description": "eTag de Amdocs",
+                    "type": "string"
                 }
             }
-        },
-        "Customer": {
-            "description": "Customer represents a person or organization that buys products and services from the enterprise or receives free offers or services. \nCustomers can also be other service providers who resell the enterprises products, other service providers that lease the enterprise's resources for utilization by the other \nservice provider's products and services, and so forth. Customer resource contains information about the customer. \nMain attributes are its identifier, name, status and validity, description, characteristics, contact medium, related customer account, related party, customer credit profile information.\n",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/PartyRole"
-                },
-                {
-                    "properties": {
-                        "customerType": {
-                            "description": "The type of the customer such as Residential/Corporate etc.\n",
-                            "type": "string"
-                        },
-                        "customerSubType": {
-                            "description": "The sub-type of customer such as Individual/Small Partnership etc.\n",
-                            "type": "string"
-                        },
-                        "acquisitionDate": {
-                            "format": "date-time",
-                            "description": "The date of aquisition of the customer\n",
-                            "type": "string"
-                        },
-                        "description": {
-                            "description": "The description of the customer\n",
-                            "type": "string"
-                        },
-                        "rank": {
-                            "description": "The rank of the customer\n",
-                            "type": "integer"
-                        },
-                        "extensions": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "object"
-                            },
-                            "x-amdocs": {
-                                "refDefinition": "CustomerExtension"
-                            }
-                        }
-                    }
-                }
-            ]
         },
         "TimePeriod": {
             "description": "Time period\n",
@@ -7396,6 +7201,259 @@
                     "description": "The value of the status change reason.\n",
                     "type": "string",
                     "readOnly": true
+                }
+            }
+        },
+        "Customer": {
+            "description": "Customer represents a person or organization that buys products and services from the enterprise or receives free offers or services. \nCustomers can also be other service providers who resell the enterprises products, other service providers that lease the enterprise's resources for utilization by the other \nservice provider's products and services, and so forth. Customer resource contains information about the customer. \nMain attributes are its identifier, name, status and validity, description, characteristics, contact medium, related customer account, related party, customer credit profile information.\n",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/PartyRole"
+                },
+                {
+                    "properties": {
+                        "customerType": {
+                            "description": "The type of the customer such as Residential/Corporate etc.\n",
+                            "type": "string"
+                        },
+                        "customerSubType": {
+                            "description": "The sub-type of customer such as Individual/Small Partnership etc.\n",
+                            "type": "string"
+                        },
+                        "acquisitionDate": {
+                            "format": "date-time",
+                            "description": "The date of aquisition of the customer\n",
+                            "type": "string"
+                        },
+                        "description": {
+                            "description": "The description of the customer\n",
+                            "type": "string"
+                        },
+                        "rank": {
+                            "description": "The rank of the customer\n",
+                            "type": "integer"
+                        },
+                        "extensions": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "object"
+                            },
+                            "x-amdocs": {
+                                "refDefinition": "CustomerExtension"
+                            }
+                        },
+                        "createdOn": {
+                            "format": "date-time",
+                            "description": "Date and time when the entity was created.\n",
+                            "type": "string"
+                        },
+                        "lastModifiedOn": {
+                            "format": "date-time",
+                            "description": "Date and time when the entity was last updated\n",
+                            "type": "string"
+                        }
+                    }
+                }
+            ]
+        },
+        "Individual": {
+            "description": "Individual resource\n",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of Individual\n",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "Hypertext reference to the individual.\n",
+                    "type": "string"
+                },
+                "@baseType": {
+                    "description": "Base type of entity\n",
+                    "type": "string"
+                },
+                "@type": {
+                    "description": "Type of Individual\n",
+                    "type": "string"
+                },
+                "@schemaLocation": {
+                    "description": "uri where the data model can be retrieved\n",
+                    "type": "string"
+                },
+                "createdOn": {
+                    "format": "date-time",
+                    "description": "Date and time when the entity was created\n",
+                    "type": "string"
+                },
+                "lastModifiedOn": {
+                    "format": "date-time",
+                    "description": "Date and time when the entity was last updated\n",
+                    "type": "string"
+                },
+                "givenName": {
+                    "description": "First name of the individual\n",
+                    "type": "string",
+                    "x-dox-pii": "nameInfo:name"
+                },
+                "middleName": {
+                    "description": "Middle name of the individual\n",
+                    "type": "string",
+                    "x-dox-pii": "nameInfo:name"
+                },
+                "familyName": {
+                    "description": "Family name of the individual\n",
+                    "type": "string",
+                    "x-dox-pii": "nameInfo:name"
+                },
+                "formattedName": {
+                    "description": "A formatted name useful for specific contexts for example Chinese,Japanese,Korean\n",
+                    "type": "string",
+                    "x-dox-pii": "nameInfo:name"
+                },
+                "fullName": {
+                    "description": "Full Name flatten (first,middle and last name flatten)\n",
+                    "type": "string",
+                    "x-dox-pii": "nameInfo:name"
+                },
+                "preferredGivenName": {
+                    "description": "name preferred by individual\n",
+                    "type": "string",
+                    "x-dox-pii": "nameInfo:name"
+                },
+                "birthDate": {
+                    "format": "date-time",
+                    "description": "Date of birth of individual\n",
+                    "type": "string",
+                    "x-dox-pii": "vitalInfo:date"
+                },
+                "countryOfBirth": {
+                    "description": "Country of birth of individual\n",
+                    "type": "string",
+                    "x-dox-pii": "vitalInfo:placeOfBirth"
+                },
+                "deathDate": {
+                    "format": "date-time",
+                    "description": "Date of death of individual\n",
+                    "type": "string",
+                    "x-dox-pii": "vitalInfo:date"
+                },
+                "gender": {
+                    "description": "Gender of the individual         \n",
+                    "type": "string",
+                    "x-dox-pii": "vitalInfo:gender"
+                },
+                "location": {
+                    "description": "Temporary current location of the individual (may be used if the individual has approved its sharing)\n",
+                    "type": "string"
+                },
+                "maritalStatus": {
+                    "description": "Marital status of the individual ( Married,divorced etc.) \n",
+                    "type": "string",
+                    "x-dox-pii": "vitalInfo:maritalStatus"
+                },
+                "nationality": {
+                    "description": "Nationality of the individual.\n",
+                    "type": "string",
+                    "x-dox-pii": "nationalityInfo:nationality"
+                },
+                "placeOfBirth": {
+                    "description": "Place of the birth of the individual\n",
+                    "type": "string",
+                    "x-dox-pii": "vitalInfo:placeOfBirth"
+                },
+                "status": {
+                    "description": "Status of the individual (for example active/inactive/obsolete and so on)\n",
+                    "type": "string"
+                },
+                "residencyType": {
+                    "description": "Type of residency such as rent,own\n",
+                    "type": "string",
+                    "x-dox-pii": "contactInfo:residencyType"
+                },
+                "title": {
+                    "description": "Used for title like Pr,Dr,Sir etc.\n",
+                    "type": "string",
+                    "x-dox-pii": "contactInfo:title"
+                },
+                "language": {
+                    "description": "Primary language of the individual\n",
+                    "type": "string",
+                    "x-dox-pii": "contactInfo:language"
+                },
+                "personRank": {
+                    "description": "Degree of importance of the person to the service provider.\n",
+                    "type": "integer"
+                },
+                "profileImageURL": {
+                    "description": "Published url for profile picture of Individual\n",
+                    "type": "string"
+                },
+                "contactMedium": {
+                    "description": "Associated Contact Mediums to individual\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ContactMedium"
+                    }
+                },
+                "relatedParty": {
+                    "description": "Party/PartyRole associated with individual\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatedPartyRef"
+                    }
+                },
+                "identification": {
+                    "description": "Represents our registration of information used as proof of identity by an individual (Passport/national identity card/SSN etc.)\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/IndividualIdentification"
+                    }
+                },
+                "characteristic": {
+                    "description": "Describes the characteristics of individual such as individual hobbies,center of interest etc. Apart from storage and retrieval no operations such as filtering,sorting etc. will be supported.\nNo sensitive infomration should be stored in this attribute.\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Characteristics"
+                    }
+                },
+                "otherName": {
+                    "description": "To keep track of other names for e.g old name of a woman before marriage , an artist name and so on\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/OtherName"
+                    }
+                },
+                "externalReference": {
+                    "description": "To manage touch points external OTT identifiers for person (facebook,google+ etc.)\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ExternalReference"
+                    }
+                },
+                "profilePicture": {
+                    "$ref": "#/definitions/AttachmentRef"
+                },
+                "InfluenceScore": {
+                    "description": "Social influence score of an individual\n",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/InfluenceScore"
+                    }
+                },
+                "additionalAttributes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/additionalAttribute"
+                    }
+                },
+                "extensions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "x-amdocs": {
+                        "refDefinition": "IndividualExtension"
+                    }
                 }
             }
         }
