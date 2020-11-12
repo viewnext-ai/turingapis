@@ -326,6 +326,10 @@
                     "items": {
                         "$ref": "#/definitions/AutenticityRule"
                     }
+                },
+                "blocked": {
+                    "description": "blocked",
+                    "type": "string"
                 }
             }
         }
