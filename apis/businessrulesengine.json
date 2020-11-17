@@ -284,23 +284,10 @@
                     "items": {
                         "$ref": "#/definitions/OfferingCriteria"
                     }
-                }
-            }
-        },
-        "AutenticityRule": {
-            "description": "AutenticityRule",
-            "type": "object",
-            "properties": {
-                "actionType": {
-                    "description": "actionType",
-                    "type": "string"
                 },
-                "autenticityCode": {
-                    "description": "autenticityCode",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                "deliveryMethod": {
+                    "description": "deliveryMethod",
+                    "type": "string"
                 }
             }
         },
@@ -330,6 +317,27 @@
                 "blocked": {
                     "description": "blocked",
                     "type": "string"
+                }
+            }
+        },
+        "AutenticityRule": {
+            "description": "",
+            "required": [
+                "actionType",
+                "autenticityCode"
+            ],
+            "type": "object",
+            "properties": {
+                "actionType": {
+                    "description": "",
+                    "type": "string"
+                },
+                "autenticityCode": {
+                    "description": "",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         }
