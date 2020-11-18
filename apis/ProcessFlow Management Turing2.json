@@ -1,0 +1,1043 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "ProcessFlow Management Turing PI5",
+        "version": "2.0.0",
+        "description": "IDD para PI5\n\nProcessFlow API provides ProcessFlow management capabilities. This API allows to:\n• Create a Process Flow (an instance of a processFlow type). \n• Get information about processFlow execution in progress.\n\nProcessFlow API performs the following operations on a ProcessFlow:\n- Retrieval of a ProcessFlow or a collection of ProcessFlow depending on filter criteria\n- Creation of a ProcessFlow (from a processFlow type)\n- Deletion of a ProcessFlow (for administration purposes)\n\n\n"
+    },
+    "host": "serverRoot",
+    "schemes": [
+        "https"
+    ],
+    "consumes": [
+        "application/json;charset=utf-8"
+    ],
+    "produces": [
+        "application/json;charset=utf-8"
+    ],
+    "paths": {
+        "/processFlow": {
+            "get": {
+                "tags": [
+                    "processFlow"
+                ],
+                "parameters": [
+                    {
+                        "name": "fields",
+                        "description": "Comma-separated properties to be provided in response",
+                        "in": "query",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "description": "Requested index for start of resources to be provided in response",
+                        "in": "query",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "limit",
+                        "description": "Requested number of resources to be provided in response",
+                        "in": "query",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "headers": {
+                            "X-Result-Count": {
+                                "description": "Actual number of items returned in the response body",
+                                "type": "integer"
+                            },
+                            "X-Total-Count": {
+                                "description": "Total number of items matching criteria",
+                                "type": "integer"
+                            }
+                        },
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ProcessFlow"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                },
+                "operationId": "listProcessFlow",
+                "summary": "List or find ProcessFlow objects",
+                "description": "This operation list or find ProcessFlow entities"
+            },
+            "post": {
+                "tags": [
+                    "processFlow"
+                ],
+                "parameters": [
+                    {
+                        "name": "processFlow",
+                        "description": "The ProcessFlow to be created",
+                        "schema": {
+                            "$ref": "#/definitions/ProcessFlow_Create"
+                        },
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/ProcessFlow"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                },
+                "operationId": "createProcessFlow",
+                "summary": "Creates a ProcessFlow",
+                "description": "This operation creates a ProcessFlow entity."
+            }
+        },
+        "/processFlow/{id}": {
+            "get": {
+                "tags": [
+                    "processFlow"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Identifier of the ProcessFlow",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "fields",
+                        "description": "Comma-separated properties to provide in response",
+                        "in": "query",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/ProcessFlow"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                },
+                "operationId": "retrieveProcessFlow",
+                "summary": "Retrieves a ProcessFlow by ID",
+                "description": "This operation retrieves a ProcessFlow entity. Attribute selection is enabled for all first level attributes."
+            },
+            "delete": {
+                "tags": [
+                    "processFlow"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Identifier of the ProcessFlow",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Deleted"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                },
+                "operationId": "deleteProcessFlow",
+                "summary": "Deletes a ProcessFlow",
+                "description": "This operation deletes a ProcessFlow entity."
+            }
+        },
+        "/processFlow/{processFlowId}/taskFlow/{id}": {
+            "patch": {
+                "parameters": [
+                    {
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/TaskFlow_Update"
+                        },
+                        "in": "body",
+                        "required": true
+                    },
+                    {
+                        "name": "processFlowId",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "description": "Identifier of the TaskFlow",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Updated",
+                        "schema": {
+                            "$ref": "#/definitions/TaskFlow"
+                        }
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "name": "processFlowId",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        }
+    },
+    "definitions": {
+        "ChannelRef": {
+            "description": "The channel to which the resource reference to. e.g. channel for selling product offerings, channel for opening a trouble ticket etc..",
+            "required": [
+                "id"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of a related entity.",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "Reference of the related entity.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of the channel.",
+                    "type": "string"
+                },
+                "@baseType": {
+                    "description": "When sub-classing, this defines the super-class",
+                    "type": "string"
+                },
+                "@schemaLocation": {
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+                    "type": "string"
+                },
+                "@type": {
+                    "description": "When sub-classing, this defines the sub-class entity name",
+                    "type": "string"
+                },
+                "@referredType": {
+                    "description": "The actual type of the target instance when needed for disambiguation.",
+                    "type": "string"
+                }
+            }
+        },
+        "Characteristic": {
+            "description": "Describes a given characteristic of an object or entity through a name/value pair.",
+            "required": [
+                "name",
+                "value"
+            ],
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Name of the characteristic",
+                    "type": "string"
+                },
+                "valueType": {
+                    "description": "Data type of the value of the characteristic",
+                    "type": "string"
+                },
+                "value": {
+                    "description": "The value of the characteristic",
+                    "type": "object"
+                },
+                "@baseType": {
+                    "description": "When sub-classing, this defines the super-class",
+                    "type": "string"
+                },
+                "@schemaLocation": {
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+                    "type": "string"
+                },
+                "@type": {
+                    "description": "When sub-classing, this defines the sub-class entity name",
+                    "type": "string"
+                }
+            }
+        },
+        "ProcessFlow": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Identifier of the Process flow",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "Reference of the ProcessFlow",
+                    "type": "string"
+                },
+                "processFlowDate": {
+                    "format": "date-time",
+                    "description": "Is the date when the processFlow was created in basse (timestamp)",
+                    "type": "string"
+                },
+                "processFlowSpecification": {
+                    "description": "Specification of the processFlow.",
+                    "type": "string"
+                },
+                "channel": {
+                    "description": "A list of channel(s) where this processFlow is executed",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ChannelRef"
+                    }
+                },
+                "characteristic": {
+                    "description": "A list of characteristic(s) associated to this processFlow",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Characteristic"
+                    }
+                },
+                "relatedEntity": {
+                    "description": "A list of related entity(ies) to this processFlow",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatedEntity"
+                    }
+                },
+                "relatedParty": {
+                    "description": "A list of related party(ies) to this processFlow",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatedParty"
+                    }
+                },
+                "state": {
+                    "$ref": "#/definitions/ProcessFlowStateType",
+                    "description": "State of the ProcessFlow: described in the state machine diagram."
+                },
+                "taskFlow": {
+                    "description": "A list of taskflow related to this processFlow",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/TaskFlowRef"
+                    }
+                },
+                "@baseType": {
+                    "description": "When sub-classing, this defines the super-class",
+                    "type": "string"
+                },
+                "@schemaLocation": {
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+                    "type": "string"
+                },
+                "@type": {
+                    "description": "When sub-classing, this defines the sub-class entity name",
+                    "type": "string"
+                }
+            }
+        },
+        "ProcessFlow_Create": {
+            "description": "\nSkipped properties: id,href,state,taskFlow,processFlowDate",
+            "required": [
+                "processFlowSpecification"
+            ],
+            "type": "object",
+            "properties": {
+                "processFlowSpecification": {
+                    "description": "Specification of the processFlow.",
+                    "type": "string"
+                },
+                "channel": {
+                    "description": "A list of channel(s) where this processFlow is executed",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ChannelRef"
+                    }
+                },
+                "characteristic": {
+                    "description": "A list of characteristic(s) associated to this processFlow",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Characteristic"
+                    }
+                },
+                "relatedEntity": {
+                    "description": "A list of related entity(ies) to this processFlow",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatedEntity"
+                    }
+                },
+                "relatedParty": {
+                    "description": "A list of related party(ies) to this processFlow",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatedParty"
+                    }
+                },
+                "@baseType": {
+                    "description": "When sub-classing, this defines the super-class",
+                    "type": "string"
+                },
+                "@schemaLocation": {
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+                    "type": "string"
+                },
+                "@type": {
+                    "description": "When sub-classing, this defines the sub-class entity name",
+                    "type": "string"
+                }
+            }
+        },
+        "ProcessFlowStateType": {
+            "description": "Valid values for the lifecycle state of the processFlow",
+            "enum": [
+                "active",
+                "cancelled",
+                "hold",
+                "completed"
+            ],
+            "type": "string"
+        },
+        "RelatedEntity": {
+            "description": "A reference to an entity, where the type of the entity is not known in advance.",
+            "required": [
+                "@referredType",
+                "id",
+                "role"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of a related entity.",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "Reference of the related entity.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of the related entity.",
+                    "type": "string"
+                },
+                "role": {
+                    "description": "The role of an entity.",
+                    "type": "string"
+                },
+                "@baseType": {
+                    "description": "When sub-classing, this defines the super-class",
+                    "type": "string"
+                },
+                "@schemaLocation": {
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+                    "type": "string"
+                },
+                "@type": {
+                    "description": "When sub-classing, this defines the sub-class entity name",
+                    "type": "string"
+                },
+                "@referredType": {
+                    "description": "The actual type of the target instance when needed for disambiguation.",
+                    "type": "string"
+                }
+            }
+        },
+        "RelatedParty": {
+            "description": "Related Entity reference. A related party defines party or party role linked to a specific entity.",
+            "required": [
+                "@referredType",
+                "id"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of a related entity.",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "Reference of the related entity.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of the related entity.",
+                    "type": "string"
+                },
+                "role": {
+                    "description": "Role played by the related party",
+                    "type": "string"
+                },
+                "@baseType": {
+                    "description": "When sub-classing, this defines the super-class",
+                    "type": "string"
+                },
+                "@schemaLocation": {
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+                    "type": "string"
+                },
+                "@type": {
+                    "description": "When sub-classing, this defines the sub-class entity name",
+                    "type": "string"
+                },
+                "@referredType": {
+                    "description": "The actual type of the target instance when needed for disambiguation.",
+                    "type": "string"
+                }
+            }
+        },
+        "TaskFlowRef": {
+            "required": [
+                "id"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of a related entity.",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "Reference of the related entity.",
+                    "type": "string"
+                },
+                "@baseType": {
+                    "description": "When sub-classing, this defines the super-class",
+                    "type": "string"
+                },
+                "@schemaLocation": {
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+                    "type": "string"
+                },
+                "@type": {
+                    "description": "When sub-classing, this defines the sub-class entity name",
+                    "type": "string"
+                },
+                "@referredType": {
+                    "description": "The actual type of the target instance when needed for disambiguation.",
+                    "type": "string"
+                }
+            }
+        },
+        "Error": {
+            "description": "Used when an API throws an Error, typically with a HTTP error response-code (3xx, 4xx, 5xx)",
+            "required": [
+                "code",
+                "message"
+            ],
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "An integer coding the error type. This is given to caller so he can translate them if required.",
+                    "type": "integer"
+                },
+                "message": {
+                    "description": "A short localized string that describes the error.",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "(optional) A long localized error description if needed. It can contain precise information about which parameter is missing, or what are the identifier acceptable values.",
+                    "type": "string"
+                },
+                "infoURL": {
+                    "description": "(optional) A URL to online documentation that provides more information about the error.",
+                    "type": "string"
+                }
+            },
+            "example": {
+                "code": 105,
+                "message": "File not found",
+                "description": "File not found"
+            }
+        },
+        "CustomerCriteria": {
+            "description": "",
+            "type": "object",
+            "properties": {
+                "brand": {
+                    "description": "Indica la marca a la que pertenece el cliente (Orange, Amena, Jazztel)",
+                    "type": "string"
+                },
+                "isNewCustomer": {
+                    "description": "Indica si la contratación es para un cliente nuevo o un cliente existente.",
+                    "type": "boolean"
+                },
+                "customerType": {
+                    "description": "Indica el tipo de cliente (Residencial, SOHO, etc)\n\n(*) Valores en data gathering",
+                    "type": "string"
+                }
+            }
+        },
+        "OfferingCriteria": {
+            "description": "",
+            "type": "object",
+            "properties": {
+                "commercialAct": {
+                    "description": "El ID del acto comercial que se esta contratando.\nSegun lista de valores de actos comerciales. Por ejemplo:\n- ALPPREMO\n- ALPPOMOV\n- etc.\n \n(*) Lista de valores en Data Gathering",
+                    "type": "string"
+                },
+                "paymentType": {
+                    "description": "Indica el tipo de contrato de la oferta (prepago, postpago)\n\n(*) Lista de valores en Data Gathering",
+                    "type": "string"
+                },
+                "paymentOption": {
+                    "description": "Indica la opcion de pago para la oferta (VAP, pago único)\n\n(*) Lista de valores en Data Gathering",
+                    "type": "string"
+                },
+                "hasTVDevice": {
+                    "description": "Indica si la oferta incluye algun producto de tipo \"TVDevice\"",
+                    "type": "boolean"
+                },
+                "maxPrice": {
+                    "description": "Indica el precio del dispositivo mas caro dentro de la oferta.\nSe tiene que indicar el valor en SAP, no el precio de venta.",
+                    "type": "number"
+                }
+            }
+        },
+        "Attachment": {
+            "description": "",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the attachment",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "Reference of the attachment",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "A narrative text describing the content of the attachment",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "Attachment type such as video, picture",
+                    "type": "string"
+                },
+                "url": {
+                    "description": "url of the document",
+                    "type": "string"
+                },
+                "content": {
+                    "$ref": "#/definitions/AttachmentContent",
+                    "description": "Content of the document. \n(*) Can hold a byte stream"
+                }
+            }
+        },
+        "AttachmentContent": {
+            "description": "",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "description": "",
+                    "type": "string"
+                },
+                "format": {
+                    "description": "Format of the document like base64, etc",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "The actual contents of the attachment object, if embedded, encoded as base64",
+                    "type": "string"
+                }
+            }
+        },
+        "TaskFlowStateType": {
+            "description": "",
+            "enum": [
+                "new",
+                "active",
+                "hold",
+                "cancelled",
+                "completed"
+            ],
+            "type": "string"
+        },
+        "TaskFlowRelationship": {
+            "description": "Describes relationship between taskFlow",
+            "required": [
+                "relationshipType",
+                "taskFlow"
+            ],
+            "type": "object",
+            "properties": {
+                "relationshipType": {
+                    "description": "The type of taskFlow relationship (requires, triggers, etc.)",
+                    "type": "string"
+                },
+                "taskFlow": {
+                    "$ref": "#/definitions/TaskFlowRef",
+                    "description": "The taskFlow being referred to"
+                },
+                "@baseType": {
+                    "description": "When sub-classing, this defines the super-class",
+                    "type": "string"
+                },
+                "@schemaLocation": {
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+                    "type": "string"
+                },
+                "@type": {
+                    "description": "When sub-classing, this defines the sub-class entity name",
+                    "type": "string"
+                }
+            }
+        },
+        "AutenticityRule": {
+            "description": "",
+            "required": [
+                "actionType",
+                "autenticityCode"
+            ],
+            "type": "object",
+            "properties": {
+                "actionType": {
+                    "description": "",
+                    "type": "string"
+                },
+                "autenticityCode": {
+                    "description": "",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "TaskFlow_Update": {
+            "description": "\nSkipped properties: id,href,taskFlowSpecification",
+            "type": "object",
+            "properties": {
+                "completionMethod": {
+                    "description": "TaskFlow completion method.",
+                    "type": "string"
+                },
+                "isMandatory": {
+                    "description": "Indicate mandatory TaskFlow.",
+                    "type": "boolean"
+                },
+                "priority": {
+                    "description": "TaskFlow priority.",
+                    "type": "integer"
+                },
+                "channel": {
+                    "description": "A list of channel(s) where this taskFlow is executed",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ChannelRef"
+                    }
+                },
+                "characteristic": {
+                    "description": "A list of characteristic(s) associated to this taskFlow",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Characteristic"
+                    }
+                },
+                "relatedEntity": {
+                    "description": "A list of related entity(ies) to this taskFlow",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatedEntity"
+                    }
+                },
+                "relatedParty": {
+                    "description": "A list of related party(ies) to this task",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatedParty"
+                    }
+                },
+                "state": {
+                    "$ref": "#/definitions/TaskFlowStateType",
+                    "description": "State of the taskFlow: described in the state machine diagram."
+                },
+                "taskFlowRelationship": {
+                    "description": "A list of taskFlows related to this taskFlow",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/TaskFlowRelationship"
+                    }
+                },
+                "@baseType": {
+                    "description": "When sub-classing, this defines the super-class",
+                    "type": "string"
+                },
+                "@schemaLocation": {
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+                    "type": "string"
+                },
+                "@type": {
+                    "description": "When sub-classing, this defines the sub-class entity name",
+                    "type": "string"
+                }
+            }
+        },
+        "TaskFlow": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Identifier of the taskFlow",
+                    "type": "string"
+                },
+                "href": {
+                    "description": "Reference of the taskFlow",
+                    "type": "string"
+                },
+                "completionMethod": {
+                    "description": "TaskFlow completion method.",
+                    "type": "string"
+                },
+                "isMandatory": {
+                    "description": "Indicate mandatory TaskFlow.",
+                    "type": "boolean"
+                },
+                "priority": {
+                    "description": "TaskFlow priority.",
+                    "type": "integer"
+                },
+                "taskFlowSpecification": {
+                    "description": "Specification of the taskFlow.",
+                    "type": "string"
+                },
+                "channel": {
+                    "description": "A list of channel(s) where this taskFlow is executed",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ChannelRef"
+                    }
+                },
+                "characteristic": {
+                    "description": "A list of characteristic(s) associated to this taskFlow",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Characteristic"
+                    }
+                },
+                "relatedEntity": {
+                    "description": "A list of related entity(ies) to this taskFlow",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatedEntity"
+                    }
+                },
+                "relatedParty": {
+                    "description": "A list of related party(ies) to this task",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatedParty"
+                    }
+                },
+                "state": {
+                    "$ref": "#/definitions/TaskFlowStateType",
+                    "description": "State of the taskFlow: described in the state machine diagram."
+                },
+                "taskFlowRelationship": {
+                    "description": "A list of taskFlows related to this taskFlow",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/TaskFlowRelationship"
+                    }
+                },
+                "@baseType": {
+                    "description": "When sub-classing, this defines the super-class",
+                    "type": "string"
+                },
+                "@schemaLocation": {
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+                    "type": "string"
+                },
+                "@type": {
+                    "description": "When sub-classing, this defines the sub-class entity name",
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "processFlow"
+        }
+    ]
+}
