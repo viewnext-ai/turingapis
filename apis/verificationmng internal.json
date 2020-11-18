@@ -108,6 +108,154 @@
                     "type": "string"
                 }
             ]
+        },
+        "/internal/{internalkey}/sireskafka": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/siresDTO"
+                        },
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response"
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "name": "internalkey",
+                    "description": "Internal key to identify only authorized system requests",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/internal/{internalkey}/certification/{idverification}/{idcertificate}": {
+            "patch": {
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "description": "Datos de la certificación.",
+                        "schema": {
+                            "$ref": "#/definitions/certificationDTO"
+                        },
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return a certification information"
+                    }
+                },
+                "operationId": "certificateSms",
+                "summary": "Informa de la certificación de un mensaje.",
+                "description": "Llamada desde madison"
+            },
+            "parameters": [
+                {
+                    "name": "internalkey",
+                    "description": "Internal key to identify only authorized system requests",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "idverification",
+                    "description": "Verification process ID",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "idcertificate",
+                    "description": "id del certificado",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        }
+    },
+    "definitions": {
+        "siresDTO": {
+            "description": "",
+            "type": "object",
+            "properties": {
+                "textSent": {
+                    "description": "Texto enviado",
+                    "type": "string"
+                },
+                "deliveryState": {
+                    "description": "Estado de entrega",
+                    "type": "string"
+                },
+                "deliveryTime": {
+                    "description": "Fecha de entrega",
+                    "type": "string"
+                },
+                "senderPhoneNumber": {
+                    "description": "Teléfono del remitente",
+                    "type": "string"
+                },
+                "receiverPhoneNumber": {
+                    "description": "Teléfono del destinatario",
+                    "type": "string"
+                }
+            }
+        },
+        "certificationDTO": {
+            "description": "Datos de certificación procedentes.",
+            "required": [
+                "state"
+            ],
+            "type": "object",
+            "properties": {
+                "state": {
+                    "description": "Estado certificación",
+                    "type": "string"
+                },
+                "attachment": {
+                    "$ref": "#/definitions/attachmentDTO",
+                    "description": "Fichero de certificación"
+                }
+            }
+        },
+        "attachmentDTO": {
+            "description": "Documento de respuesta de certificación",
+            "required": [
+                "certificationDate",
+                "content",
+                "format"
+            ],
+            "type": "object",
+            "properties": {
+                "content": {
+                    "description": "Contenido del fichero",
+                    "type": "string"
+                },
+                "format": {
+                    "description": "Formato del fichero",
+                    "type": "string"
+                },
+                "certificationDate": {
+                    "description": "Fecha de certificación.",
+                    "type": "string"
+                }
+            }
         }
     }
 }
