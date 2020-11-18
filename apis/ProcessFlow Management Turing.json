@@ -831,61 +831,6 @@
             ],
             "type": "string"
         },
-        "TaskFlow_Update": {
-            "description": "Skipped properties: id,href,taskFlowSpecification",
-            "type": "object",
-            "properties": {
-                "description": {
-                    "description": "Skipped properties: id,href,taskFlowSpecification",
-                    "type": "string"
-                },
-                "completionMethod": {
-                    "description": "TaskFlow completion method.",
-                    "type": "string"
-                },
-                "isMandatory": {
-                    "description": "Indicate mandatory TaskFlow.",
-                    "type": "boolean"
-                },
-                "priority": {
-                    "description": "TaskFlow priority.",
-                    "type": "number"
-                },
-                "channel": {
-                    "$ref": "#/definitions/ChannelRef",
-                    "description": "A list of channel(s) where this taskFlow is executed"
-                },
-                "characteristic": {
-                    "$ref": "#/definitions/Characteristic",
-                    "description": "A list of characteristic(s) associated to this taskFlow"
-                },
-                "relatedEntity": {
-                    "$ref": "#/definitions/RelatedEntity",
-                    "description": "A list of related entity(ies) to this taskFlow"
-                },
-                "relatedParty": {
-                    "$ref": "#/definitions/RelatedEntity",
-                    "description": "A list of related party(ies) to this task"
-                },
-                "state": {
-                    "$ref": "#/definitions/TaskFlowStateType",
-                    "description": "Valid values for the lifecycle state of the taskFlow"
-                },
-                "@baseType": {
-                    "description": "When sub-classing, this defines the super-class",
-                    "type": "string"
-                },
-                "@schemaLocation": {
-                    "format": "uri",
-                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
-                    "type": "string"
-                },
-                "@type": {
-                    "description": "When sub-classing, this defines the sub-class entity name",
-                    "type": "string"
-                }
-            }
-        },
         "TaskFlowRelationship": {
             "description": "Describes relationship between taskFlow",
             "required": [
@@ -900,7 +845,7 @@
                 },
                 "taskFlow": {
                     "$ref": "#/definitions/TaskFlowRef",
-                    "description": ""
+                    "description": "The taskFlow being referred to"
                 },
                 "@baseType": {
                     "description": "When sub-classing, this defines the super-class",
@@ -939,6 +884,76 @@
                     "items": {
                         "type": "string"
                     }
+                }
+            }
+        },
+        "TaskFlow_Update": {
+            "description": "\nSkipped properties: id,href,taskFlowSpecification",
+            "type": "object",
+            "properties": {
+                "completionMethod": {
+                    "description": "TaskFlow completion method.",
+                    "type": "string"
+                },
+                "isMandatory": {
+                    "description": "Indicate mandatory TaskFlow.",
+                    "type": "boolean"
+                },
+                "priority": {
+                    "description": "TaskFlow priority.",
+                    "type": "integer"
+                },
+                "channel": {
+                    "description": "A list of channel(s) where this taskFlow is executed",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ChannelRef"
+                    }
+                },
+                "characteristic": {
+                    "description": "A list of characteristic(s) associated to this taskFlow",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Characteristic"
+                    }
+                },
+                "relatedEntity": {
+                    "description": "A list of related entity(ies) to this taskFlow",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatedEntity"
+                    }
+                },
+                "relatedParty": {
+                    "description": "A list of related party(ies) to this task",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatedParty"
+                    }
+                },
+                "state": {
+                    "$ref": "#/definitions/TaskFlowStateType",
+                    "description": "State of the taskFlow: described in the state machine diagram."
+                },
+                "taskFlowRelationship": {
+                    "description": "A list of taskFlows related to this taskFlow",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/TaskFlowRelationship"
+                    }
+                },
+                "@baseType": {
+                    "description": "When sub-classing, this defines the super-class",
+                    "type": "string"
+                },
+                "@schemaLocation": {
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+                    "type": "string"
+                },
+                "@type": {
+                    "description": "When sub-classing, this defines the sub-class entity name",
+                    "type": "string"
                 }
             }
         }
