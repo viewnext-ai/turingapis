@@ -18,7 +18,7 @@
                     {
                         "name": "body",
                         "schema": {
-                            "$ref": "#/definitions/SendSmsRequest"
+                            "$ref": "#/definitions/ThirdPartiesDto"
                         },
                         "in": "body",
                         "required": true
@@ -60,7 +60,7 @@
                     {
                         "name": "body",
                         "schema": {
-                            "$ref": "#/definitions/ResponseSmsRequest"
+                            "$ref": "#/definitions/ThirdPartiesDto"
                         },
                         "in": "body",
                         "required": true
@@ -106,27 +106,6 @@
                 }
             }
         },
-        "ResponseSmsRequest": {
-            "description": "",
-            "type": "object",
-            "properties": {
-                "apiKey": {
-                    "description": "APIkey de acceso al servicio",
-                    "type": "string"
-                },
-                "urlCallback": {
-                    "description": "URL Call-back petición a informar a APIGEE",
-                    "type": "string"
-                },
-                "sms": {
-                    "$ref": "#/definitions/Sms"
-                },
-                "idCertSend": {
-                    "description": "Identificador del proceso de certificación SMS Envío",
-                    "type": "string"
-                }
-            }
-        },
         "SendSmsResponse": {
             "description": "",
             "type": "object",
@@ -138,36 +117,6 @@
                 "idCertSend": {
                     "description": "Identificador del proceso de certificación",
                     "type": "string"
-                }
-            }
-        },
-        "SendSmsRequest": {
-            "description": "",
-            "type": "object",
-            "properties": {
-                "apiKey": {
-                    "description": "APIkey de acceso al servicio",
-                    "type": "string"
-                },
-                "urlCallback": {
-                    "description": "URL Call-back petición a informar a APIGEE",
-                    "type": "string"
-                },
-                "sms": {
-                    "$ref": "#/definitions/Sms"
-                },
-                "client": {
-                    "$ref": "#/definitions/Client"
-                },
-                "fileList": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/File"
-                    },
-                    "xml": {
-                        "name": "file",
-                        "wrapped": true
-                    }
                 }
             }
         },
@@ -243,7 +192,7 @@
                 }
             }
         },
-        "File": {
+        "Fichero": {
             "description": "",
             "type": "object",
             "properties": {
@@ -262,6 +211,63 @@
                 "dataformat": {
                     "description": "Formato (extensión)",
                     "type": "string"
+                }
+            }
+        },
+        "ThirdPartiesDto": {
+            "description": "",
+            "type": "object",
+            "properties": {
+                "apiKey": {
+                    "description": "APIkey de acceso al servicio",
+                    "type": "string"
+                },
+                "urlCallback": {
+                    "description": "URL Call-back petición a informar a APIGEE",
+                    "type": "string"
+                },
+                "sms": {
+                    "$ref": "#/definitions/Sms"
+                },
+                "client": {
+                    "$ref": "#/definitions/Client"
+                },
+                "fileList": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Fichero"
+                    },
+                    "xml": {
+                        "name": "file",
+                        "wrapped": true
+                    }
+                },
+                "idCertSend": {
+                    "description": "Identificador del proceso de certificación",
+                    "type": "string"
+                }
+            }
+        },
+        "TokenOauth": {
+            "description": "",
+            "type": "object",
+            "properties": {
+                "token_type": {
+                    "description": "Tipo de token.",
+                    "type": "string"
+                },
+                "access_token": {
+                    "description": "Token de acceso.",
+                    "type": "string"
+                },
+                "expires_in": {
+                    "description": "Tiempo de caducidad.",
+                    "type": "string"
+                },
+                "creation_date": {
+                    "format": "int64",
+                    "description": "Fecha de creacion del token.",
+                    "type": "integer"
                 }
             }
         }
