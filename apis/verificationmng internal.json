@@ -109,37 +109,6 @@
                 }
             ]
         },
-        "/internal/{internalkey}/sireskafka": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "body",
-                        "schema": {
-                            "$ref": "#/definitions/siresDTO"
-                        },
-                        "in": "body",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Response"
-                    }
-                }
-            },
-            "parameters": [
-                {
-                    "name": "internalkey",
-                    "description": "Internal key to identify only authorized system requests",
-                    "in": "path",
-                    "required": true,
-                    "type": "string"
-                }
-            ]
-        },
         "/internal/{internalkey}/certification/{idverification}/{idcertificate}": {
             "patch": {
                 "consumes": [
@@ -183,6 +152,84 @@
                 {
                     "name": "idcertificate",
                     "description": "id del certificado",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/internal/{internalkey}/sireskafka": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/siresDTO"
+                        },
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response"
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "name": "internalkey",
+                    "description": "Internal key to identify only authorized system requests",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/internal/{internalkey}/reminders": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response"
+                    },
+                    "304": {
+                        "description": "Respuesta KO"
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "name": "internalkey",
+                    "description": "Internal key to identify only authorized system requests",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/internal/{internalkey}/expiration": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Respuesta OK"
+                    },
+                    "304": {
+                        "description": "Respuesta KO"
+                    }
+                },
+                "summary": "Servicio que inicia la expiracion de los procesos de verificacion no confirmados en tiempo",
+                "description": ""
+            },
+            "parameters": [
+                {
+                    "name": "internalkey",
+                    "description": "Internal key to identify only authorized system requests",
                     "in": "path",
                     "required": true,
                     "type": "string"
@@ -257,5 +304,15 @@
                 }
             }
         }
-    }
+    },
+    "tags": [
+        {
+            "name": "TURING",
+            "description": ""
+        },
+        {
+            "name": "INTERNAL",
+            "description": ""
+        }
+    ]
 }
