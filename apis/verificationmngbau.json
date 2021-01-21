@@ -413,6 +413,11 @@
                         },
                         "in": "body",
                         "required": true
+                    },
+                    {
+                        "name": "internalkey",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -423,7 +428,16 @@
                 "operationId": "insecureCustomerCommunicationTask",
                 "summary": "Manage communication to user and response without security context",
                 "description": "Manage communication to user and response. Available actions are: \n- MessageSent\n- MessageReceived\n\n"
-            }
+            },
+            "parameters": [
+                {
+                    "name": "internalkey",
+                    "description": "Internal key to identify only authorized system requests",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
         },
         "/internal/{internalkey}/expiration": {
             "get": {
