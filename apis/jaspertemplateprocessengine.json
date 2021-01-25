@@ -191,7 +191,7 @@
             "type": "object",
             "properties": {
                 "name": {
-                    "description": "Name of the document",
+                    "description": "Document name",
                     "type": "string"
                 },
                 "template": {
@@ -214,15 +214,15 @@
             "type": "object",
             "properties": {
                 "result": {
-                    "description": "result",
+                    "description": "Result",
                     "type": "string"
                 },
                 "filePath": {
-                    "description": "filePath",
+                    "description": "File path",
                     "type": "string"
                 },
                 "errorDescription": {
-                    "description": "errorDescription",
+                    "description": "Error description.",
                     "type": "string"
                 }
             },
