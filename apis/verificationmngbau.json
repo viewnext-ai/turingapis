@@ -79,6 +79,13 @@
                             "NOT_REQUIRED",
                             "MANUAL_SIGNATURE"
                         ]
+                    },
+                    {
+                        "name": "orderid",
+                        "description": "Id de orden",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -116,74 +123,6 @@
             }
         },
         "/verificationProcess": {
-            "get": {
-                "tags": [
-                    "verificationProcessManagement"
-                ],
-                "parameters": [
-                    {
-                        "name": "filter",
-                        "description": "Query parameter to specify the search filters. Attribute filters are specified in the following way:\n_?filters=([attributeName][operator][value],...,[value])[&|;]...[&|;]([attributeName][operator][value],...,[value])_\n\nSupported attributeNames are:\n* sfid\n* brand\n* channel\n* signatureType\n* step\n* status\n\nSupported operators are:\n* Equality: == (equals), != (not equals)\n\n\n\nComma separated values for an attribute are evaluated with OR operator. & is the separator for multiple queries to be evaluated with AND operator while the ; is the separator for multiple queries to be evaluated with OR operator (OR operator is not implemented).",
-                        "in": "query",
-                        "type": "string"
-                    },
-                    {
-                        "name": "sort",
-                        "description": "Sort parameter to specify the search filters. Sort attributes are specified in the following way:\n_?sort=([attributeName][order])[&]...[&]([attributeName][order])_\n\nSupported attributeNames are:\n* sfid\n* brand\n* channel\n* stack\n* step\n* createddate\n* statusdate\n\nSupported orders are:\n* Ascending: asc\n* Descending: desc\n\n\n\n& is the separator for multiple sort parameters",
-                        "in": "query",
-                        "type": "string"
-                    },
-                    {
-                        "name": "page",
-                        "description": "Page parameter. \n_?page=([pagenumber] size [pagesize])_\n\nDefault pagenumber is 1.\nDefault pagesize is 20",
-                        "in": "query",
-                        "type": "string"
-                    },
-                    {
-                        "name": "startdate",
-                        "description": "Start date from which the requests will be returned by filtering by the request creation date. \nFormat will be YYYY-MM-DD. \nBy default, startdate will be equal than enddate. \nDates between start and end date won't be more than 7.",
-                        "in": "query",
-                        "type": "string",
-                        "pattern": "^((2000|2400|2800|(19|2[0-9](0[48]|[2468][048]|[13579][26])))-02-29)$|^(((19|2[0-9])[0-9]{2})-02-(0[1-9]|1[0-9]|2[0-8]))$|^(((19|2[0-9])[0-9]{2})-(0[13578]|10|12)-(0[1-9]|[12][0-9]|3[01]))$|^(((19|2[0-9])[0-9]{2})-(0[469]|11)-(0[1-9]|[12][0-9]|30))$"
-                    },
-                    {
-                        "name": "enddate",
-                        "description": "End date until which the requests will be returned by filtering by the request creation date. \nFormat will be YYYY-MM-DD. \nBy default, enddate will be equal than today. \nDates between start and end date won't be more than 7.",
-                        "in": "query",
-                        "type": "string",
-                        "pattern": "^((2000|2400|2800|(19|2[0-9](0[48]|[2468][048]|[13579][26])))-02-29)$|^(((19|2[0-9])[0-9]{2})-02-(0[1-9]|1[0-9]|2[0-8]))$|^(((19|2[0-9])[0-9]{2})-(0[13578]|10|12)-(0[1-9]|[12][0-9]|3[01]))$|^(((19|2[0-9])[0-9]{2})-(0[469]|11)-(0[1-9]|[12][0-9]|30))$    "
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/verificationPage"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    },
-                    "405": {
-                        "description": "Method not allowed",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    }
-                },
-                "operationId": "verificationList",
-                "summary": "Get a list of verification request based on filters",
-                "description": "This operation provides a verifications request list based on filter parameters \n\n**Mandatory**\nNone\n\n**Supported filters**\n* sfid\n* brand\n* channel\n* signatureType\n* step\n* status\n\n**Supported sort**\n* sfid\n* brand\n* channel\n* signatureType\n* step\n* status\n* createddate\n* statusdate\n\n**Suported page**\nSupported. Default page 1 pagesize 20.\n\n&nbsp;  "
-            },
             "post": {
                 "tags": [
                     "verificationProcessManagement"
@@ -412,11 +351,6 @@
                             "$ref": "#/definitions/customerCommunication"
                         },
                         "in": "body",
-                        "required": true
-                    },
-                    {
-                        "name": "internalkey",
-                        "in": "path",
                         "required": true
                     }
                 ],
@@ -688,6 +622,7 @@
             ],
             "properties": {
                 "code": {
+                    "format": "int64",
                     "description": "An integer coding the error type. This is given to caller so he can translate them if required.",
                     "type": "integer"
                 },
@@ -735,69 +670,6 @@
                 }
             }
         },
-        "requestinfo": {
-            "description": "Verification request information for process generation",
-            "required": [
-                "orderid",
-                "signatureType",
-                "step"
-            ],
-            "type": "object",
-            "properties": {
-                "orderid": {
-                    "description": "Order identifier in original stack",
-                    "type": "string"
-                },
-                "orderItemsId": {
-                    "description": "List of orderitemid involved in this request. If it's null, request is related with all orderitemid included in the order.",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "stack": {
-                    "description": "Stack",
-                    "default": "ALANI",
-                    "enum": [
-                        "ALANI",
-                        "BAU_OSP",
-                        "BAU_JZZ"
-                    ],
-                    "type": "string"
-                },
-                "channel": {
-                    "description": "Sales channel (\"Callcenter | SelfService | Retail\")",
-                    "type": "string"
-                },
-                "sfid": {
-                    "description": "SFID",
-                    "type": "string"
-                },
-                "step": {
-                    "description": "Step in contract flow",
-                    "enum": [
-                        "PURCHASE",
-                        "DELIVERY"
-                    ],
-                    "type": "string"
-                },
-                "signatureType": {
-                    "description": "Signature type requested by SOE",
-                    "enum": [
-                        "DIGITAL_SIGNATURE",
-                        "CERTIFIED_SMS",
-                        "INFORMATIVE_SMS_EMAIL",
-                        "VOICE_RECORDING",
-                        "NOT_REQUIRED",
-                        "MANUAL_SIGNATURE"
-                    ],
-                    "type": "string"
-                }
-            },
-            "xml": {
-                "name": "requestinfo"
-            }
-        },
         "certificationTask": {
             "description": "Datos de certificación procedentes.",
             "required": [
@@ -838,82 +710,6 @@
                 }
             }
         },
-        "SignatoryStatusEnumType": {
-            "enum": [
-                "REGISTERED",
-                "SENDING_COMUNICATION",
-                "AWAITNG_RESPONSE",
-                "ERROR",
-                "CANCELLED",
-                "EXPIRED",
-                "NOT_REQUIRED",
-                "AWAITNG_CERTIFY",
-                "SIGNED",
-                "CERTIFIED",
-                "DONE"
-            ]
-        },
-        "VerificationStatusEnumType": {
-            "enum": [
-                "REGISTERED",
-                "RETRIEVING_INFORMATION",
-                "INFORMATION_FAIL",
-                "EXECUTING_RULES",
-                "RULES_FAIL",
-                "ERROR",
-                "CANCELLED",
-                "DONE",
-                "AWAITING_SIGNED",
-                "EXPIRED"
-            ]
-        },
-        "SignatoryRoleEnumType": {
-            "enum": [
-                "MAIN",
-                "SECONDARY",
-                "OPTIONAL",
-                "REPRESENTED"
-            ]
-        },
-        "ContactDataStatusEnumType": {
-            "enum": [
-                "ACTIVE",
-                "OUT_OF_USE"
-            ]
-        },
-        "SignatureEnumType": {
-            "enum": [
-                "DIGITAL_SIGNATURE",
-                "CERTIFIED_SMS",
-                "NOT_CERTIFIED_SMS",
-                "INFORMATIVE_SMS_EMAIL",
-                "CERTIFIED_VOICE_RECORDING",
-                "VOICE_RECORDING",
-                "NOT_REQUIRED"
-            ]
-        },
-        "ComunicationEnumType": {
-            "enum": [
-                "RESPONSE_OK",
-                "RESPONSE_KO",
-                "RESPONSE_ERROR",
-                "RESPONSE_HELP",
-                "PORTIN_VALIDATION_REQUEST",
-                "PORTIN_VALIDATION_OK",
-                "PORTIN_VALIDATION_ERROR",
-                "CUSTOMER_VALIDATION_REQUEST",
-                "CUSTOMER_VALIDATION_REMEMBER",
-                "CUSTOMER_SIGNED_VALIDATION_PORTIN_REMEMBER",
-                "CUSTOMER_VALIDATION_PORTIN_REMEMBER",
-                "CUSTOMER_VALIDATION_OK",
-                "CUSTOMER_VALIDATION_ERROR",
-                "CUSTOMER_VALIDATION_EXPIRED",
-                "COMMUNICATION_DOCUMENT",
-                "VALIDATION_KO",
-                "VALIDATION_ERROR",
-                "VALIDATION_HELP"
-            ]
-        },
         "CalculatedSignaturesDto": {
             "type": "object",
             "properties": {
@@ -928,54 +724,6 @@
                 }
             },
             "additionalProperties": false
-        },
-        "DocumentSignatureEnumType": {
-            "enum": [
-                "DIGITAL_SIGNATURE",
-                "CERTIFIED_SMS",
-                "NOT_CERTIFIED_SMS",
-                "INFORMATIVE_SMS_EMAIL",
-                "CERTIFIED_VOICE_RECORDING",
-                "VOICE_RECORDING",
-                "NOT_REQUIRED",
-                "OPTIONAL_DIGITAL_SIGNATURE",
-                "OPTIONAL_CERTIFIED_SMS",
-                "OPTIONAL_NOT_CERTIFIED_SMS"
-            ]
-        },
-        "CertificateStatusEnumType": {
-            "enum": [
-                "INITIAL",
-                "INITIAL_SIG_OK",
-                "AW_SIG_OK",
-                "READY_2_CERT_REQ",
-                "AW_CERT_OK",
-                "DONE",
-                "CANCELLED",
-                "ERROR",
-                "EXPIRED"
-            ]
-        },
-        "ComunicationStatusEnumType": {
-            "enum": [
-                "CREATED",
-                "PUBLISHED",
-                "SENT",
-                "ANSWERED",
-                "ANSWERED_AND_SENT",
-                "READY2PUBLISH",
-                "AWAITING2PUBLISH",
-                "ERROR",
-                "CANCELLED",
-                "EXPIRED",
-                "DONE"
-            ]
-        },
-        "AccessRegistryEnumType": {
-            "enum": [
-                "SIGNATORY",
-                "DOCUMENT"
-            ]
         },
         "AccessRegistryDto": {
             "type": "object",
@@ -1053,6 +801,7 @@
                     "type": "string"
                 },
                 "createdtimestamp": {
+                    "format": "int64",
                     "type": "integer"
                 },
                 "contractId": {
@@ -1077,6 +826,7 @@
             "type": "object",
             "properties": {
                 "timestamp": {
+                    "format": "int64",
                     "type": "integer"
                 },
                 "status": {
@@ -1088,6 +838,7 @@
             "type": "object",
             "properties": {
                 "timestamp": {
+                    "format": "int64",
                     "type": "integer"
                 },
                 "status": {
@@ -1099,6 +850,7 @@
             "type": "object",
             "properties": {
                 "timestamp": {
+                    "format": "int64",
                     "type": "integer"
                 },
                 "status": {
@@ -1113,6 +865,7 @@
                     "$ref": "#/definitions/SignatoryStatusEnumType"
                 },
                 "timestamp": {
+                    "format": "int64",
                     "type": "integer"
                 }
             }
@@ -1124,6 +877,7 @@
                     "$ref": "#/definitions/VerificationStatusEnumType"
                 },
                 "timestamp": {
+                    "format": "int64",
                     "type": "integer"
                 }
             }
@@ -1144,6 +898,7 @@
                     "$ref": "#/definitions/AbstractStatusDtoCertificateStatusEnumType"
                 },
                 "createdTimestamp": {
+                    "format": "int64",
                     "type": "integer"
                 },
                 "comunicationRef": {
@@ -1153,9 +908,11 @@
                     }
                 },
                 "certifyResponseTimestamp": {
+                    "format": "int64",
                     "type": "integer"
                 },
                 "certifySendingTimestamp": {
+                    "format": "int64",
                     "type": "integer"
                 },
                 "id": {
@@ -1164,10 +921,7 @@
                 "status": {
                     "type": "array",
                     "items": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/CertificateStatusEnumType"
-                        }
+                        "$ref": "#/definitions/AbstractStatusDtoCertificateStatusEnumType"
                     }
                 }
             },
@@ -1177,6 +931,7 @@
             "type": "object",
             "properties": {
                 "sendingTimestamp": {
+                    "format": "int64",
                     "type": "integer"
                 },
                 "senderPhoneNumber": {
@@ -1195,12 +950,14 @@
                     }
                 },
                 "createdTimestamp": {
+                    "format": "int64",
                     "type": "integer"
                 },
                 "certificate": {
                     "$ref": "#/definitions/CertificateDto"
                 },
                 "publishingTimestamp": {
+                    "format": "int64",
                     "type": "integer"
                 },
                 "comunicationRef": {
@@ -1219,6 +976,7 @@
                     "type": "string"
                 },
                 "responseTimestamp": {
+                    "format": "int64",
                     "type": "integer"
                 },
                 "signatory": {
@@ -1230,10 +988,7 @@
                 "status": {
                     "type": "array",
                     "items": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/ComunicationStatusEnumType"
-                        }
+                        "$ref": "#/definitions/AbstractStatusDtoComunicationStatusEnumType"
                     }
                 }
             },
@@ -1252,6 +1007,7 @@
                     "$ref": "#/definitions/AbstractStatusDtoContactDataStatusEnumType"
                 },
                 "createdTimestamp": {
+                    "format": "int64",
                     "type": "integer"
                 },
                 "sendernumber": {
@@ -1266,10 +1022,7 @@
                 "status": {
                     "type": "array",
                     "items": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/ContactDataStatusEnumType"
-                        }
+                        "$ref": "#/definitions/AbstractStatusDtoContactDataStatusEnumType"
                     }
                 }
             },
@@ -1303,9 +1056,11 @@
                     }
                 },
                 "createdTimestamp": {
+                    "format": "int64",
                     "type": "integer"
                 },
                 "expirationTimestamp": {
+                    "format": "int64",
                     "type": "integer"
                 },
                 "clientAmdocsRef": {
@@ -1353,10 +1108,7 @@
                 "status": {
                     "type": "array",
                     "items": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/SignatoryStatusEnumType"
-                        }
+                        "$ref": "#/definitions/AbstractStatusDtoSignatoryStatusEnumType"
                     }
                 }
             },
@@ -1393,6 +1145,7 @@
                     }
                 },
                 "createdtimestamp": {
+                    "format": "int64",
                     "type": "integer"
                 },
                 "step": {
@@ -1420,19 +1173,223 @@
                     "type": "string"
                 },
                 "productOrderTimestamp": {
+                    "format": "int64",
                     "type": "integer"
                 },
                 "status": {
                     "type": "array",
                     "items": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/VerificationStatusEnumType"
-                        }
+                        "$ref": "#/definitions/AbstractStatusDtoVerificationStatusEnumType"
                     }
                 }
             },
             "additionalProperties": false
+        },
+        "VerificationStatusEnumType": {
+            "enum": [
+                "REGISTERED",
+                "RETRIEVING_INFORMATION",
+                "INFORMATION_FAIL",
+                "EXECUTING_RULES",
+                "RULES_FAIL",
+                "ERROR",
+                "CANCELLED",
+                "DONE",
+                "AWAITING_SIGNED",
+                "EXPIRED"
+            ],
+            "type": "string"
+        },
+        "SignatureEnumType": {
+            "enum": [
+                "DIGITAL_SIGNATURE",
+                "CERTIFIED_SMS",
+                "NOT_CERTIFIED_SMS",
+                "INFORMATIVE_SMS_EMAIL",
+                "CERTIFIED_VOICE_RECORDING",
+                "VOICE_RECORDING",
+                "NOT_REQUIRED"
+            ],
+            "type": "string"
+        },
+        "SignatoryStatusEnumType": {
+            "enum": [
+                "REGISTERED",
+                "SENDING_COMUNICATION",
+                "AWAITNG_RESPONSE",
+                "ERROR",
+                "CANCELLED",
+                "EXPIRED",
+                "NOT_REQUIRED",
+                "AWAITNG_CERTIFY",
+                "SIGNED",
+                "CERTIFIED",
+                "DONE"
+            ],
+            "type": "string"
+        },
+        "SignatoryRoleEnumType": {
+            "enum": [
+                "MAIN",
+                "SECONDARY",
+                "OPTIONAL",
+                "REPRESENTED"
+            ],
+            "type": "string"
+        },
+        "DocumentSignatureEnumType": {
+            "enum": [
+                "DIGITAL_SIGNATURE",
+                "CERTIFIED_SMS",
+                "NOT_CERTIFIED_SMS",
+                "INFORMATIVE_SMS_EMAIL",
+                "CERTIFIED_VOICE_RECORDING",
+                "VOICE_RECORDING",
+                "NOT_REQUIRED",
+                "OPTIONAL_DIGITAL_SIGNATURE",
+                "OPTIONAL_CERTIFIED_SMS",
+                "OPTIONAL_NOT_CERTIFIED_SMS"
+            ],
+            "type": "string"
+        },
+        "ContactDataStatusEnumType": {
+            "enum": [
+                "ACTIVE",
+                "OUT_OF_USE"
+            ],
+            "type": "string"
+        },
+        "ComunicationStatusEnumType": {
+            "enum": [
+                "CREATED",
+                "PUBLISHED",
+                "SENT",
+                "ANSWERED",
+                "ANSWERED_AND_SENT",
+                "READY2PUBLISH",
+                "AWAITING2PUBLISH",
+                "ERROR",
+                "CANCELLED",
+                "EXPIRED",
+                "DONE"
+            ],
+            "type": "string"
+        },
+        "ComunicationEnumType": {
+            "enum": [
+                "RESPONSE_OK",
+                "RESPONSE_KO",
+                "RESPONSE_ERROR",
+                "RESPONSE_HELP",
+                "PORTIN_VALIDATION_REQUEST",
+                "PORTIN_VALIDATION_OK",
+                "PORTIN_VALIDATION_ERROR",
+                "CUSTOMER_VALIDATION_REQUEST",
+                "CUSTOMER_VALIDATION_REMEMBER",
+                "CUSTOMER_SIGNED_VALIDATION_PORTIN_REMEMBER",
+                "CUSTOMER_VALIDATION_PORTIN_REMEMBER",
+                "CUSTOMER_VALIDATION_OK",
+                "CUSTOMER_VALIDATION_ERROR",
+                "CUSTOMER_VALIDATION_EXPIRED",
+                "COMMUNICATION_DOCUMENT",
+                "VALIDATION_KO",
+                "VALIDATION_ERROR",
+                "VALIDATION_HELP"
+            ],
+            "type": "string"
+        },
+        "CertificateStatusEnumType": {
+            "enum": [
+                "INITIAL",
+                "INITIAL_SIG_OK",
+                "AW_SIG_OK",
+                "READY_2_CERT_REQ",
+                "AW_CERT_OK",
+                "DONE",
+                "CANCELLED",
+                "ERROR",
+                "EXPIRED"
+            ],
+            "type": "string"
+        },
+        "AccessRegistryEnumType": {
+            "enum": [
+                "SIGNATORY",
+                "DOCUMENT"
+            ],
+            "type": "string"
+        },
+        "requestinfo": {
+            "description": "Verification request information for process generation",
+            "required": [
+                "orderid",
+                "signatureType",
+                "step"
+            ],
+            "type": "object",
+            "properties": {
+                "orderid": {
+                    "description": "Order identifier in original stack",
+                    "type": "string"
+                },
+                "orderItemsId": {
+                    "description": "List of orderitemid involved in this request. If it's null, request is related with all orderitemid included in the order.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "stack": {
+                    "description": "Stack",
+                    "default": "ALANI",
+                    "enum": [
+                        "ALANI",
+                        "BAU_OSP",
+                        "BAU_JZZ"
+                    ],
+                    "type": "string"
+                },
+                "brand": {
+                    "description": "Commertial brand related with order",
+                    "enum": [
+                        "ORANGE",
+                        "JAZZTEL",
+                        "AMENA"
+                    ],
+                    "type": "string"
+                },
+                "channel": {
+                    "description": "Sales channel (\"Callcenter | SelfService | Retail\")",
+                    "type": "string"
+                },
+                "sfid": {
+                    "description": "SFID",
+                    "type": "string"
+                },
+                "step": {
+                    "description": "Step in contract flow",
+                    "enum": [
+                        "PURCHASE",
+                        "DELIVERY"
+                    ],
+                    "type": "string"
+                },
+                "signatureType": {
+                    "description": "Signature type requested by SOE",
+                    "enum": [
+                        "DIGITAL_SIGNATURE",
+                        "CERTIFIED_SMS",
+                        "INFORMATIVE_SMS_EMAIL",
+                        "VOICE_RECORDING",
+                        "NOT_REQUIRED",
+                        "MANUAL_SIGNATURE"
+                    ],
+                    "type": "string"
+                }
+            },
+            "xml": {
+                "name": "requestinfo"
+            }
         }
     },
     "tags": [
